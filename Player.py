@@ -8,10 +8,9 @@ class Player:
             blocks_taken: A list of Blocks which belong to the Player.
     """
 
-    def ___init___(self):
+    def __init__(self):
         """ Initializes a Player.
         """
-
         # Initializes member variables.
         self.score = 0
         self.bonuses_taken_per_color = {}

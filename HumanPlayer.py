@@ -1,6 +1,5 @@
 from Player import Player
 
-
 class HumanPlayer(Player):
     """ Represents a human player.
 
@@ -14,12 +13,8 @@ class HumanPlayer(Player):
     def __init__(self):
         """ Initializes a HumanPlayer.
         """
-        print("FUCKK")
         # Initializes a Player
         Player.__init__(self)
-        print(self.score)
-        print(self.bonuses_taken_per_color)
-        print("FUCK")
 
     def evaluate_moves(self, legal_moves):
         """ Prompts the player to select a move.
