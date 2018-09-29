@@ -14,7 +14,7 @@ class ComputerPlayer(Player):
         """
 
         # Initializes a Player
-        super.__init__()
+        Player.__init__()
 
     def evaluate_moves(self, legal_moves):
         """ Calculates and selects the optimal move.

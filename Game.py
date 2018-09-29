@@ -37,6 +37,10 @@ class Game:
         self.depth = depth
         self.colors = self.generate_colors(num_colors)
 
+        # Let players create a dict storing all 1 point tiles taken
+        for player in players:
+            player.set_colors(self.colors)
+
         # Initialize other default values
         self.current_player = 0
         self.game_over = False
@@ -133,7 +137,21 @@ class Game:
             Args:
                 position: An (x,y) tuple (must be extended for >2 dimensions).
         """
-        print()
+        # Remember to remove block from legal moves when detecting which position
+        # loses a block.
+
+        i = position[0]
+        j = position[1]
+
+        # Check if there are no block is both directions
+        if (i == 0 or self.board[i-1][j].color == "0") and \
+           (j == 0 or self.board[i][j-1].color == "0"):
+           # Remove block
+           self.board[i][j].color = "0"
+           self.board[i][j].value = 0
+           # give block points and color to player
+           self.players[self.current_player].score_block(self.board[i][j])
+
 
     def score_bonus_blocks(self):
         """ Scores the bonus Blocks remaining in the base of the
@@ -191,10 +209,12 @@ class Game:
             current_block = self.board[i][j]
 
         # Makes adjacent blocks legal
-        if (i - 1, j) not in self.legal_moves:
+        if i > 0 and (i - 1, j) not in self.legal_moves:
             self.legal_moves.append((i - 1, j))
-        if (i, j - 1) not in self.legal_moves:
+            print("here1")
+        if j > 0 and (i, j - 1) not in self.legal_moves:
             self.legal_moves.append((i, j - 1))
+            print("here2")
 
         # Resets i and j
         i = move[0]
@@ -206,10 +226,12 @@ class Game:
             current_block = self.board[i][j]
 
         # Makes adjacent blocks legal
-        if (i - 1, j) not in self.legal_moves:
+        if i > 0 and (i - 1, j) not in self.legal_moves:
             self.legal_moves.append((i - 1, j))
-        if (i, j - 1) not in self.legal_moves:
+            print("here3")
+        if j > 0 and (i, j - 1) not in self.legal_moves:
             self.legal_moves.append((i, j - 1))
+            print("here4")
 
         # Prints the new list of legal (x,y) moves
         print(self.legal_moves)

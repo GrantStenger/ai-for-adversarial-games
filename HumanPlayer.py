@@ -14,9 +14,12 @@ class HumanPlayer(Player):
     def __init__(self):
         """ Initializes a HumanPlayer.
         """
-
+        print("FUCKK")
         # Initializes a Player
-        super.__init__()
+        Player.__init__(self)
+        print(self.score)
+        print(self.bonuses_taken_per_color)
+        print("FUCK")
 
     def evaluate_moves(self, legal_moves):
         """ Prompts the player to select a move.
@@ -38,4 +41,4 @@ class HumanPlayer(Player):
         i, j = user_input.split(',')
 
         # Return chosen position
-        return i, j
+        return int(i), int(j)
