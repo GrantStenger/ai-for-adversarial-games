@@ -143,15 +143,20 @@ class Game:
         i = position[0]
         j = position[1]
 
-        # Check if there are no block is both directions
-        if (i == 0 or self.board[i-1][j].color == "0") and \
-           (j == 0 or self.board[i][j-1].color == "0"):
-           # Remove block
-           self.board[i][j].color = "0"
-           self.board[i][j].value = 0
-           # give block points and color to player
-           self.players[self.current_player].score_block(self.board[i][j])
+        # Check if there is no block in both directions
+        if (i == 0 or self.board[i - 1][j].color == "0") and \
+           (j == 0 or self.board[i][j - 1].color == "0"):
+            # Remove block from board
+            self.board[i][j].color = "0"
+            self.board[i][j].value = 0
 
+            # Remove block from legal moves
+            self.legal_moves.remove(position)
+
+            # Give block points and color to player
+            self.players[self.current_player].score_block(self.board[i][j])
+
+        # Add cases here
 
     def score_bonus_blocks(self):
         """ Scores the bonus Blocks remaining in the base of the
@@ -182,9 +187,6 @@ class Game:
                    self.board[i][j - 1].color == "0":
                     legal_moves.append((i, j))
 
-        # Prints the list of legal (x,y) moves
-        print(legal_moves)
-
         # Return the list of legal (x,y) moves
         return legal_moves
 
@@ -211,10 +213,8 @@ class Game:
         # Makes adjacent blocks legal
         if i > 0 and (i - 1, j) not in self.legal_moves:
             self.legal_moves.append((i - 1, j))
-            print("here1")
         if j > 0 and (i, j - 1) not in self.legal_moves:
             self.legal_moves.append((i, j - 1))
-            print("here2")
 
         # Resets i and j
         i = move[0]
@@ -228,22 +228,43 @@ class Game:
         # Makes adjacent blocks legal
         if i > 0 and (i - 1, j) not in self.legal_moves:
             self.legal_moves.append((i - 1, j))
-            print("here3")
         if j > 0 and (i, j - 1) not in self.legal_moves:
             self.legal_moves.append((i, j - 1))
-            print("here4")
 
-        # Prints the new list of legal (x,y) moves
-        print(self.legal_moves)
+    def pretty_print(self):
+        """ Prints board, legal moves, player scores and colors
+            TODO: Implement pretty board
+        """
+
+        print
+        print(self.board)
+        print
+        for i, player in enumerate(self.players):
+            print("Player " + str(i + 1) + ": ")
+            player.pretty_print()
+        print
+        print("Legal moves: " + str(self.legal_moves))
+        print
+
+        # Prints current player
+        print("Player " + str(self.current_player + 1) + "'s move.")
 
     def play(self):
         """ Runs gameplay until the game is over, then scores bonus Blocks.
         """
 
+        parameters = "Players: " + str(len(self.players))
+        parameters += " Depth: " + str(self.depth)
+        parameters += " Colors: " + str(len(self.colors))
+
+        # Print game parameters
+        print("------------PYRAMIX------------")
+        print(parameters)
+
         # Runs gameplay until only the base Blocks remain
         while not self.game_over:
-            # Prints the current board state
-            print(self.board)
+            # Prints the current game state
+            self.pretty_print()
 
             # Current player evaluates legal moves and selects the optimal (x,y) position
             move = self.players[self.current_player].evaluate_moves(self.legal_moves)

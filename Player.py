@@ -1,5 +1,3 @@
-from Block import Block
-
 class Player:
     """ An class representing a Player.
 
@@ -38,3 +36,7 @@ class Player:
 
         if block.value == 1:
             self.bonuses_taken_per_color[block.color] += 1
+
+    def pretty_print(self):
+        print("    Score: " + str(self.score))
+        print("    Colors: " + str(self.bonuses_taken_per_color))
