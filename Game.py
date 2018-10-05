@@ -287,6 +287,7 @@ class Game:
         	for j in range(len(self.board[i])):
         		#prints each tile (consisting of two characters)
         		print(str(self.board[i][j]), end='')
+        		if (str(self.board[i][j]) == '0'): print (' ', end="")
         		#prints space number of spaces each tile, as well as a vertical dividor between tiles
         		for k in range(spaces):
         			print(" ", end="")
