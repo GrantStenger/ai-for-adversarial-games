@@ -1,5 +1,5 @@
 from Game import Game
-from HumanPlayer import HumanPlayer
+from players.HumanPlayer import HumanPlayer
 
 
 def main():

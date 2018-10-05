@@ -34,6 +34,7 @@ class RandomComputerPlayer(ComputerPlayer):
         """
 
         # Randomly select new position
+        print(legal_moves)
         ind = np.random.choice(np.arange(len(legal_moves)))
         new_pos = legal_moves[ind]
 
