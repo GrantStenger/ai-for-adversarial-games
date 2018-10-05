@@ -1,7 +1,7 @@
-from Player import Player
+from players.BasePlayer import BasePlayer
 
 
-class HumanPlayer(Player):
+class HumanPlayer(BasePlayer):
     """ Represents a human player.
 
         Prompts for input instead of calculating the optimum move.
@@ -16,7 +16,7 @@ class HumanPlayer(Player):
         """
 
         # Initializes a Player
-        Player.__init__(self)
+        super().__init__()
 
     def evaluate_moves(self, legal_moves):
         """ Prompts the player to select a move.
@@ -32,6 +32,7 @@ class HumanPlayer(Player):
         # Prompt the user for input, restricting them to the list of legal moves
         user_input = input('Enter the coordinates of the block you wish to take (in the form "i,j"): ')
         while user_input not in legal_moves:
+            print
             print('That is not a legal move.')
             user_input = input('Enter the coordinates of the block you wish to take (in the form "i,j"): ')
 
