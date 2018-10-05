@@ -21,4 +21,8 @@ class Block:
     def __repr__(self):
         """ Overrides the print function to return the Block's color.
         """
-        return self.color
+
+        # Only print the value of the block if it is nonzero
+        if self.value == 0:
+            return self.color
+        return self.color + str(self.value)

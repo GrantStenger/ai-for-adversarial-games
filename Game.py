@@ -146,17 +146,53 @@ class Game:
         # Check if there is no block in both directions
         if (i == 0 or self.board[i - 1][j].color == "0") and \
            (j == 0 or self.board[i][j - 1].color == "0"):
+            # Give block points and color to player
+            self.players[self.current_player].score_block(self.board[i][j])
+
             # Remove block from board
             self.board[i][j].color = "0"
             self.board[i][j].value = 0
 
             # Remove block from legal moves
-            self.legal_moves.remove(position)
+            self.legal_moves.remove((i, j))
 
+        # Check if there is no block in the x direction
+        elif i == 0 or self.board[i - 1][j].color == "0":
             # Give block points and color to player
             self.players[self.current_player].score_block(self.board[i][j])
 
-        # Add cases here
+            # Slide blocks down
+            while not (j == 0 or self.board[i][j - 1].color == "0"):
+                # Make new Block for new position
+                # Don't just set equal because we want a copy, not a reference
+                self.board[i][j] = Block(self.board[i][j - 1].color, self.board[i][j - 1].value)
+                j -= 1
+
+            # Remove final block from board
+            self.board[i][j].color = "0"
+            self.board[i][j].value = 0
+
+            # Remove final block from legal moves
+            self.legal_moves.remove((i, j))
+
+        # Check if there is no block in the y direction
+        elif j == 0 or self.board[i][j - 1].color == "0":
+            # Give block points and color to player
+            self.players[self.current_player].score_block(self.board[i][j])
+
+            # Slide blocks down
+            while not (i == 0 or self.board[i - 1][j].color == "0"):
+                # Make new Block for new position
+                # Don't just set equal because we want a copy, not a reference
+                self.board[i][j] = Block(self.board[i - 1][j].color, self.board[i - 1][j].value)
+                i -= 1
+
+            # Remove final block from board
+            self.board[i][j].color = "0"
+            self.board[i][j].value = 0
+
+            # Remove final block from legal moves
+            self.legal_moves.remove((i, j))
 
     def score_bonus_blocks(self):
         """ Scores the bonus Blocks remaining in the base of the
@@ -164,6 +200,7 @@ class Game:
 
             (Add rules here later).
         """
+
         return 0
 
     def initialize_legal_moves(self):
@@ -225,11 +262,15 @@ class Game:
             i -= 1
             current_block = self.board[i][j]
 
+        # BUG SOMEWHERE: 0,0 SOMETIMES BECOMES LEGAL WHEN IT IS NOT
+
         # Makes adjacent blocks legal
         if i > 0 and (i - 1, j) not in self.legal_moves:
             self.legal_moves.append((i - 1, j))
         if j > 0 and (i, j - 1) not in self.legal_moves:
             self.legal_moves.append((i, j - 1))
+
+        self.legal_moves.sort()
 
     def pretty_print(self):
         """ Prints board, legal moves, player scores and colors
