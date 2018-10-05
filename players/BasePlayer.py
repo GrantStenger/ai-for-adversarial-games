@@ -1,4 +1,4 @@
-class Player(object):
+class BasePlayer(object):
     """ An class representing a Player.
 
         Attributes:

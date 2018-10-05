@@ -1,7 +1,7 @@
 from random import shuffle
 import string
 
-from Player import Player
+from players.BasePlayer import Player
 from Block import Block
 
 

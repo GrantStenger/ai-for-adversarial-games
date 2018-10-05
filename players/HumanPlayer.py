@@ -1,7 +1,7 @@
-from Player import Player
+from players.BasePlayer import BasePlayer
 
 
-class HumanPlayer(Player):
+class HumanPlayer(BasePlayer):
     """ Represents a human player.
 
         Prompts for input instead of calculating the optimum move.
@@ -16,7 +16,7 @@ class HumanPlayer(Player):
         """
 
         # Initializes a Player
-        Player.__init__(self)
+        super().__init__()
 
     def evaluate_moves(self, legal_moves):
         """ Prompts the player to select a move.
