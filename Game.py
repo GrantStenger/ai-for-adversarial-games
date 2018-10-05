@@ -282,9 +282,29 @@ class Game:
             TODO: Implement pretty board
         """
 
-        print
+        #prints the board in a pretty manner
+        #spaces stores the number of spaces between each tile
+        spaces = 4
+        for i in range(len(self.board)):
+        	for j in range(len(self.board[i])):
+        		#prints each tile (consisting of two characters)
+        		print(str(self.board[i][j]), end='')
+        		#prints space number of spaces each tile, as well as a vertical dividor between tiles
+        		for k in range(spaces):
+        			print(" ", end="")
+        			if k == (spaces+2)//2 -2: print("|", end="")
+        	print('')
+        	#prints a line of underscores between each row of tiles
+        	for j in range(len(self.board[i])):
+        		for k in range(spaces+2):
+        			print("_", end="")
+        			if k == (spaces+2)//2:
+        				print("|", end="")
+        				if j == len(self.board[i])-1: break
+        	print("")
         print(self.board)
-        print
+
+
         for i, player in enumerate(self.players):
             print("Player " + str(i + 1) + ": ")
             player.pretty_print()
