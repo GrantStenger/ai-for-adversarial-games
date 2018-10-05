@@ -1,11 +1,14 @@
 # Pyramix AI
 
 ## Questions to Explore
-* How does the strategy change when we generalize to n dimensions?
-* How does the strategy change when we generalize to depth d?
-* How does the strategy change when we generalize to k players?
-* How does the strategy change when we generalize to c colors?
-* How does the strategy change as the ratio of cobras change?
-* How does the strategy change as the ratio of ankhs change?
+* How does the strategy change when:
+  * We generalize to n dimensions?
+  * We generalize to depth d?
+  * We generalize to k players?
+  * We generalize to c colors?
+  * The ratio of cobras changes?
+  * The ratio of ankhs changes?
 * How how much advantage does player 1 have over player k?
 * What changes can we make to ensure a more 'fair' game?
+* What heuristics does a hand designed algorithm learn that a reinforcement learning algorithm doesn't, and vice versa.
+* What is the complexity of the game?
