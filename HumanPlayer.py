@@ -32,6 +32,7 @@ class HumanPlayer(Player):
         # Prompt the user for input, restricting them to the list of legal moves
         user_input = input('Enter the coordinates of the block you wish to take (in the form "i,j"): ')
         while user_input not in legal_moves:
+            print
             print('That is not a legal move.')
             user_input = input('Enter the coordinates of the block you wish to take (in the form "i,j"): ')
 

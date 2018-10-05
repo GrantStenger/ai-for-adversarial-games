@@ -1,6 +1,7 @@
 from random import shuffle
 import string
 
+from Player import Player
 from Block import Block
 
 
@@ -194,6 +195,9 @@ class Game:
             # Remove final block from legal moves
             self.legal_moves.remove((i, j))
 
+        # Decrement blocks left
+        self.blocks_left -= 1
+
     def score_bonus_blocks(self):
         """ Scores the bonus Blocks remaining in the base of the
             pyramid at the end of the game.
@@ -248,9 +252,9 @@ class Game:
             current_block = self.board[i][j]
 
         # Makes adjacent blocks legal
-        if i > 0 and (i - 1, j) not in self.legal_moves:
+        if i > 0 and (i - 1, j) not in self.legal_moves and self.board[i - 1][j].color != "0":
             self.legal_moves.append((i - 1, j))
-        if j > 0 and (i, j - 1) not in self.legal_moves:
+        if j > 0 and (i, j - 1) not in self.legal_moves and self.board[i][j - 1].color != "0":
             self.legal_moves.append((i, j - 1))
 
         # Resets i and j
@@ -259,15 +263,14 @@ class Game:
 
         # Checks the y axis
         while current_block.color != "0" and i - 1 >= 0:
+            print(str(i))
             i -= 1
             current_block = self.board[i][j]
 
-        # BUG SOMEWHERE: 0,0 SOMETIMES BECOMES LEGAL WHEN IT IS NOT
-
         # Makes adjacent blocks legal
-        if i > 0 and (i - 1, j) not in self.legal_moves:
+        if i > 0 and (i - 1, j) not in self.legal_moves and self.board[i - 1][j].color != "0":
             self.legal_moves.append((i - 1, j))
-        if j > 0 and (i, j - 1) not in self.legal_moves:
+        if j > 0 and (i, j - 1) not in self.legal_moves and self.board[i][j - 1].color != "0":
             self.legal_moves.append((i, j - 1))
 
         self.legal_moves.sort()
@@ -289,6 +292,28 @@ class Game:
 
         # Prints current player
         print("Player " + str(self.current_player + 1) + "'s move.")
+
+    def pretty_print_for_end(self):
+        """ Prints board and score, and winner at the end of the game.
+            TODO: Implement pretty board
+        """
+
+        print
+        print(self.board)
+        print
+        for i, player in enumerate(self.players):
+            print("Player " + str(i + 1) + ": ")
+            player.pretty_print()
+        print
+
+        winner = Player()
+        winner_num = -1
+        for i, player in enumerate(self.players):
+            if player.score > winner.score:
+                winner = player
+                winner_num = i
+
+        print("Winner: Player " + str(winner_num + 1) + " Score: " + str(winner.score))
 
     def play(self):
         """ Runs gameplay until the game is over, then scores bonus Blocks.
@@ -325,3 +350,6 @@ class Game:
 
         # Scores bonus blocks
         self.score_bonus_blocks()
+
+        # Prints the endgame and winner
+        self.pretty_print_for_end()
