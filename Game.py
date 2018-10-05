@@ -79,6 +79,7 @@ class Game:
         # Return the first num_colors colors
         return generated_colors
 
+
     def initialize_board(self, depth, num_colors):
         """ Initializes the board (represented as a nested list).
 
@@ -130,6 +131,7 @@ class Game:
 
         # Return the initialized board
         return board
+
 
     def make_move(self, position):
         """ Removes the Block in the given position and slides other
@@ -340,6 +342,8 @@ class Game:
 
             # If only the base Blocks remain, terminate the game
             if self.blocks_left == self.depth:
+                self.game_over = True
+            if len(self.legal_moves) == 0:
                 self.game_over = True
 
             # Updates legal moves given the player's move choices

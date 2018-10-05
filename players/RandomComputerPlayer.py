@@ -33,8 +33,10 @@ class RandomComputerPlayer(ComputerPlayer):
                 j: An integer representing the y position of the chosen move.
         """
 
+        
+
         # Randomly select new position
-        print(legal_moves)
+  
         ind = np.random.choice(np.arange(len(legal_moves)))
         new_pos = legal_moves[ind]
 
