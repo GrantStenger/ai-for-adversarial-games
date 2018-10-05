@@ -1,7 +1,7 @@
 from random import shuffle
 import string
 
-from players.BasePlayer import Player
+from players.BasePlayer import BasePlayer
 from Block import Block
 
 
@@ -306,7 +306,7 @@ class Game:
             player.pretty_print()
         print
 
-        winner = Player()
+        winner = BasePlayer()
         winner_num = -1
         for i, player in enumerate(self.players):
             if player.score > winner.score:
