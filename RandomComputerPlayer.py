@@ -1,7 +1,9 @@
-from Player import Player
+from ComputerPlayer import ComputerPlayer
+import numpy as np 
 
 
-class ComputerPlayer(Player):
+class RandomComputerPlayer(ComputerPlayer):
+
     """ Represents a computer player.
 
         Attributes:
@@ -13,13 +15,14 @@ class ComputerPlayer(Player):
         """ Initializes a ComputerPlayer.
         """
 
-        # Initializes a Player
+        # Initializes a ComputerPlayer
         super().__init__()
 
     def evaluate_moves(self, legal_moves):
-        """ Calculates and selects the optimal move.
-
-            TODO: Restrict them to the list of legal moves.
+        """ 
+        Selects a Random Move
+        from the list of legal 
+        moves 
 
             Args:
                 legal_moves: A list of legal moves.
@@ -29,5 +32,9 @@ class ComputerPlayer(Player):
                 j: An integer representing the y position of the chosen move.
         """
 
-        # Returns dummy values
-        return 0, 0
+        # Randomly select new position
+        ind = np.random.choice(np.arange(len(legal_moves)))
+        new_pos = legal_moves[ind]
+
+        # Returns random position
+        return new_pos
