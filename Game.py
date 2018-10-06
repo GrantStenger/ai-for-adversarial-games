@@ -309,9 +309,9 @@ class Game:
         for i, player in enumerate(self.players):
             print("Player " + str(i + 1) + ": ")
             player.pretty_print()
-        print
+        print()
         print("Legal moves: " + str(self.legal_moves))
-        print
+        print()
 
         # Prints current player
         print("Player " + str(self.current_player + 1) + "'s move.")
@@ -321,13 +321,13 @@ class Game:
             TODO: Implement pretty board
         """
 
-        print
+        print()
         print(self.board)
-        print
+        print()
         for i, player in enumerate(self.players):
             print("Player " + str(i + 1) + ": ")
             player.pretty_print()
-        print
+        print()
 
         winner = BasePlayer()
         winner_num = -1
