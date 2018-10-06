@@ -79,7 +79,6 @@ class Game:
         # Return the first num_colors colors
         return generated_colors
 
-
     def initialize_board(self, depth, num_colors):
         """ Initializes the board (represented as a nested list).
 
@@ -131,7 +130,6 @@ class Game:
 
         # Return the initialized board
         return board
-
 
     def make_move(self, position):
         """ Removes the Block in the given position and slides other
@@ -279,37 +277,43 @@ class Game:
 
     def pretty_print(self):
         """ Prints board, legal moves, player scores and colors
-            TODO: Implement pretty board
         """
 
-        #prints the board in a pretty manner
-        #spaces stores the number of spaces between each tile
+        print()
+        # Prints the board in a pretty manner
+        # Spaces stores the number of spaces between each tile
         spaces = 4
         for i in range(len(self.board)):
-        	for j in range(len(self.board[i])):
-        		#prints each tile (consisting of two characters)
-        		print(str(self.board[i][j]), end='')
-        		if (str(self.board[i][j]) == '0'): print (' ', end="")
-        		#prints space number of spaces each tile, as well as a vertical dividor between tiles
-        		for k in range(spaces):
-        			print(" ", end="")
-        			if k == (spaces+2)//2 -2: print("|", end="")
-        	print('')
-        	#prints a line of underscores between each row of tiles
-        	for j in range(len(self.board[i])):
-        		for k in range(spaces+2):
-        			print("_", end="")
-        			if k == (spaces+2)//2:
-        				print("|", end="")
-        				if j == len(self.board[i])-1: break
-        	print("")
-        print(self.board)
+            for j in range(len(self.board[i])):
+                # Prints each tile (consisting of two characters)
+                print(str(self.board[i][j]), end="")
+                if (str(self.board[i][j]) == '0'):
+                    print (" ", end="")
 
+                # Prints space number of spaces each tile and vertical division between tiles
+                for k in range(spaces):
+                    print(" ", end="")
+                    if k == (spaces + 2) // 2 - 2:
+                        print("|", end="")
+            print()
+            # Prints a line of underscores between each row of tiles
+            for j in range(len(self.board[i])):
+                for k in range(spaces + 2):
+                    print("_", end="")
+                    if k == (spaces + 2) // 2:
+                        print("|", end="")
+                        if j == len(self.board[i]) - 1:
+                            break
+            print()
+        print()
 
+        # Prints players and scores
         for i, player in enumerate(self.players):
             print("Player " + str(i + 1) + ": ")
             player.pretty_print()
         print()
+
+        # Prints legal moves
         print("Legal moves: " + str(self.legal_moves))
         print()
 
@@ -318,17 +322,18 @@ class Game:
 
     def pretty_print_for_end(self):
         """ Prints board and score, and winner at the end of the game.
-            TODO: Implement pretty board
         """
 
         print()
-        print(self.board)
-        print()
+
+        # Prints players and scores
         for i, player in enumerate(self.players):
             print("Player " + str(i + 1) + ": ")
             player.pretty_print()
         print()
 
+        # Prints winner and score
+        # Could be more pythonic, but we need the winner number which makes it less elegant
         winner = BasePlayer()
         winner_num = -1
         for i, player in enumerate(self.players):
