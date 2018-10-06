@@ -28,18 +28,16 @@ class HumanPlayer(BasePlayer):
                 i: An integer representing the x position of the chosen move.
                 j: An integer representing the y position of the chosen move.
         """
-        
+
         # Prompt the user for input, restricting them to the list of legal moves
         user_input = input('Enter the coordinates of the block you wish to take (in the form "i,j"): ')
-        user_input = tuple( [  int(i) for i in user_input.split(',') ] )
+        user_input = tuple([int(i) for i in user_input.split(',')])
 
         while user_input not in legal_moves:
-            print
+            print()
             print('That is not a legal move.')
             user_input = input('Enter the coordinates of the block you wish to take (in the form "i,j"): ')
-
-        # Parse input
-        # i, j = user_input.split(',')
+            user_input = tuple([int(i) for i in user_input.split(',')])
 
         # Return chosen position
-        return  ( int(user_input[0]), int(user_input[1]) )
+        return (int(user_input[0]), int(user_input[1]))

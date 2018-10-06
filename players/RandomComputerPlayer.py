@@ -1,4 +1,4 @@
-import numpy as np 
+import numpy as np
 
 from players.ComputerPlayer import ComputerPlayer
 
@@ -20,10 +20,7 @@ class RandomComputerPlayer(ComputerPlayer):
         super().__init__()
 
     def evaluate_moves(self, legal_moves):
-        """ 
-        Selects a Random Move
-        from the list of legal 
-        moves 
+        """ Selects a Random Move from the list of legal moves.
 
             Args:
                 legal_moves: A list of legal moves.
@@ -33,10 +30,7 @@ class RandomComputerPlayer(ComputerPlayer):
                 j: An integer representing the y position of the chosen move.
         """
 
-        
-
         # Randomly select new position
-  
         ind = np.random.choice(np.arange(len(legal_moves)))
         new_pos = legal_moves[ind]
 
