@@ -263,7 +263,6 @@ class Game:
 
         # Checks the y axis
         while current_block.color != "0" and i - 1 >= 0:
-            print(str(i))
             i -= 1
             current_block = self.board[i][j]
 

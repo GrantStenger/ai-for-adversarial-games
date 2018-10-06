@@ -19,8 +19,6 @@ class ComputerPlayer(BasePlayer):
     def evaluate_moves(self, legal_moves):
         """ Calculates and selects the optimal move.
 
-            TODO: Restrict them to the list of legal moves.
-
             Args:
                 legal_moves: A list of legal moves.
 
