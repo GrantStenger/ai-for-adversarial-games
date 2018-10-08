@@ -1,7 +1,6 @@
 from random import shuffle
 import string
 
-from players.BasePlayer import BasePlayer
 from Block import Block
 
 
@@ -202,10 +201,37 @@ class Game:
         """ Scores the bonus Blocks remaining in the base of the
             pyramid at the end of the game.
 
-            (Add rules here later).
+            The player with the most 1-point blocks of that color get the points; if there is a
+            tie, nobody gets the points.
         """
+        print()
+        print("Scoring bonus blocks...")
 
-        return 0
+        for color in self.colors:
+            # Creates a list of how many 1-point blocks of this color everyone has
+            ones_of_color = [player.bonuses_taken_per_color[color] for player in self.players]
+
+            # Finds max number
+            max_ones_of_color = max(ones_of_color)
+
+            # Ends if there is more than one max player
+            if ones_of_color.count(max_ones_of_color) == 1:
+                points_scored = 0
+
+                # Finds the player with the most 1-point blocks of that color
+                max_player = [player for player in self.players if player.bonuses_taken_per_color[color] == max_ones_of_color][0]
+                player_index = self.players.index(max_player)
+
+                # Change to be more efficient and not have to search the whole board
+                for row in self.board:
+                    for block in row:
+                        if block.color == color:
+                            max_player.score_block(block)
+                            points_scored += block.value
+                print()
+                print("Player " + str(player_index + 1) + " won the color " + color + " and scored " + str(points_scored) + " points.")
+            else:
+                print("There was a tie for the color " + color + ".")
 
     def initialize_legal_moves(self):
         """ Initalizes the legal moves of the initial board state.
@@ -274,11 +300,10 @@ class Game:
 
         self.legal_moves.sort()
 
-    def pretty_print(self):
-        """ Prints board, legal moves, player scores and colors
+    def pretty_print_board(self):
+        """ Prints the board
         """
 
-        print()
         # Prints the board in a pretty manner
         # Spaces stores the number of spaces between each tile
         spaces = 4
@@ -287,7 +312,7 @@ class Game:
                 # Prints each tile (consisting of two characters)
                 print(str(self.board[i][j]), end="")
                 if (str(self.board[i][j]) == '0'):
-                    print (" ", end="")
+                    print(" ", end="")
 
                 # Prints space number of spaces each tile and vertical division between tiles
                 for k in range(spaces):
@@ -304,6 +329,13 @@ class Game:
                         if j == len(self.board[i]) - 1:
                             break
             print()
+
+    def pretty_print(self):
+        """ Prints board, legal moves, player scores and colors
+        """
+
+        print()
+        self.pretty_print_board()
         print()
 
         # Prints players and scores
@@ -332,15 +364,10 @@ class Game:
         print()
 
         # Prints winner and score
-        # Could be more pythonic, but we need the winner number which makes it less elegant
-        winner = BasePlayer()
-        winner_num = -1
-        for i, player in enumerate(self.players):
-            if player.score > winner.score:
-                winner = player
-                winner_num = i
+        winner = max(self.players, key=lambda player: player.score)
+        winner_num = self.players.index(winner) + 1
 
-        print("Winner: Player " + str(winner_num + 1) + " Score: " + str(winner.score))
+        print("Winner: Player " + str(winner_num) + " Score: " + str(winner.score))
 
     def play(self):
         """ Runs gameplay until the game is over, then scores bonus Blocks.
@@ -376,6 +403,10 @@ class Game:
 
             # Makes the next player the current player
             self.current_player = (self.current_player + 1) % len(self.players)
+
+        # Prints the board
+        print()
+        self.pretty_print_board()
 
         # Scores bonus blocks
         self.score_bonus_blocks()
