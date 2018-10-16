@@ -1,8 +1,6 @@
 from random import shuffle
 import string
-
 from Block import Block
-
 
 class Game:
     """ Represents the game state.
