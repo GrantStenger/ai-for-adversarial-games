@@ -104,7 +104,8 @@ class Game:
 		# Check diagonal
 		for row in range(3):
 			for column in range(4):
-				if self.board[row][column] == self.board[row+1][column+1] == self.board[row+2][column+2] == self.board[row+3][column+3] != BLANK:
+				if self.board[row][column] == self.board[row+1][column+1] == \
+				   self.board[row+2][column+2] == self.board[row+3][column+3] != BLANK:
 					print(self.board[row][column], "wins!")
 					self.playing = False
 					if self.player_to_move == "white":
@@ -113,7 +114,8 @@ class Game:
 						return -1
 		for row in range(4, 6):
 			for column in range(4):
-				if self.board[row][column] == self.board[row-1][column+1] == self.board[row-2][column+2] == self.board[row-3][column+3] != BLANK:
+				if self.board[row][column] == self.board[row-1][column+1] == \
+				   self.board[row-2][column+2] == self.board[row-3][column+3] != BLANK:
 					print(self.board[row][column], "wins!")
 					self.playing = False
 					if self.player_to_move == "white":
@@ -122,6 +124,7 @@ class Game:
 						return -1
 
 		# If no one has won, return 0
+		return 0
 
 	def isPlaying(self):
 		return self.playing
@@ -217,7 +220,7 @@ class HumanPlayer:
 
 def main():
 	game = Game()
-	player = ComputerPlayer("computer")
+	player = HumanPlayer("grant")
 	player.play(game)
 
 if __name__ == "__main__":

@@ -99,48 +99,35 @@ def decide_winner(players, river):
     for hand in players_sorted_hands:
         longest_straight = 1
         current_straight = 1
+        straight_high_card = -1
         for i in range(1, len(hand)):
-            print()
-            print(hand[i])
             # Checks if new card is one more than the last card,
             # or current is an ace and last was a king
             if (int(hand[i-1], base=2) // 4) + 1 == (int(hand[i], base=2) // 4) or \
                ((int(hand[i-1], base=2) // 4) == '1101' and (int(hand[i], base=2) // 4 == '0001')):
+               # increment length of longest straight
                 current_straight += 1
-                print("current straight =", current_straight)
-                print((int(hand[i-1], base=2) // 4) + 1, (int(hand[i], base=2) // 4))
+                # If this is the longest straight seen so far, note that
                 if current_straight > longest_straight:
                     longest_straight = current_straight
-            elif int(hand[i-1], base=2) // 4 == int(hand[i], base=2) // 4:
-                if (int(hand[i-2], base=2) // 4) + 1 == (int(hand[i], base=2) // 4) or \
-                   ((int(hand[i-2], base=2) // 4) == '1101' and (int(hand[i], base=2) // 4 == '0001')):
-                    current_straight += 1
-                    print("current straight =", current_straight)
-                    print((int(hand[i-2], base=2) // 4) + 1, (int(hand[i], base=2) // 4))
-                    if current_straight > longest_straight:
-                        longest_straight = current_straight
-            elif int(hand[i-2], base=2) // 4 == int(hand[i], base=2) // 4:
-                if (int(hand[i-3], base=2) // 4) + 1 == (int(hand[i], base=2) // 4) or \
-                   ((int(hand[i-3], base=2) // 4) == '1101' and (int(hand[i], base=2) // 4 == '0001')):
-                    current_straight += 1
-                    print("current straight =", current_straight)
-                    print((int(hand[i-3], base=2) // 4) + 1, (int(hand[i], base=2) // 4))
-                    if current_straight > longest_straight:
-                        longest_straight = current_straight
-            elif int(hand[i-3], base=2) // 4 == int(hand[i], base=2) // 4:
-                if (int(hand[i-4], base=2) // 4) + 1 == (int(hand[i], base=2) // 4) or \
-                   ((int(hand[i-4], base=2) // 4) == '1101' and (int(hand[i], base=2) // 4 == '0001')):
-                    current_straight += 1
-                    print("current straight =", current_straight)
-                    print((int(hand[i-4], base=2) // 4) + 1, (int(hand[i], base=2) // 4))
-                    if current_straight > longest_straight:
-                        longest_straight = current_straight
+                    if longest_straight >= 5:
+                        straight_high_card = (int(hand[i], base=2) // 4)
+            # If this next card is the same value as the next card,
+            # keep straight length and move on.
+            elif (int(hand[i-1], base=2) // 4) == (int(hand[i], base=2) // 4):
+                current_straight = current_straight
             else:
                 current_straight = 1
 
         if longest_straight >= 5:
             print("STRAIGHT!!!!")
-        print(longest_straight)
+            print(straight_high_card)
+            ## UPDATE HAND VALUE
+            hand_values.append(4)
+        else:
+            # Assign this hand value 0
+            hand_values.append(0)
+
 
     # 7: Four of a Kind
     # 6: Full House

@@ -2,7 +2,6 @@ from Game import Game
 from players.HumanPlayer import HumanPlayer
 from players.RandomComputerPlayer import RandomComputerPlayer
 
-
 def main():
     """ Initializes Players and a Game, then begins the game.
     """

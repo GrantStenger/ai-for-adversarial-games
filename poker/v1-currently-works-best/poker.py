@@ -176,7 +176,7 @@ def analyze(hole, community):
 	# Check for straight
 	longestStraightLength = 1
 	currentStraightLength = 1
-	numbers = [2,3,4,5,6,7,8,9,10,'Jack','Queen','King','Ace']
+	numbers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
 	for i in range(1, len(cards)):
 		if numbers.index(cards[i-1].number) + 1 == numbers.index(cards[i].number):
 			currentStraightLength += 1
