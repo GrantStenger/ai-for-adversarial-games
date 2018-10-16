@@ -1,9 +1,7 @@
 from players.BasePlayer import BasePlayer
 
-class HumanPlayer(BasePlayer):
-    """ Represents a human player.
-
-        Prompts for input instead of calculating the optimum move.
+class RandomComputerPlayer(BasePlayer):
+    """ Represents a computer player who plays randomly.
 
         Attributes:
             name: A string representing the Player's name.

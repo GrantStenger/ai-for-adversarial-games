@@ -1,3 +1,5 @@
+import os
+
 BLANK = "_"
 
 class Game:
@@ -6,6 +8,8 @@ class Game:
 		self.board = self.makeBoard()
 		self.player1 = players[0]
 		self.player2 = players[1]
+		self.player1.assignToken("X")
+		self.player2.assignToken("O")
 		self.player_to_move = self.player1
 		self.playing = True
 
@@ -35,23 +39,6 @@ class Game:
 		else:
 			print("U fucked up. not a slot")
 
-		# Check if anyone has won yet, and return 1 if player 1 won or -1 if lost
-		move_val = self.check_board()
-
-		# Display updated board
-		self.printBoard()
-
-		print("HERE")
-		# Switch whose turn it is
-		if self.player_to_move == self.player1:
-			print("here1")
-			self.player_to_move = self.player2
-		else:
-			print("here2")
-			self.player_to_move = self.player1
-
-		return board, move_val
-
 	# Check for victory (i.e. 4-in-a-row)
 	def check_board(self):
 
@@ -63,7 +50,7 @@ class Game:
 				if curr_val == self.board[row][column] and curr_val != BLANK:
 					count += 1
 					if count == 4:
-						print(self.player_to_move.name, "wins!")
+						self.winner = self.player_to_move
 						self.playing = False
 						if self.player_to_move == self.player1:
 							return 1
@@ -89,7 +76,7 @@ class Game:
 					# Then that player has won
 					if count == 4:
 						# Print the winner
-						print(self.player_to_move.name, "wins!")
+						self.winner = self.player_to_move
 						# Set playing to false so the game knows not to play anymore
 						self.playing = False
 						# Exit the function
@@ -109,7 +96,7 @@ class Game:
 			for column in range(4):
 				if self.board[row][column] == self.board[row+1][column+1] == \
 				   self.board[row+2][column+2] == self.board[row+3][column+3] != BLANK:
-					print(self.player_to_move.name, "wins!")
+					self.winner = self.player_to_move
 					self.playing = False
 					if self.player_to_move == self.player1:
 						return 1
@@ -120,7 +107,7 @@ class Game:
 			for column in range(4):
 				if self.board[row][column] == self.board[row-1][column+1] == \
 				   self.board[row-2][column+2] == self.board[row-3][column+3] != BLANK:
-					print(self.player_to_move.name, "wins!")
+					self.winner = self.player_to_move
 					self.playing = False
 					if self.player_to_move == self.player1:
 						return 1
@@ -143,10 +130,29 @@ class Game:
 		""" Runs gameplay until the game is over, then scores bonus Blocks.
 		"""
 
-		# Display board
-		self.printBoard()
-
 		# Runs game until a player has won
 		while self.isPlaying():
+
+			# Display board
+			os.system('clear')
+			self.printBoard()
+
+			# Let the player choose their move
 			chosen_move = self.player_to_move.chooseMove()
+
+			# Execute move
 			self.move(int(chosen_move) - 1, self.getBoard())
+
+			# Check board
+			self.check_board()
+
+			# Switch whose turn it is
+			if self.player_to_move == self.player1:
+				self.player_to_move = self.player2
+			else:
+				self.player_to_move = self.player1
+
+		# Print final board configuration
+		os.system('clear')
+		print(self.winner.name, "wins!")
+		self.printBoard()

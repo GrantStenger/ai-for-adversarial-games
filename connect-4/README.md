@@ -1,3 +1,8 @@
+# Connect-4
+
+### Status
+* Playable in console by a human
+
 ### To Do's:
 * Implement MiniMax
 * Implement Alpha-Beta Pruning

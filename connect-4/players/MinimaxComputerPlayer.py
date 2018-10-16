@@ -1,6 +1,6 @@
 from players.BasePlayer import BasePlayer
 
-class ComputerPlayer(BasePlayer):
+class MinimaxComputerPlayer(BasePlayer):
 
 	def __init__(self, name):
 		self.name = name

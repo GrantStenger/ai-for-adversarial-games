@@ -1,13 +1,14 @@
 from Game import Game
 from players.HumanPlayer import HumanPlayer
-from players.ComputerPlayer import ComputerPlayer
+from players.RandomComputerPlayer import RandomComputerPlayer
+from players.MinimaxComputerPlayer import MinimaxComputerPlayer
 
 def main():
 	""" Initializes Players and a Game, then begins the game.
 	"""
 
 	# Initializes Players
-	players = [HumanPlayer("White", "X"), HumanPlayer("Black", "O")]
+	players = [HumanPlayer("White"), HumanPlayer("Black")]
 
 	# Initializes a Game
 	game = Game(players)
