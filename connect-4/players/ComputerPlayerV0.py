@@ -1,7 +1,7 @@
 from players.BasePlayer import BasePlayer
 from random import randrange
 
-class RandomComputerPlayer(BasePlayer):
+class ComputerPlayerV0(BasePlayer):
     """ Represents a computer player who plays randomly.
 
         Attributes:

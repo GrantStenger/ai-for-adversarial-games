@@ -29,6 +29,7 @@ class Game:
 		if slot < self.columns and slot >= 0:
 			if board[0][slot] != BLANK:
 				print("slot is full u fuck, try again")
+				pass
 			else:
 				height = self.rows - 1
 				while board[height][slot] != BLANK and height > 0:
@@ -38,19 +39,23 @@ class Game:
 				self.playing = False
 		else:
 			print("U fucked up. not a slot")
+			pass
 
 	# Check for victory (i.e. 4-in-a-row)
-	def check_board(self):
+	def check_board(self, board = None):
+
+		# Work-around to fix default argument in python (need to fix)
+		board = board if board is not None else self.board
 
 		# Check horizontal
 		for row in range(self.rows):
 			count = 1
-			curr_val = self.board[row][0]
-			for column in range(1, len(self.board[row])):
-				if curr_val == self.board[row][column] and curr_val != BLANK:
+			curr_val = board[row][0]
+			for column in range(1, len(board[row])):
+				if curr_val == board[row][column] and curr_val != BLANK:
 					count += 1
 					if count == 4:
-						self.winner = self.player_to_move
+						self.winner_name = self.player_to_move.name
 						self.playing = False
 						if self.player_to_move == self.player1:
 							return 1
@@ -58,25 +63,25 @@ class Game:
 							return -1
 				else:
 					count = 1
-				curr_val = self.board[row][column]
+				curr_val = board[row][column]
 
 		# Check vertical connect 4
 		# Iterate through each of the columns
 		for column in range(self.columns):
 			# Initialize count to 1 and set the current value to the top cell in each column
 			count = 1
-			curr_val = self.board[0][column]
+			curr_val = board[0][column]
 			# Go down the rows and check if there are 4 tiles of the same color in a row
-			for row in range(1, len(self.board)):
+			for row in range(1, len(board)):
 				# If next value in column is the same as the previous value
-				if curr_val == self.board[row][column] and curr_val != BLANK:
+				if curr_val == board[row][column] and curr_val != BLANK:
 					# Increment count
 					count += 1
 					# If this is the fourth of the same tile in a row,
 					# Then that player has won
 					if count == 4:
 						# Print the winner
-						self.winner = self.player_to_move
+						self.winner_name = self.player_to_move.name
 						# Set playing to false so the game knows not to play anymore
 						self.playing = False
 						# Exit the function
@@ -89,14 +94,14 @@ class Game:
 					# Reset count to 1
 					count = 1
 				# Set the new current value to value of the tile we just checked
-				curr_val = self.board[row][column]
+				curr_val = board[row][column]
 
 		# Check diagonal
 		for row in range(self.rows - 3):
 			for column in range(self.columns - 3):
-				if self.board[row][column] == self.board[row+1][column+1] == \
-				   self.board[row+2][column+2] == self.board[row+3][column+3] != BLANK:
-					self.winner = self.player_to_move
+				if board[row][column] == board[row+1][column+1] == \
+				   board[row+2][column+2] == board[row+3][column+3] != BLANK:
+					self.winner_name = self.player_to_move.name
 					self.playing = False
 					if self.player_to_move == self.player1:
 						return 1
@@ -105,14 +110,24 @@ class Game:
 
 		for row in range(4, self.rows):
 			for column in range(self.columns - 3):
-				if self.board[row][column] == self.board[row-1][column+1] == \
-				   self.board[row-2][column+2] == self.board[row-3][column+3] != BLANK:
-					self.winner = self.player_to_move
+				if board[row][column] == board[row-1][column+1] == \
+				   board[row-2][column+2] == board[row-3][column+3] != BLANK:
+					self.winner_name = self.player_to_move.name
 					self.playing = False
 					if self.player_to_move == self.player1:
 						return 1
 					else:
 						return -1
+
+		# Check if board is full
+		full = True
+		for column in range(self.columns):
+			if board[0][column] == BLANK:
+				full = False
+		if full == True:
+			self.playing = False
+			self.winner_name = "Tie"
+			return 0
 
 		# If no one has won, return 0
 		return 0
@@ -154,5 +169,5 @@ class Game:
 
 		# Print final board configuration
 		os.system('clear')
-		print(self.winner.name, "wins!")
+		print(self.winner_name, "wins!")
 		self.printBoard()

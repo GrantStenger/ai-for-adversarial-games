@@ -10,6 +10,8 @@
 * Build Javascript front-end
 * Optimize runtime (encode boards as bits, potentially rewrite in C++, be more careful with recursion)
 * Generalize connect-4 board size
+* Simulator works best with no printing, human experience better with it => make two versions: optimized and comfortable
+* What's the best way to internally represent board configurations within each player as they imagine the changes made for each possible choice? 
 
 ### Game Plan
 1. Build Random Player
@@ -58,4 +60,11 @@
 ### Questions
 * When two random players are playing, how much more likely is player1 going to win? How does this change as the size of the board changes? What is the proper function?
 * How likely is a tie with random players? How does this change as the board size changes? What is the true mathematical function underlying this?
+  * 8 by 8: 1,000,000 games
+    * Player 1 wins: 557159
+    * Player 2 wins: 442825
+    * Ties: 16
 * What is the average number of moves until a win given a certain board size given random players? What is the distribution? How does the distribution change with board size?
+* How does the game change when turns are determined randomly? What happens when a player gets a turn 55% of the time?
+* Given a width, is there an expected value height that the game will get to?
+* If the board size grows in O(n^2), will the number of tiles grow in O(nlogn)

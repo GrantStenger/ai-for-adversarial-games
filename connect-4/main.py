@@ -1,6 +1,7 @@
 from Game import Game
 from players.HumanPlayer import HumanPlayer
-from players.RandomComputerPlayer import RandomComputerPlayer
+from players.ComputerPlayerV0 import ComputerPlayerV0
+from players.ComputerPlayerV1 import ComputerPlayerV1
 from players.MinimaxComputerPlayer import MinimaxComputerPlayer
 
 def main():
@@ -8,11 +9,11 @@ def main():
 	"""
 
 	# Initializes Players
-	players = [RandomComputerPlayer("White"), RandomComputerPlayer("Black")]
+	players = [HumanPlayer("White"), ComputerPlayerV1("Black")]
 
 	# Initialize board size
-	rows = 8
-	columns = 8
+	rows = 5
+	columns = 5
 	board_size = (rows, columns)
 
 	# Initializes a Game
