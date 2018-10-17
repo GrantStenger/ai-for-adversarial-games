@@ -1,4 +1,4 @@
-from ComputerPlayer import ComputerPlayer
+from players.ComputerPlayer import ComputerPlayer
 
 # This AI blocks the opponent from playing immediately winning moves
 # It will also play immediately winning moves for itself, otherwise it plays randomly

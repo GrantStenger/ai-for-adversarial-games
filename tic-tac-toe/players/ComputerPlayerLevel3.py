@@ -1,4 +1,4 @@
-from ComputerPlayer import ComputerPlayer
+from players.ComputerPlayer import ComputerPlayer
 from BoardTree import BoardTree
 
 class ComputerPlayerLevel3(ComputerPlayer):

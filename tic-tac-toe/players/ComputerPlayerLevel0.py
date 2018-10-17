@@ -1,4 +1,4 @@
-from ComputerPlayer import ComputerPlayer
+from players.ComputerPlayer import ComputerPlayer
 
 # This AI plays legal moves randomly
 class ComputerPlayerLevel0(ComputerPlayer):

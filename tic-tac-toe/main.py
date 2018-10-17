@@ -1,11 +1,11 @@
 #!/Users/Home/anaconda/bin/python
 
 from Game import Game
-from HumanPlayer import HumanPlayer
-from ComputerPlayerLevel0 import ComputerPlayerLevel0
-from ComputerPlayerLevel1 import ComputerPlayerLevel1
-from ComputerPlayerLevel2 import ComputerPlayerLevel2
-from ComputerPlayerLevel3 import ComputerPlayerLevel3
+from players.HumanPlayer import HumanPlayer
+from players.ComputerPlayerLevel0 import ComputerPlayerLevel0
+from players.ComputerPlayerLevel1 import ComputerPlayerLevel1
+from players.ComputerPlayerLevel2 import ComputerPlayerLevel2
+from players.ComputerPlayerLevel3 import ComputerPlayerLevel3
 
 def main():
 	game = Game()

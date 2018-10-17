@@ -1,3 +1,5 @@
+# This currently does not work. This will be fixed soon.
+
 from players.BasePlayer import BasePlayer
 
 class MinimaxComputerPlayer(BasePlayer):

@@ -7,12 +7,20 @@ class Game:
 	def __init__(self, players, board_size):
 		self.rows = board_size[0]
 		self.columns = board_size[1]
+
+		# This will be the real board the only gets changed when a player
+		# decides to make a move
 		self.board = self.makeBoard()
+
+		# When players are considering how a certain move might play out,
+		# they will be using this imaginary board, so as not to effect our real board
+		self.imaginary_board = None
 		self.player1 = players[0]
 		self.player2 = players[1]
 		self.player1.assignToken("X")
 		self.player2.assignToken("O")
 		self.player_to_move = self.player1
+		self.imaginary_player_to_move = None
 		self.playing = True
 
 	def makeBoard(self):
@@ -153,7 +161,7 @@ class Game:
 			self.printBoard()
 
 			# Let the player choose their move
-			chosen_move = self.player_to_move.chooseMove(self.board)
+			chosen_move = self.player_to_move.chooseMove(self)
 
 			# Execute move
 			self.move(int(chosen_move) - 1, self.getBoard())

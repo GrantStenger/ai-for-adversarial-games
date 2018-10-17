@@ -17,13 +17,13 @@ class HumanPlayer(BasePlayer):
         # Initializes a Player
         super().__init__(name)
 
-    def chooseMove(self, board):
+    def chooseMove(self, game):
         has_chosen_valid_move = False
         while not has_chosen_valid_move:
 
             chosen_move = input("What move would you like to play? \n")
-            columns = len(board[0])
-            rows = len(board)
+            columns = game.columns
+            rows = game.rows
             BLANK = "_"
             quit_strings = ["q", "quit", "Q", "Quit"]
 
@@ -34,7 +34,7 @@ class HumanPlayer(BasePlayer):
             elif int(chosen_move) > columns or int(chosen_move) <= 0:
                 print("Input not in the valid column range")
             # If it is the valid range, check if the column is full
-            elif board[0][int(chosen_move)-1] != BLANK:
+            elif game.board[0][int(chosen_move)-1] != BLANK:
                 print("This column is full")
             else:
                 has_chosen_valid_move = True

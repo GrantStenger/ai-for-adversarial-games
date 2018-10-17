@@ -1,4 +1,4 @@
-from ComputerPlayer import ComputerPlayer
+from players.ComputerPlayer import ComputerPlayer
 
 # This AI can play immeditaly winning moves, but otherwise plays randomly
 class ComputerPlayerLevel1(ComputerPlayer):

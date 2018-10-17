@@ -1,4 +1,4 @@
-from Player import Player
+from players.Player import Player
 
 class ComputerPlayer(Player):
 
