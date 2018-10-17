@@ -10,8 +10,13 @@ def main():
 	# Initializes Players
 	players = [HumanPlayer("White"), HumanPlayer("Black")]
 
+	# Initialize board size
+	rows = 8
+	columns = 8
+	board_size = (rows, columns)
+
 	# Initializes a Game
-	game = Game(players)
+	game = Game(players, board_size)
 
 	# Begins the game
 	game.play()

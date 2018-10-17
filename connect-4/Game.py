@@ -4,7 +4,9 @@ BLANK = "_"
 
 class Game:
 
-	def __init__(self, players):
+	def __init__(self, players, board_size):
+		self.rows = board_size[0]
+		self.columns = board_size[1]
 		self.board = self.makeBoard()
 		self.player1 = players[0]
 		self.player2 = players[1]
@@ -14,9 +16,7 @@ class Game:
 		self.playing = True
 
 	def makeBoard(self):
-		rows = 6
-		columns = 7
-		board = [[BLANK for j in range(columns)] for i in range(rows)]
+		board = [[BLANK for j in range(self.columns)] for i in range(self.rows)]
 		return board
 
 	def printBoard(self):
@@ -26,11 +26,11 @@ class Game:
 			print()
 
 	def move(self, slot, board):
-		if slot < 7 and slot >= 0:
+		if slot < self.columns and slot >= 0:
 			if board[0][slot] != BLANK:
 				print("slot is full u fuck, try again")
 			else:
-				height = 5
+				height = self.rows - 1
 				while board[height][slot] != BLANK and height > 0:
 					height -= 1;
 				board[height][slot] = self.player_to_move.token
@@ -43,7 +43,7 @@ class Game:
 	def check_board(self):
 
 		# Check horizontal
-		for row in range(len(self.board)):
+		for row in range(self.rows):
 			count = 1
 			curr_val = self.board[row][0]
 			for column in range(1, len(self.board[row])):
@@ -62,7 +62,7 @@ class Game:
 
 		# Check vertical connect 4
 		# Iterate through each of the columns
-		for column in range(len(self.board[0])):
+		for column in range(self.columns):
 			# Initialize count to 1 and set the current value to the top cell in each column
 			count = 1
 			curr_val = self.board[0][column]
@@ -92,8 +92,8 @@ class Game:
 				curr_val = self.board[row][column]
 
 		# Check diagonal
-		for row in range(3):
-			for column in range(4):
+		for row in range(self.rows - 3):
+			for column in range(self.columns - 3):
 				if self.board[row][column] == self.board[row+1][column+1] == \
 				   self.board[row+2][column+2] == self.board[row+3][column+3] != BLANK:
 					self.winner = self.player_to_move
@@ -103,8 +103,8 @@ class Game:
 					else:
 						return -1
 
-		for row in range(4, 6):
-			for column in range(4):
+		for row in range(4, self.rows):
+			for column in range(self.columns - 3):
 				if self.board[row][column] == self.board[row-1][column+1] == \
 				   self.board[row-2][column+2] == self.board[row-3][column+3] != BLANK:
 					self.winner = self.player_to_move
@@ -138,7 +138,7 @@ class Game:
 			self.printBoard()
 
 			# Let the player choose their move
-			chosen_move = self.player_to_move.chooseMove()
+			chosen_move = self.player_to_move.chooseMove(self.board)
 
 			# Execute move
 			self.move(int(chosen_move) - 1, self.getBoard())
