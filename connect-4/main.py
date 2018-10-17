@@ -8,7 +8,7 @@ def main():
 	"""
 
 	# Initializes Players
-	players = [HumanPlayer("White"), HumanPlayer("Black")]
+	players = [RandomComputerPlayer("White"), RandomComputerPlayer("Black")]
 
 	# Initialize board size
 	rows = 8

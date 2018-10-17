@@ -54,3 +54,8 @@
     * Allen solved in in this book: http://blog.gamesolver.org/data/expert_play_in_connect_4.html
     * At the time, a brute force solution was not possible. They solved it with a combinatorial solution with a knowledge database
   * John Tromp was the first to solve the game with a proper brute force solution in 1995. He's solved a bunch of board possibilities here: https://tromp.github.io/c4/c4.html
+
+### Questions
+* When two random players are playing, how much more likely is player1 going to win? How does this change as the size of the board changes? What is the proper function?
+* How likely is a tie with random players? How does this change as the board size changes? What is the true mathematical function underlying this?
+* What is the average number of moves until a win given a certain board size given random players? What is the distribution? How does the distribution change with board size?

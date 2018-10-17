@@ -1,4 +1,5 @@
 from players.BasePlayer import BasePlayer
+from random import randrange
 
 class RandomComputerPlayer(BasePlayer):
     """ Represents a computer player who plays randomly.
@@ -15,6 +16,6 @@ class RandomComputerPlayer(BasePlayer):
         # Initializes a Player
         super().__init__(name)
 
-    def chooseMove(self):
-        chosen_move = input("What move would you like to play? \n")
+    def chooseMove(self, board):
+        chosen_move = randrange(1, len(board[0]) + 1)
         return chosen_move
