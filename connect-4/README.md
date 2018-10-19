@@ -11,7 +11,7 @@
 * Optimize runtime (encode boards as bits, potentially rewrite in C++, be more careful with recursion)
 * Generalize connect-4 board size
 * Simulator works best with no printing, human experience better with it => make two versions: optimized and comfortable
-* What's the best way to internally represent board configurations within each player as they imagine the changes made for each possible choice? 
+* What's the best way to internally represent board configurations within each player as they imagine the changes made for each possible choice?
 
 ### Game Plan
 1. Build Random Player
@@ -68,3 +68,11 @@
 * How does the game change when turns are determined randomly? What happens when a player gets a turn 55% of the time?
 * Given a width, is there an expected value height that the game will get to?
 * If the board size grows in O(n^2), will the number of tiles grow in O(nlogn)
+
+### Building a Solver
+* Each position should be given a score
+  * Positive in current player should win, 0 if tie, negative if current player should lose
+  * Value 1 if current player wins with her last stone, value 2 if second to last, etc.
+* Comparing solvers
+  * Have them play against each other, output % wins for each player
+  * Compare move execution time (on the same machine)
