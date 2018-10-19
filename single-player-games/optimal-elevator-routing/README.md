@@ -14,6 +14,7 @@ We develop and experimentally compare policies for the control of a system of k 
 	- l_i: floors per elevator given all have lobby 0
 	- elevators have different ground floors
   - c: capacity
+	- w: weight (impacts energy consumption)
 	- staircase? If there is a staircase, we should incur some cost for having people use them
 	- m: max number of people per elevator
 - What if elevators split into different zones? (i.e. elevator 1 accesses lobby and floors 1-10, elevator 2 accesses lobby and floors 11-20, … , elevator 10 accesses lobby and floors 91-100)
@@ -80,6 +81,6 @@ components: incoming, outgoing and inter-floor components.” [1]
 - Elevator traffic handbook: theory and practice
 - [Optimal control of double-deck elevator group using genetic algorithm](https://www.popularmechanics.com/technology/infrastructure/a20986/the-hidden-science-of-elevators/)
 - [Elevator Group Control Using Multiple Reinforcement Learning Agents](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.464.6183&rep=rep1&type=pdf)
-
+- [The Elevator Dispatching Problem](https://pdfs.semanticscholar.org/4617/d0778ce91f1dd098815831167b3a2034ec20.pdf)
 
 *Keywords & Tags*: vehicle routing, simulation, optimization
