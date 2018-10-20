@@ -10,7 +10,7 @@ def main():
     players = [HumanPlayer(), RandomComputerPlayer(), RandomComputerPlayer()]
 
     # Initializes a Game
-    game = Game(players, depth=3, num_colors=2)
+    game = Game(players, depth=4, num_colors=1)
 
     # Begins the game
     game.play()

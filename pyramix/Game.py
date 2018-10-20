@@ -1,6 +1,8 @@
 from random import shuffle
 import string
+
 from Block import Block
+
 
 class Game:
     """ Represents the game state.
@@ -100,12 +102,26 @@ class Game:
         else:
             blocks_per_color = int(blocks_per_color)
 
+        # Builds the points of the Blocks
+        # Let 6/10 be 1 point, 3/10 be 2 points, 1/10 be 3 points
+        one_point_blocks_per_color = round(0.6 * blocks_per_color)
+        two_point_blocks_per_color = round(0.3 * blocks_per_color)
+        three_point_blocks_per_color = round(0.1 * blocks_per_color)
+        
+        if one_point_blocks_per_color + two_point_blocks_per_color + three_point_blocks_per_color != blocks_per_color:
+            raise ValueError("Points can't be divided evenly given this depth and num_colors") 
+
+        points = []
+        points[:one_point_blocks_per_color] = [1] * one_point_blocks_per_color
+        points[one_point_blocks_per_color + 1:two_point_blocks_per_color] = [2] * two_point_blocks_per_color
+        points[one_point_blocks_per_color + two_point_blocks_per_color + 1:] = [3] * three_point_blocks_per_color
+        
         # Builds a shuffled list of Blocks
         blocks = []
         for i in range(num_colors):
             for j in range(blocks_per_color):
-                # Instantiates a Block with the appropriate color and a value of 1
-                new_block = Block(color=self.colors[i], value=1)
+                # Instantiates a Block with the appropriate color and points
+                new_block = Block(color=self.colors[i], value=points[j])
                 # Adds the new Block to the list
                 blocks.append(new_block)
         # Shuffles the list of Blocks
@@ -187,10 +203,6 @@ class Game:
 
             # Remove final block from board
             self.board[i][j].color = "0"
-            self.board[i][j].value = 0
-
-            # Remove final block from legal moves
-            self.legal_moves.remove((i, j))
 
         # Decrement blocks left
         self.blocks_left -= 1

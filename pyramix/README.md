@@ -13,7 +13,7 @@
   * The ratio of ankhs changes?
 * How how much advantage does player 1 have over player k?
 * What changes can we make to ensure a more 'fair' game?
-* What heuristics does a hand designed algorithm learn that a reinforcement learning algorithm doesn't, and vice versa.
+* What heuristics does a hand designed algorithm learn that a reinforcement learning algorithm doesn't, and vice versa?
 * What is the complexity of the game?
 * When are there 'interesting cases' of k and c (i.e. 3 players and 4 colors)?
   * Possibly all k mod c != 0 are all interesting.
