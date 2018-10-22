@@ -16,6 +16,6 @@ class ComputerPlayerV0(BasePlayer):
         # Initializes a Player
         super().__init__(name)
 
-    def chooseMove(self, board):
-        chosen_move = randrange(1, len(board[0]) + 1)
+    def chooseMove(self, game):
+        chosen_move = randrange(1, len(game.board[0]) + 1)
         return chosen_move

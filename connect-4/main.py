@@ -10,11 +10,11 @@ def main():
 	"""
 
 	# Initializes Players
-	players = [HumanPlayer("White"), ComputerPlayerV1("Black")]
+	players = [HumanPlayer("White"), ComputerPlayerV2("Black")]
 
 	# Initialize board size
-	rows = 5
-	columns = 5
+	rows = 6
+	columns = 7
 	board_size = (rows, columns)
 
 	# Initializes a Game

@@ -4,7 +4,7 @@ BLANK = "_"
 
 class Game:
 
-	def __init__(self, players, board_size):
+	def __init__(self, players, board_size, simulating = None):
 		self.rows = board_size[0]
 		self.columns = board_size[1]
 
@@ -23,36 +23,52 @@ class Game:
 		self.imaginary_player_to_move = None
 		self.playing = True
 
+		# Work-around to fix default argument in python (need to fix)
+		self.simulating = simulating if simulating is not None else simulating
+
 	def makeBoard(self):
 		board = [[BLANK for j in range(self.columns)] for i in range(self.rows)]
 		return board
 
-	def printBoard(self):
-		for row in range(len(self.board)):
-			for col in range(len(self.board[0])):
-				print(self.board[row][col], end=' ')
+	def printBoard(self, board = None):
+
+		# Work-around to fix default argument in python (need to fix)
+		board = board if board is not None else self.board
+
+		for row in range(len(board)):
+			for col in range(len(board[0])):
+				print(board[row][col], end=' ')
 			print()
 
-	def move(self, slot, board):
+		for col in range(self.columns):
+			print(col + 1, end=' ')
+		print()
+		print()
+
+	def move(self, slot, board, player_to_move = None):
+
+		# Work-around to fix default argument in python (need to fix)
+		player_to_move = player_to_move if player_to_move is not None else self.player_to_move
+
 		if slot < self.columns and slot >= 0:
 			if board[0][slot] != BLANK:
-				print("slot is full u fuck, try again")
+				# print("slot is full u fuck, try again")
 				return False
 			else:
 				height = self.rows - 1
 				while board[height][slot] != BLANK and height > 0:
 					height -= 1;
-				board[height][slot] = self.player_to_move.token
+				board[height][slot] = player_to_move.token
 				return True
 		elif slot == "q" or slot == "Q" or slot == "quit":
 			self.playing = False
 			return True
 		else:
-			print("U fucked up. not a slot")
+			# print("U fucked up. not a slot")
 			return False
 
 	# Check for victory (i.e. 4-in-a-row)
-	def check_board(self, board = None):
+	def check_board(self, board = None, imaginary = False):
 
 		# Work-around to fix default argument in python (need to fix)
 		board = board if board is not None else self.board
@@ -65,9 +81,9 @@ class Game:
 				if curr_val == board[row][column] and curr_val != BLANK:
 					count += 1
 					if count == 4:
-						print("HORIZONTAL")
-						self.winner_name = self.player_to_move.name
-						self.playing = False
+						if not imaginary:
+							self.winner_name = self.player_to_move.name
+							self.playing = False
 						if self.player_to_move == self.player1:
 							return 1
 						else:
@@ -91,11 +107,11 @@ class Game:
 					# If this is the fourth of the same tile in a row,
 					# Then that player has won
 					if count == 4:
-						print("VERTICAL")
-						# Print the winner
-						self.winner_name = self.player_to_move.name
-						# Set playing to false so the game knows not to play anymore
-						self.playing = False
+						if not imaginary:
+							# Print the winner
+							self.winner_name = self.player_to_move.name
+							# Set playing to false so the game knows not to play anymore
+							self.playing = False
 						# Exit the function
 						if self.player_to_move == self.player1:
 							return 1
@@ -113,9 +129,9 @@ class Game:
 			for column in range(self.columns - 3):
 				if board[row][column] == board[row+1][column+1] == \
 				   board[row+2][column+2] == board[row+3][column+3] != BLANK:
-					print("DIAGONAL 1")
-					self.winner_name = self.player_to_move.name
-					self.playing = False
+					if not imaginary:
+						self.winner_name = self.player_to_move.name
+						self.playing = False
 					if self.player_to_move == self.player1:
 						return 1
 					else:
@@ -125,9 +141,9 @@ class Game:
 			for column in range(self.columns - 3):
 				if board[row][column] == board[row-1][column+1] == \
 				   board[row-2][column+2] == board[row-3][column+3] != BLANK:
-					print("DIAGONAL 2")
-					self.winner_name = self.player_to_move.name
-					self.playing = False
+					if not imaginary:
+						self.winner_name = self.player_to_move.name
+						self.playing = False
 					if self.player_to_move == self.player1:
 						return 1
 					else:
@@ -139,9 +155,9 @@ class Game:
 			if board[0][column] == BLANK:
 				full = False
 		if full == True:
-			print("TIE")
-			self.playing = False
-			self.winner_name = "Tie"
+			if not imaginary:
+				self.playing = False
+				self.winner_name = "Tie"
 			return 0
 
 		# If no one has won, return 0
@@ -164,8 +180,9 @@ class Game:
 		while self.isPlaying():
 
 			# Display board
-			os.system('clear')
-			self.printBoard()
+			if not self.simulating:
+				os.system('clear')
+				self.printBoard()
 
 			# Let the player choose their move
 			chosen_move = self.player_to_move.chooseMove(self)
@@ -183,6 +200,7 @@ class Game:
 				self.player_to_move = self.player1
 
 		# Print final board configuration
-		os.system('clear')
-		print(self.winner_name, "wins!")
-		self.printBoard()
+		if not self.simulating:
+			os.system('clear')
+			print(self.winner_name, "wins!")
+			self.printBoard()

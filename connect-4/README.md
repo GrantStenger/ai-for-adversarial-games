@@ -3,6 +3,19 @@
 ### Status
 * Playable in console by a human
 * Game is playable for any generalized board size
+* V2 beats V0
+  * 9,881 out of 10,000 when V2 gets first move (1 tie)
+  * 9,786 out of 10,000 when V0 gets first move (0 ties)
+* V2 beats V1
+  * 9,064 out of 10,000 when V2 gets first move (6 ties)
+  * 8,675 out of 10,000 when V1 gets first move (8 ties)
+* V1 beats V0
+  * 7,244 out of 10,000 when V0 gets first move (1 tie)
+  * 8,446 out of 10,000 when V1 gets first move (0 ties)
+* Player 1 beats player 2
+  * V2 vs. V2: 5,187 out of 10,000 (305 ties)
+  * V1 vs. V1: 5,989 out of 10,000 (2 ties)
+  * V0 vs. V0: 5,517 out of 10,000 (30 ties)
 
 ### To Do's:
 * Implement MiniMax

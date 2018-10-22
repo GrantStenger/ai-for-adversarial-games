@@ -30,8 +30,6 @@ class ComputerPlayerV1(BasePlayer):
 
             # If there is a winning move in this column, make it.
             valid_move = game.move(column, game.imaginary_board)
-            print("column", column)
-            print("valid move?", valid_move)
             if valid_move:
 
                 # Add this to the list of valid moves
@@ -51,7 +49,5 @@ class ComputerPlayerV1(BasePlayer):
             self.imaginary_board = None
 
         # After checking all columns, if there is no winning move, move randomly.
-        print("valid moves:", valid_moves)
         chosen_move = choice(valid_moves)
-        print("chosen_move", chosen_move)
         return chosen_move + 1

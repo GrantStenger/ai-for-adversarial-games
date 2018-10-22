@@ -1,11 +1,13 @@
 from Game import Game
 from players.HumanPlayer import HumanPlayer
 from players.ComputerPlayerV0 import ComputerPlayerV0
+from players.ComputerPlayerV1 import ComputerPlayerV1
+from players.ComputerPlayerV2 import ComputerPlayerV2
 from players.MinimaxComputerPlayer import MinimaxComputerPlayer
 
 """ CONSTANTS """
-ROWS = 8
-COLUMNS = 8
+ROWS = 6
+COLUMNS = 7
 
 def simulate(rows, columns):
 	""" Initializes Players and a Game, then begins the game.
@@ -18,13 +20,13 @@ def simulate(rows, columns):
 	# Initializes Players
 	player1_name = "White"
 	player2_name = "Black"
-	players = [ComputerPlayerV0(player1_name), ComputerPlayerV0(player2_name)]
+	players = [ComputerPlayerV2(player1_name), ComputerPlayerV2(player2_name)]
 
 	# Initialize board size
 	board_size = (rows, columns)
 
 	# Initializes a Game
-	game = Game(players, board_size)
+	game = Game(players, board_size, simulating = True)
 
 	# Begins the game
 	game.play()
@@ -44,7 +46,7 @@ if __name__ == "__main__":
 	player2_wins = 0
 	ties = 0
 
-	for i in range(1000000):
+	for i in range(10000):
 		if i % 10000 == 0:
 			print(i)
 		simulate(ROWS, COLUMNS)

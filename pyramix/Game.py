@@ -111,17 +111,17 @@ class Game:
         one_point_blocks_per_color = round(0.6 * blocks_per_color)
         two_point_blocks_per_color = round(0.3 * blocks_per_color)
         three_point_blocks_per_color = round(0.1 * blocks_per_color)
-        
+
         # Make sure the points add up
         if one_point_blocks_per_color + two_point_blocks_per_color + three_point_blocks_per_color != blocks_per_color:
-            raise ValueError("Points can't be divided evenly given this depth and num_colors") 
+            raise ValueError("Points can't be divided evenly given this depth and num_colors")
 
         # Build an array of points
         points = []
         points[:one_point_blocks_per_color] = [1] * one_point_blocks_per_color
         points[one_point_blocks_per_color + 1:two_point_blocks_per_color] = [2] * two_point_blocks_per_color
         points[one_point_blocks_per_color + two_point_blocks_per_color + 1:] = [3] * three_point_blocks_per_color
-        
+
         # Builds a shuffled list of Blocks
         blocks = []
         for i in range(num_colors):
@@ -210,7 +210,7 @@ class Game:
             # Remove final block from board
             self.board[i][j].color = "0"
             self.board[i][j].value = 0
-            
+
             # Remove final block from legal moves
             self.legal_moves.remove((i, j))
 
@@ -300,13 +300,19 @@ class Game:
         print(str(i) + str(j) + current_block.color)
 
         # Makes adjacent blocks legal
-        if i > 0 and (i - 1, j) not in self.legal_moves and self.board[i - 1][j].color != "0":
+        if i > 0 and (i - 1, j) not in self.legal_moves and \
+           self.board[i - 1][j].color != "0":
             self.legal_moves.append((i - 1, j))
-        if j > 0 and (i, j - 1) not in self.legal_moves and self.board[i][j - 1].color != "0":
+        if j > 0 and (i, j - 1) not in self.legal_moves and \
+           self.board[i][j - 1].color != "0":
             self.legal_moves.append((i, j - 1))
-        if current_block.color == "0" and (i != self.depth - 2 and j != 0) and (i + 1 + j) < self.depth and self.board[i + 1][j].color != "0" and (i + 1, j) not in self.legal_moves:
+        if current_block.color == "0" and (i != self.depth - 2 and j != 0) and \
+           (i + 1 + j) < self.depth and self.board[i + 1][j].color != "0" and \
+           (i + 1, j) not in self.legal_moves:
             self.legal_moves.append((i + 1, j))
-        if current_block.color == "0" and (i != 0 and j != self.depth - 2) and (i + j + 1) < self.depth and self.board[i][j + 1].color != "0" and (i, j + 1) not in self.legal_moves:
+        if current_block.color == "0" and (i != 0 and j != self.depth - 2) and \
+           (i + j + 1) < self.depth and self.board[i][j + 1].color != "0" and \
+           (i, j + 1) not in self.legal_moves:
             self.legal_moves.append((i, j + 1))
 
         # Resets i and j
