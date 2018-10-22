@@ -1,6 +1,8 @@
 from random import shuffle
 import string
+
 from Block import Block
+
 
 class Game:
     """ Represents the game state.
@@ -45,7 +47,7 @@ class Game:
         self.blocks_left = depth * (depth + 1) / 2
 
         # Initialize the board
-        self.board = self.initialize_board(depth, num_colors)
+        self.board = self.initialize_board(num_colors)
 
         # Initalize the starting legal moves
         # MUST be called AFTER initialize_board
@@ -76,11 +78,10 @@ class Game:
         # Return the first num_colors colors
         return generated_colors
 
-    def initialize_board(self, depth, num_colors):
+    def initialize_board(self, num_colors):
         """ Initializes the board (represented as a nested list).
 
             Args:
-                depth: An integer representing the depth of the board.
                 num_colors: An integer representing the number of block colors.
 
             Returns:
@@ -89,7 +90,12 @@ class Game:
 
         # Calculates the total number of blocks on the board
         # How to extend to >2 dimensions?
-        total_blocks = depth * (depth + 1) / 2
+        total_blocks = self.depth * (self.depth + 1) / 2
+
+        # If the players will have unequal amounts of turns, raise an error
+        turns_per_player = (total_blocks - self.depth) / len(self.players)
+        if turns_per_player != int(turns_per_player):
+            raise ValueError("Players will have unequal turns given this depth and num_players")
 
         # Calculates the number of blocks per color
         blocks_per_color = total_blocks / num_colors
@@ -100,12 +106,28 @@ class Game:
         else:
             blocks_per_color = int(blocks_per_color)
 
+        # Builds the points of the Blocks
+        # Let 6/10 be 1 point, 3/10 be 2 points, 1/10 be 3 points
+        one_point_blocks_per_color = round(0.6 * blocks_per_color)
+        two_point_blocks_per_color = round(0.3 * blocks_per_color)
+        three_point_blocks_per_color = round(0.1 * blocks_per_color)
+        
+        # Make sure the points add up
+        if one_point_blocks_per_color + two_point_blocks_per_color + three_point_blocks_per_color != blocks_per_color:
+            raise ValueError("Points can't be divided evenly given this depth and num_colors") 
+
+        # Build an array of points
+        points = []
+        points[:one_point_blocks_per_color] = [1] * one_point_blocks_per_color
+        points[one_point_blocks_per_color + 1:two_point_blocks_per_color] = [2] * two_point_blocks_per_color
+        points[one_point_blocks_per_color + two_point_blocks_per_color + 1:] = [3] * three_point_blocks_per_color
+        
         # Builds a shuffled list of Blocks
         blocks = []
         for i in range(num_colors):
             for j in range(blocks_per_color):
-                # Instantiates a Block with the appropriate color and a value of 1
-                new_block = Block(color=self.colors[i], value=1)
+                # Instantiates a Block with the appropriate color and points
+                new_block = Block(color=self.colors[i], value=points[j])
                 # Adds the new Block to the list
                 blocks.append(new_block)
         # Shuffles the list of Blocks
@@ -115,11 +137,11 @@ class Game:
         # Must modify for >2 dimensions
         board = []
         # Adds positions on the x-axis
-        for i in range(depth):
+        for i in range(self.depth):
             row = []
             # Adds positions on the y-axis
             # As the x-axis increases, the maximum y decreases (via pyramid shape)
-            for j in range(depth - i):
+            for j in range(self.depth - i):
                 # Add a random Block to the given position
                 row.append(blocks.pop())
             # Add the completed x list to the board
@@ -188,7 +210,7 @@ class Game:
             # Remove final block from board
             self.board[i][j].color = "0"
             self.board[i][j].value = 0
-
+            
             # Remove final block from legal moves
             self.legal_moves.remove((i, j))
 
@@ -229,6 +251,7 @@ class Game:
                 print()
                 print("Player " + str(player_index + 1) + " won the color " + color + " and scored " + str(points_scored) + " points.")
             else:
+                print()
                 print("There was a tie for the color " + color + ".")
 
     def initialize_legal_moves(self):
@@ -274,27 +297,66 @@ class Game:
         while current_block.color != "0" and j - 1 >= 0:
             j -= 1
             current_block = self.board[i][j]
+        print(str(i) + str(j) + current_block.color)
 
         # Makes adjacent blocks legal
         if i > 0 and (i - 1, j) not in self.legal_moves and self.board[i - 1][j].color != "0":
             self.legal_moves.append((i - 1, j))
         if j > 0 and (i, j - 1) not in self.legal_moves and self.board[i][j - 1].color != "0":
             self.legal_moves.append((i, j - 1))
+        if current_block.color == "0" and (i != self.depth - 2 and j != 0) and (i + 1 + j) < self.depth and self.board[i + 1][j].color != "0" and (i + 1, j) not in self.legal_moves:
+            self.legal_moves.append((i + 1, j))
+        if current_block.color == "0" and (i != 0 and j != self.depth - 2) and (i + j + 1) < self.depth and self.board[i][j + 1].color != "0" and (i, j + 1) not in self.legal_moves:
+            self.legal_moves.append((i, j + 1))
 
         # Resets i and j
         i = move[0]
         j = move[1]
 
+        # For every axis, iterate down until an empty Block is hit
+        # Then, all adjacent positions become legal moves
+        current_block = self.board[i][j]
+
         # Checks the y axis
         while current_block.color != "0" and i - 1 >= 0:
             i -= 1
             current_block = self.board[i][j]
+        print(str(i) + str(j) + current_block.color)
 
         # Makes adjacent blocks legal
         if i > 0 and (i - 1, j) not in self.legal_moves and self.board[i - 1][j].color != "0":
             self.legal_moves.append((i - 1, j))
         if j > 0 and (i, j - 1) not in self.legal_moves and self.board[i][j - 1].color != "0":
             self.legal_moves.append((i, j - 1))
+        if current_block.color == "0" and (i != self.depth - 2 and j != 0) and (i + 1 + j) < self.depth and self.board[i + 1][j].color != "0" and (i + 1, j) not in self.legal_moves:
+            self.legal_moves.append((i + 1, j))
+        if current_block.color == "0" and (i != 0 and j != self.depth - 2) and (i + j + 1) < self.depth and self.board[i][j + 1].color != "0" and (i, j + 1) not in self.legal_moves:
+            self.legal_moves.append((i, j + 1))
+
+        # Resets i and j
+        i = move[0]
+        j = move[1]
+
+        # Removes block from legal moves if removing it would expose the board
+        # Case when the block is taken from the bottom
+        if (i + j + 1) == self.depth and (i, j) in self.legal_moves:
+            if (i == 0 or (i > 0 and self.board[i - 1][j].color == "0")) and \
+               (j == 0 or (j > 0 and self.board[i][j - 1].color == "0")):
+                self.legal_moves.remove((i, j))
+            if (i + 1, j - 1) in self.legal_moves:
+                if j <= 1 or self.board[i + 1][j - 2].color == "0":
+                    self.legal_moves.remove((i + 1, j - 1))
+            if (i - 1, j + 1) in self.legal_moves:
+                if i <= 1 or self.board[i - 2][j + 1].color == "0":
+                    self.legal_moves.remove((i - 1, j + 1))
+        # Case when the block is taken from the second to the bottom
+        elif (i + j + 2) == self.depth and self.board[i][j].color == "0":
+            if (i + 1, j) in self.legal_moves:
+                if j == 0 or self.board[i + 1][j - 1].color == "0":
+                    self.legal_moves.remove((i + 1, j))
+            if (i, j + 1) in self.legal_moves:
+                if i == 0 or self.board[i - 1][j + 1].color == "0":
+                    self.legal_moves.remove((i, j + 1))
 
         self.legal_moves.sort()
 
