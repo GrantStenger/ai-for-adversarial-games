@@ -26,10 +26,11 @@ class BasePlayer(object):
         for color in colors:
             self.bonuses_taken_per_color[color] = 0
 
-    def evaluate_moves(self, legal_moves):
+    def evaluate_moves(self, board, legal_moves):
         """ Evaluates and selects an optimum move.
 
             Args:
+                board: A nested array of Blocks.
                 legal_moves: A list of legal moves.
 
             Returns:

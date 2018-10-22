@@ -1,4 +1,5 @@
 from random import shuffle
+from random import randint
 import string
 
 from Block import Block
@@ -297,7 +298,6 @@ class Game:
         while current_block.color != "0" and j - 1 >= 0:
             j -= 1
             current_block = self.board[i][j]
-        print(str(i) + str(j) + current_block.color)
 
         # Makes adjacent blocks legal
         if i > 0 and (i - 1, j) not in self.legal_moves and \
@@ -327,7 +327,6 @@ class Game:
         while current_block.color != "0" and i - 1 >= 0:
             i -= 1
             current_block = self.board[i][j]
-        print(str(i) + str(j) + current_block.color)
 
         # Makes adjacent blocks legal
         if i > 0 and (i - 1, j) not in self.legal_moves and self.board[i - 1][j].color != "0":
@@ -435,6 +434,8 @@ class Game:
 
         print("Winner: Player " + str(winner_num) + " Score: " + str(winner.score))
 
+        return winner_num - 1
+
     def play(self):
         """ Runs gameplay until the game is over, then scores bonus Blocks.
         """
@@ -444,16 +445,22 @@ class Game:
         parameters += " Colors: " + str(len(self.colors))
 
         # Print game parameters
+        print()
         print("------------PYRAMIX------------")
         print(parameters)
 
         # Runs gameplay until only the base Blocks remain
+        turn_num = 0
         while not self.game_over:
+            # Randomized order: every round, a new player starts
+            if turn_num % len(self.players) == 0:
+                self.current_player = randint(0, len(self.players) - 1)
+
             # Prints the current game state
             self.pretty_print()
 
             # Current player evaluates legal moves and selects the optimal (x,y) position
-            move = self.players[self.current_player].evaluate_moves(self.legal_moves)
+            move = self.players[self.current_player].evaluate_moves(self.board, self.legal_moves)
 
             # Applies the move that the player chose
             self.make_move(move)
@@ -470,6 +477,9 @@ class Game:
             # Makes the next player the current player
             self.current_player = (self.current_player + 1) % len(self.players)
 
+            # Increment the turn number
+            turn_num += 1
+
         # Prints the board
         print()
         self.pretty_print_board()
@@ -478,4 +488,4 @@ class Game:
         self.score_bonus_blocks()
 
         # Prints the endgame and winner
-        self.pretty_print_for_end()
+        return self.pretty_print_for_end()

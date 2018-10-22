@@ -3,13 +3,14 @@ import argparse
 from Game import Game
 from players.HumanPlayer import HumanPlayer
 from players.RandomComputerPlayer import RandomComputerPlayer
+from players.GreedyComputerPlayer import GreedyComputerPlayer
 
 def main(_):
     """ Initializes Players and a Game, then begins the game.
     """
 
     # Initializes Players
-    players = [RandomComputerPlayer(), RandomComputerPlayer(), RandomComputerPlayer()]
+    players = [HumanPlayer(), GreedyComputerPlayer(), RandomComputerPlayer()]
 
     # Initializes a Game
     game = Game(players, depth=FLAGS.depth, num_colors=FLAGS.num_colors)
