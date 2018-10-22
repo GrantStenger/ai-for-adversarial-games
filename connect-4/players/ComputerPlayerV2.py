@@ -1,9 +1,10 @@
+# Not fully working yet...
 from players.BasePlayer import BasePlayer
-from random import choice
+from random import randrange
 
-class ComputerPlayerV1(BasePlayer):
-    """ Represents a computer player who plays almost randomly.
-    It will make immediately winning moves, but other wise plays randomly.
+class ComputerPlayerV2(BasePlayer):
+    """ Represents a computer player who will make immediately winning moves
+    and will block opponent when there are possible winning moves for them.
 
         Attributes:
             name: A string representing the Player's name.
@@ -19,8 +20,6 @@ class ComputerPlayerV1(BasePlayer):
 
     def chooseMove(self, game):
 
-        valid_moves = []
-
         # Check each column for a possible winning move
         for column in range(game.columns):
 
@@ -30,12 +29,7 @@ class ComputerPlayerV1(BasePlayer):
 
             # If there is a winning move in this column, make it.
             valid_move = game.move(column, game.imaginary_board)
-            print("column", column)
-            print("valid move?", valid_move)
             if valid_move:
-
-                # Add this to the list of valid moves
-                valid_moves.append(column)
 
                 # Check if this move is winning
                 # (check_board will return 1 if player 1 wins and -1 if player 2 wins)
@@ -51,7 +45,5 @@ class ComputerPlayerV1(BasePlayer):
             self.imaginary_board = None
 
         # After checking all columns, if there is no winning move, move randomly.
-        print("valid moves:", valid_moves)
-        chosen_move = choice(valid_moves)
-        print("chosen_move", chosen_move)
-        return chosen_move + 1
+        chosen_move = randrange(1, game.columns + 1)
+        return chosen_move

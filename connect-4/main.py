@@ -2,6 +2,7 @@ from Game import Game
 from players.HumanPlayer import HumanPlayer
 from players.ComputerPlayerV0 import ComputerPlayerV0
 from players.ComputerPlayerV1 import ComputerPlayerV1
+from players.ComputerPlayerV2 import ComputerPlayerV2
 from players.MinimaxComputerPlayer import MinimaxComputerPlayer
 
 def main():

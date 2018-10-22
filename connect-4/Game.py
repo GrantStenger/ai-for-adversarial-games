@@ -37,17 +37,19 @@ class Game:
 		if slot < self.columns and slot >= 0:
 			if board[0][slot] != BLANK:
 				print("slot is full u fuck, try again")
-				pass
+				return False
 			else:
 				height = self.rows - 1
 				while board[height][slot] != BLANK and height > 0:
 					height -= 1;
 				board[height][slot] = self.player_to_move.token
+				return True
 		elif slot == "q" or slot == "Q" or slot == "quit":
-				self.playing = False
+			self.playing = False
+			return True
 		else:
 			print("U fucked up. not a slot")
-			pass
+			return False
 
 	# Check for victory (i.e. 4-in-a-row)
 	def check_board(self, board = None):
@@ -63,6 +65,7 @@ class Game:
 				if curr_val == board[row][column] and curr_val != BLANK:
 					count += 1
 					if count == 4:
+						print("HORIZONTAL")
 						self.winner_name = self.player_to_move.name
 						self.playing = False
 						if self.player_to_move == self.player1:
@@ -88,6 +91,7 @@ class Game:
 					# If this is the fourth of the same tile in a row,
 					# Then that player has won
 					if count == 4:
+						print("VERTICAL")
 						# Print the winner
 						self.winner_name = self.player_to_move.name
 						# Set playing to false so the game knows not to play anymore
@@ -109,6 +113,7 @@ class Game:
 			for column in range(self.columns - 3):
 				if board[row][column] == board[row+1][column+1] == \
 				   board[row+2][column+2] == board[row+3][column+3] != BLANK:
+					print("DIAGONAL 1")
 					self.winner_name = self.player_to_move.name
 					self.playing = False
 					if self.player_to_move == self.player1:
@@ -120,6 +125,7 @@ class Game:
 			for column in range(self.columns - 3):
 				if board[row][column] == board[row-1][column+1] == \
 				   board[row-2][column+2] == board[row-3][column+3] != BLANK:
+					print("DIAGONAL 2")
 					self.winner_name = self.player_to_move.name
 					self.playing = False
 					if self.player_to_move == self.player1:
@@ -133,6 +139,7 @@ class Game:
 			if board[0][column] == BLANK:
 				full = False
 		if full == True:
+			print("TIE")
 			self.playing = False
 			self.winner_name = "Tie"
 			return 0
