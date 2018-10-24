@@ -16,10 +16,11 @@ class ComputerPlayer(BasePlayer):
         # Initializes a Player
         super().__init__()
 
-    def evaluate_moves(self, legal_moves):
+    def evaluate_moves(self, board, legal_moves):
         """ Calculates and selects the optimal move.
 
             Args:
+                board: A nested array of Blocks.
                 legal_moves: A list of legal moves.
 
             Returns:

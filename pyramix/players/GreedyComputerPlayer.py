@@ -1,11 +1,9 @@
-import numpy as np
-
 from players.ComputerPlayer import ComputerPlayer
 
 
-class RandomComputerPlayer(ComputerPlayer):
+class GreedyComputerPlayer(ComputerPlayer):
 
-    """ Represents a computer player.
+    """ Represents a greedy computer player.
 
         Attributes:
             score: An integer representing the Player's current score.
@@ -20,20 +18,18 @@ class RandomComputerPlayer(ComputerPlayer):
         super().__init__()
 
     def evaluate_moves(self, board, legal_moves):
-        """ Selects a Random Move from the list of legal moves.
+        """ Selects the highest points move from the list of legal moves.
 
             Args:
                 board: A nested array of Blocks.
                 legal_moves: A list of legal moves.
-
             Returns:
                 i: An integer representing the x position of the chosen move.
                 j: An integer representing the y position of the chosen move.
         """
 
-        # Randomly select new position
-        ind = np.random.choice(np.arange(len(legal_moves)))
-        new_pos = legal_moves[ind]
+        # Return the highest points move
+        values = [board[move[0]][move[1]].value for move in legal_moves]
+        best_move = [move for move in legal_moves if board[move[0]][move[1]].value == max(values)][0]
 
-        # Returns random position
-        return new_pos
+        return best_move
