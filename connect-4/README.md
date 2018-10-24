@@ -16,6 +16,7 @@
   * V2 vs. V2: 5,187 out of 10,000 (305 ties)
   * V1 vs. V1: 5,989 out of 10,000 (2 ties)
   * V0 vs. V0: 5,517 out of 10,000 (30 ties)
+* If AlphaZero can beat AlphaGo 100-0, we can build a player that always beats random.
 
 ### To Do's:
 * Implement MiniMax

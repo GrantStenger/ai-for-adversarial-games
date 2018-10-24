@@ -20,7 +20,7 @@ def simulate(rows, columns):
 	# Initializes Players
 	player1_name = "White"
 	player2_name = "Black"
-	players = [ComputerPlayerV2(player1_name), ComputerPlayerV2(player2_name)]
+	players = [ComputerPlayerV0(player1_name), ComputerPlayerV2(player2_name)]
 
 	# Initialize board size
 	board_size = (rows, columns)
@@ -46,7 +46,7 @@ if __name__ == "__main__":
 	player2_wins = 0
 	ties = 0
 
-	for i in range(10000):
+	for i in range(100):
 		if i % 10000 == 0:
 			print(i)
 		simulate(ROWS, COLUMNS)
