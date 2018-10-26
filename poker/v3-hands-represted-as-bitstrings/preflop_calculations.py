@@ -82,7 +82,7 @@ def simulate_hand(player1):
 
 	# Decide who the winner is
 	winner = decide_winner_new([player1, player2], river)
-	print("The winner is player " + str(winner) + "!")
+	print("The winner is player " + str(winner + 1) + "!")
 
 # Takes array of players and the river and decides which player won
 # A value is calculated for each hand and these values are compared
@@ -157,6 +157,10 @@ def decide_winner(players, river):
 
 	print()
 
+# This is the game logic that decides who wins.
+# I am currently working to clean it up and optimize it.
+# Right now it's really gross, apologies.
+# Returns a list of winners (often just one, but accounts for case where several tie)
 def decide_winner_new(players, river):
 
 	all_players_cards = []
@@ -164,6 +168,7 @@ def decide_winner_new(players, river):
 	all_players_has_straight = []
 	all_players_has_flush = []
 	all_players_has_straight_flush = []
+	all_players_full_house = []
 	all_players_four_of_a_kinds = []
 	all_players_three_of_a_kinds = []
 	all_players_pairs = []
@@ -188,8 +193,11 @@ def decide_winner_new(players, river):
 		player_has_straight_flush = -1
 		all_players_has_straight_flush.append(player_has_straight_flush)
 
-		player_four_of_a_kinds = []
+		player_four_of_a_kinds = -1
 		all_players_four_of_a_kinds.append(player_four_of_a_kinds)
+
+		player_full_house = [] # [three of a kind, pair]
+		all_players_full_house.append(player_full_house)
 
 		player_three_of_a_kinds = []
 		all_players_three_of_a_kinds.append(player_three_of_a_kinds)
@@ -284,14 +292,14 @@ def decide_winner_new(players, river):
 				all_players_has_straight_flush[player_num] = straight_flush_high_card
 
 
-	# Check which player has the highest straight flush, if none then continue.
+	# Check which player has the highest straight flush
 	players_with_straight_flushes = []
 	for player_num in range(len(players)):
 		# Check if a player has a straight flush
 		if all_players_has_straight_flush[player_num] != -1:
 			players_with_straight_flushes.append((player_num, all_players_has_straight_flush[player_num]))
 
-	# If someone has a straight flush
+	# If someone has a straight flush...
 	if len(players_with_straight_flushes) > 0:
 		# Return player with highest straight flush hand
 		current_highest_straight_flush = players_with_straight_flushes[0][1]
@@ -300,8 +308,195 @@ def decide_winner_new(players, river):
 			if straight_flush_tuple[1] > current_highest_straight_flush:
 				current_highest_straight_flush = straight_flush_tuple[1]
 				current_winner = straight_flush_tuple[0]
+		print("STRAIGHT FLUSH!!")
 		return current_winner
 
+	"""
+	Check which players have for four of a kinds, three of a kinds, full houses,
+	two pairs, and pairs and count the times a number appears in the hand.
+	"""
+	for player_num, cards in enumerate(all_players_cards):
+		cards_seen = {cards[0]: 1}
+		for i in range(1, len(cards)):
+			if cards[i] in cards_seen:
+				cards_seen[cards[i]] = cards_seen[cards[i]] + 1
+			else:
+				cards_seen[cards[i]] = 1
+
+		for card_val in cards_seen:
+			if 4 == cards_seen[card_val]:
+				all_players_four_of_a_kinds[player_num] = card_val
+			if 3 == cards_seen[card_val]:
+				all_players_three_of_a_kinds[player_num].append(card_val)
+			if 2 == cards_seen[card_val]:
+				all_players_pairs[player_num].append(card_val)
+
+		# Check for four of a kinds is handled above
+
+		# Check all three of a kind situations (different from full house)
+		# If this player has two three of a kinds...
+		if len(all_players_three_of_a_kinds[player_num]) == 2:
+			# Create a full house by pick the largest to be the three of a kind
+			# and picking the second largest for the pair.
+			if all_players_three_of_a_kinds[player_num][0] > all_players_three_of_a_kinds[player_num][1]:
+				all_players_full_house[player_num].append(all_players_three_of_a_kinds[player_num][0])
+				all_players_full_house[player_num].append(all_players_three_of_a_kinds[player_num][1])
+			else:
+				all_players_full_house[player_num].append(all_players_three_of_a_kinds[player_num][1])
+				all_players_full_house[player_num].append(all_players_three_of_a_kinds[player_num][0])
+		elif len(all_players_three_of_a_kinds[player_num]) == 1 and pairs > 0:
+			# If player has a three of a kind and at least one pair
+			# Create a full house from the three of a kind and the largest pair
+			all_players_full_house[player_num].append(all_players_three_of_a_kinds[player_num][0])
+			current_largest_pair = all_players_pairs[player_num][0]
+			for pair in all_players_pairs[player_num]:
+				if pair > current_largest_pair:
+					current_largest_pair = pair
+			all_players_full_house[player_num].append(current_largest_pair)
+
+	# Check which player have the highest four of a kind
+	players_with_four_of_a_kinds = []
+	for player_num in range(len(players)):
+		if all_players_four_of_a_kinds[player_num] != -1:
+			players_with_four_of_a_kinds.append((player_num, all_players_four_of_a_kinds[player_num]))
+	# Return the player with the highest four of a kind
+	if len(players_with_four_of_a_kinds) > 0:
+		current_highest_foak = players_with_four_of_a_kinds[0][1]
+		current_winner = players_with_four_of_a_kinds[0][0]
+		for foak_tuple in players_with_four_of_a_kinds:
+			if foak_tuple[1] > current_highest_foak:
+				current_highest_foak = foak_tuple[1]
+				current_winner = foak_tuple[0]
+		print("FOUR OF A KIND!!")
+		return current_winner
+
+	# Check which player have the highest full house
+	players_with_full_house = []
+	for player_num in range(len(players)):
+		if len(all_players_full_house[player_num]) != 0:
+			players_with_full_house.append((player_num, all_players_full_house[player_num]))
+	# Return the player with the highest full house
+	if len(players_with_full_house) > 0:
+		current_highest_full_house = players_with_full_house[0][1]
+		current_winner = players_with_full_house[0][0]
+		for full_house_tuple in players_with_full_house:
+			if full_house_tuple[1] > current_highest_full_house:
+				current_highest_full_house = full_house_tuple[1]
+				current_winner = full_house_tuple[0]
+		print("FULL HOUSE!!")
+		print(players_with_full_house)
+		return current_winner
+	# NEED TO ADD TIE CASE
+
+	# Check which player has the best flush
+	players_with_flushes = []
+	for player_num in range(len(players)):
+		if all_players_has_flush[player_num] != -1:
+			players_with_flushes.append((player_num, all_players_has_flush[player_num]))
+	# Return the player with the best flush
+	if len(players_with_flushes) > 0:
+		current_best_flush = players_with_flushes[0][1]
+		current_winner = players_with_flushes[0][0]
+		for flush_tuple in players_with_flushes:
+			if flush_tuple[1] > current_best_flush:
+				current_best_flush = flush_tuple[1]
+				current_winner = flush_tuple[0]
+		print("FLUSH!")
+		return current_winner
+	# NEED TO ADD TIE CASE
+
+	# Check which player has the best straight
+	players_with_straights = []
+	for player_num in range(len(players)):
+		if all_players_has_straight[player_num] != -1:
+			players_with_straights.append((player_num, all_players_has_straight[player_num]))
+	# Return the player with the best straight
+	if len(players_with_straights) > 0:
+		current_best_straight = players_with_straights[0][0]
+		for stright_tuple in players_with_straights:
+			if stright_tuple[1] > current_best_straight:
+				current_best_straight = stright_tuple[1]
+				current_winner = stright_tuple[0]
+		print("STRAIGHT!")
+		return current_winner
+	# NEED TO ADD TIE CASE
+
+	# Check which player have the highest three of a kind
+	players_with_three_of_a_kinds = []
+	for player_num in range(len(players)):
+		if len(all_players_three_of_a_kinds[player_num]) != 0:
+			players_with_three_of_a_kinds.append((player_num, all_players_three_of_a_kinds[player_num]))
+	# Return the player with the highest three of a kind
+	if len(players_with_three_of_a_kinds) > 0:
+		current_highest_toak = players_with_three_of_a_kinds[0][1]
+		current_winner = players_with_three_of_a_kinds[0][0]
+		for toak_tuple in players_with_three_of_a_kinds:
+			if toak_tuple[1] > current_highest_toak:
+				current_highest_toak = toak_tuple[1]
+				current_winner = toak_tuple[0]
+		print("Three of a kind!")
+		return current_winner
+	# NEED TO ADD TIE CASE
+
+	# Check which player has the best two pair
+	players_with_two_pair = []
+	for player_num in range(len(players)):
+		if len(all_players_pairs[player_num]) >= 2:
+			# Choose the two highest pairs
+			if all_players_pairs[player_num][0] > all_players_pairs[player_num][1]:
+				current_highest_two_pairs = [all_players_pairs[player_num][0], all_players_pairs[player_num][1]]
+			else:
+				current_highest_two_pairs = [all_players_pairs[player_num][1], all_players_pairs[player_num][0]]
+			for i in range(2, len(all_players_pairs[player_num])):
+				if all_players_pairs[player_num][i] > current_highest_two_pairs[0]:
+					current_highest_two_pairs[0] = all_players_pairs[player_num][i]
+				elif all_players_pairs[player_num][i] > current_highest_two_pairs[1]:
+					current_highest_two_pairs[1] = all_players_pairs[player_num][i]
+			players_with_two_pair.append((player_num, current_highest_two_pairs))
+	# Return the player with the highest two pair
+	if len(players_with_two_pair) > 0:
+		current_highest_tp = players_with_two_pair[0][1]
+		current_winner = players_with_two_pair[0][0]
+		for tp_tuple in players_with_two_pair:
+			if tp_tuple[1] > current_highest_tp:
+				current_highest_tp = tp_tuple[1]
+				current_winner = tp_tuple[0]
+		print("Two pair!")
+		return current_winner
+	# NEED TO ADD TIE CASE
+
+	# Check which player has the best pair
+	players_with_pair = []
+	for player_num in range(len(players)):
+		if len(all_players_pairs[player_num]) >= 1:
+			# Choose the highest pair
+			current_highest_pair = [all_players_pairs[player_num][0]]
+			for i in range(1, len(all_players_pairs[player_num])):
+				if all_players_pairs[player_num][i] > current_highest_pair:
+					current_highest_pair = all_players_pairs[player_num][i]
+			players_with_pair.append((player_num, current_highest_pair))
+	# Return the player with the highest two pair
+	if len(players_with_pair) > 0:
+		current_highest_pair = players_with_pair[0][1]
+		current_winner = players_with_pair[0][0]
+		for pair_tuple in players_with_pair:
+			if pair_tuple[1] > current_highest_pair:
+				current_highest_pair = pair_tuple[1]
+				current_winner = pair_tuple[0]
+		print("Pair!")
+		return current_winner
+	# NEED TO ADD TIE CASE
+
+	# Choose player with best high card
+	current_best_high_card = all_players_cards[0][-1]
+	current_winner = 0
+	for player_num, cards in enumerate(all_players_cards):
+		if cards[-1] > current_best_high_card:
+			current_best_high_card = cards[-1]
+			current_winner = player_num
+	print("High card:", current_best_high_card)
+	return current_winner
+	# NEED TO ADD TIE CASE
 
 def print_hand(cards):
 	for card in cards:

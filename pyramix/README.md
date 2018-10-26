@@ -17,3 +17,6 @@
 * What is the complexity of the game?
 * When are there 'interesting cases' of k and c (i.e. 3 players and 4 colors)?
   * Possibly all k mod c != 0 are all interesting.
+
+# To Do's
+* Turing test
