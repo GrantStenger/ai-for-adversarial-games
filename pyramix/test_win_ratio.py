@@ -3,6 +3,7 @@ from players.HumanPlayer import HumanPlayer
 from players.RandomComputerPlayer import RandomComputerPlayer
 from players.GreedyComputerPlayer import GreedyComputerPlayer
 from players.HalfGreedyComputerPlayer import HalfGreedyComputerPlayer
+from players.DistanceComputerPlayer import DistanceComputerPlayer
 
 
 def main():
@@ -12,13 +13,15 @@ def main():
     win_nums = [0] * 3
     for i in range(100):
         # Initializes Players
-        players = [GreedyComputerPlayer(), HalfGreedyComputerPlayer(), RandomComputerPlayer()]
+        players = [DistanceComputerPlayer(3), GreedyComputerPlayer(), RandomComputerPlayer()]
         
         # Initializes a Game with a depth of 3 and 2 colors
-        game = Game(players, depth=7, num_colors=4)
+        game = Game(players, depth=15, num_colors=4)
         
         # Begins the game
-        win_nums[game.play()] += 1
+        winner = game.play()
+        if winner != -1:
+            win_nums[game.play()] += 1
 
     print(win_nums)
 

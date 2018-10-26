@@ -4,13 +4,14 @@ from Game import Game
 from players.HumanPlayer import HumanPlayer
 from players.RandomComputerPlayer import RandomComputerPlayer
 from players.GreedyComputerPlayer import GreedyComputerPlayer
+from players.DistanceComputerPlayer import DistanceComputerPlayer
 
 def main(_):
     """ Initializes Players and a Game, then begins the game.
     """
 
     # Initializes Players
-    players = [HumanPlayer(), GreedyComputerPlayer(), RandomComputerPlayer()]
+    players = [HumanPlayer(), DistanceComputerPlayer(), GreedyComputerPlayer()]
 
     # Initializes a Game
     game = Game(players, depth=FLAGS.depth, num_colors=FLAGS.num_colors)

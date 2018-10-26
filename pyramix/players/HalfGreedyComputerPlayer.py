@@ -10,7 +10,7 @@ class HalfGreedyComputerPlayer(ComputerPlayer):
 
         Attributes:
             score: An integer representing the Player's current score.
-            blocks_taken: A list of Blocks which belong to the Player.
+            bonuses_taken_per_color: A dict of colors and the number of 1-point blocks the Player has of them. 
     """
 
     def __init__(self):
@@ -20,12 +20,13 @@ class HalfGreedyComputerPlayer(ComputerPlayer):
         # Initializes a ComputerPlayer
         super().__init__()
 
-    def evaluate_moves(self, board, legal_moves):
+    def evaluate_moves(self, board, legal_moves, players):
         """ 50/50 chance to either be greedy or random.
 
             Args:
                 board: A nested array of Blocks.
                 legal_moves: A list of legal moves.
+                players: A list of players.
             Returns:
                 i: An integer representing the x position of the chosen move.
                 j: An integer representing the y position of the chosen move.

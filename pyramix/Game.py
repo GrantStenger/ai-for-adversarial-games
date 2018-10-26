@@ -432,9 +432,17 @@ class Game:
         winner = max(self.players, key=lambda player: player.score)
         winner_num = self.players.index(winner) + 1
 
-        print("Winner: Player " + str(winner_num) + " Score: " + str(winner.score))
+        # Determine if there is a tie
+        def has_max_score(player, score):
+            return player.score == score
+        num_players_with_max_score = sum(1 for player in self.players if has_max_score(player, winner.score))
 
-        return winner_num - 1
+        if num_players_with_max_score == 1:
+            print("Winner: Player " + str(winner_num) + " Score: " + str(winner.score))
+            return winner_num - 1
+        else:
+            print("There is a tie. Score: " + str(winner.score))
+            return -1
 
     def play(self):
         """ Runs gameplay until the game is over, then scores bonus Blocks.
@@ -460,7 +468,7 @@ class Game:
             self.pretty_print()
 
             # Current player evaluates legal moves and selects the optimal (x,y) position
-            move = self.players[self.current_player].evaluate_moves(self.board, self.legal_moves)
+            move = self.players[self.current_player].evaluate_moves(self.board, self.legal_moves, self.players)
 
             # Applies the move that the player chose
             self.make_move(move)
