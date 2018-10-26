@@ -15,13 +15,16 @@ def main():
         # Initializes Players
         players = [DistanceComputerPlayer(3), GreedyComputerPlayer(), RandomComputerPlayer()]
         
+        # Define vprint as an empty function
+        vprint = lambda *a, **k: None
+
         # Initializes a Game with a depth of 3 and 2 colors
-        game = Game(players, depth=15, num_colors=4)
+        game = Game(players, depth=7, num_colors=4, vprint=vprint)
         
         # Begins the game
         winner = game.play()
         if winner != -1:
-            win_nums[game.play()] += 1
+            win_nums[winner] += 1
 
     print(win_nums)
 

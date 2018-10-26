@@ -74,7 +74,7 @@ class DistanceComputerPlayer(ComputerPlayer):
                 if min_diff == 0:
                     leads = True
                     for player in players:
-                        if player.bonuses_taken_per_color[min_color] == self.bonuses_taken_per_color[min_color]:
+                        if player.bonuses_taken_per_color[min_color] == self.bonuses_taken_per_color[min_color] and player != self:
                             leads = False
 
                     # If the Player leads in the color, don't take it
@@ -101,3 +101,5 @@ class DistanceComputerPlayer(ComputerPlayer):
                     # If it doesn't exist, set diff to a large number
                     color_differences[min_diff_index] = sys.maxsize
 
+                # If the player leads in all colors, pick a random Block.
+                return legal_moves[0]

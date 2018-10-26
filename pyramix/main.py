@@ -11,10 +11,10 @@ def main(_):
     """
 
     # Initializes Players
-    players = [HumanPlayer(), DistanceComputerPlayer(), GreedyComputerPlayer()]
+    players = [HumanPlayer(), DistanceComputerPlayer(4), DistanceComputerPlayer(3)]
 
     # Initializes a Game
-    game = Game(players, depth=FLAGS.depth, num_colors=FLAGS.num_colors)
+    game = Game(players, depth=FLAGS.depth, num_colors=FLAGS.num_colors, vprint=print)
 
     # Begins the game
     game.play()
