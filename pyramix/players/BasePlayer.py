@@ -53,9 +53,12 @@ class BasePlayer(object):
         if block.value == 1:
             self.bonuses_taken_per_color[block.color] += 1
 
-    def pretty_print(self):
+    def pretty_print(self, vprint):
         """ Pretty-prints player's score and colors.
+            
+            Args:
+                vprint: The intended print function.
         """
 
-        print("    Score: " + str(self.score))
-        print("    Colors: " + str(self.bonuses_taken_per_color))
+        vprint("    Score: " + str(self.score))
+        vprint("    Colors: " + str(self.bonuses_taken_per_color))

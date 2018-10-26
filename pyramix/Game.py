@@ -24,20 +24,22 @@ class Game:
             legal_moves: A list of legal moves given the board state.
     """
 
-    def __init__(self, players, depth, num_colors):
+    def __init__(self, players, depth, num_colors, vprint):
         """ Initializes a Game.
 
             Args:
                 players: A list of Players.
                 depth: An integer representing the depth of the board.
                 num_colors: An integer representing the number of block colors.
+                vprint: A function which is equivalent to print if verbose, empty if not verbose.
         """
 
         # Initialize argument values
         self.players = players
         self.depth = depth
         self.colors = self.generate_colors(num_colors)
-
+        self.vprint = vprint
+           
         # Let players create a dict storing all 1 point tiles taken
         for player in players:
             player.set_colors(self.colors)
@@ -53,7 +55,7 @@ class Game:
         # Initalize the starting legal moves
         # MUST be called AFTER initialize_board
         self.legal_moves = self.initialize_legal_moves()
-
+ 
     def generate_colors(self, num_colors):
         """ Generates a list of block colors represented by ASCII letters.
 
@@ -225,8 +227,8 @@ class Game:
             The player with the most 1-point blocks of that color get the points; if there is a
             tie, nobody gets the points.
         """
-        print()
-        print("Scoring bonus blocks...")
+        self.vprint()
+        self.vprint("Scoring bonus blocks...")
 
         for color in self.colors:
             # Creates a list of how many 1-point blocks of this color everyone has
@@ -249,11 +251,11 @@ class Game:
                         if block.color == color:
                             max_player.score_block(block)
                             points_scored += block.value
-                print()
-                print("Player " + str(player_index + 1) + " won the color " + color + " and scored " + str(points_scored) + " points.")
+                self.vprint()
+                self.vprint("Player " + str(player_index + 1) + " won the color " + color + " and scored " + str(points_scored) + " points.")
             else:
-                print()
-                print("There was a tie for the color " + color + ".")
+                self.vprint()
+                self.vprint("There was a tie for the color " + color + ".")
 
     def initialize_legal_moves(self):
         """ Initalizes the legal moves of the initial board state.
@@ -375,58 +377,58 @@ class Game:
         for i in range(len(self.board)):
             for j in range(len(self.board[i])):
                 # Prints each tile (consisting of two characters)
-                print(str(self.board[i][j]), end="")
+                self.vprint(str(self.board[i][j]), end="")
                 if (str(self.board[i][j]) == '0'):
-                    print(" ", end="")
+                    self.vprint(" ", end="")
 
                 # Prints space number of spaces each tile and vertical division between tiles
                 for k in range(spaces):
-                    print(" ", end="")
+                    self.vprint(" ", end="")
                     if k == (spaces + 2) // 2 - 2:
-                        print("|", end="")
-            print()
+                        self.vprint("|", end="")
+            self.vprint()
             # Prints a line of underscores between each row of tiles
             for j in range(len(self.board[i])):
                 for k in range(spaces + 2):
-                    print("_", end="")
+                    self.vprint("_", end="")
                     if k == (spaces + 2) // 2:
-                        print("|", end="")
+                        self.vprint("|", end="")
                         if j == len(self.board[i]) - 1:
                             break
-            print()
+            self.vprint()
 
     def pretty_print(self):
         """ Prints board, legal moves, player scores and colors
         """
 
-        print()
+        self.vprint()
         self.pretty_print_board()
-        print()
+        self.vprint()
 
         # Prints players and scores
         for i, player in enumerate(self.players):
-            print("Player " + str(i + 1) + ": ")
-            player.pretty_print()
-        print()
+            self.vprint("Player " + str(i + 1) + ": ")
+            player.pretty_print(self.vprint)
+        self.vprint()
 
         # Prints legal moves
-        print("Legal moves: " + str(self.legal_moves))
-        print()
+        self.vprint("Legal moves: " + str(self.legal_moves))
+        self.vprint()
 
         # Prints current player
-        print("Player " + str(self.current_player + 1) + "'s move.")
+        self.vprint("Player " + str(self.current_player + 1) + "'s move.")
 
     def pretty_print_for_end(self):
         """ Prints board and score, and winner at the end of the game.
         """
 
-        print()
+        self.vprint()
 
         # Prints players and scores
         for i, player in enumerate(self.players):
-            print("Player " + str(i + 1) + ": ")
-            player.pretty_print()
-        print()
+            self.vprint("Player " + str(i + 1) + ": ")
+            player.pretty_print(self.vprint)
+        self.vprint()
 
         # Prints winner and score
         winner = max(self.players, key=lambda player: player.score)
@@ -438,10 +440,10 @@ class Game:
         num_players_with_max_score = sum(1 for player in self.players if has_max_score(player, winner.score))
 
         if num_players_with_max_score == 1:
-            print("Winner: Player " + str(winner_num) + " Score: " + str(winner.score))
+            self.vprint("Winner: Player " + str(winner_num) + " Score: " + str(winner.score))
             return winner_num - 1
         else:
-            print("There is a tie. Score: " + str(winner.score))
+            self.vprint("There is a tie. Score: " + str(winner.score))
             return -1
 
     def play(self):
@@ -453,9 +455,9 @@ class Game:
         parameters += " Colors: " + str(len(self.colors))
 
         # Print game parameters
-        print()
-        print("------------PYRAMIX------------")
-        print(parameters)
+        self.vprint()
+        self.vprint("------------PYRAMIX------------")
+        self.vprint(parameters)
 
         # Runs gameplay until only the base Blocks remain
         turn_num = 0
@@ -489,7 +491,7 @@ class Game:
             turn_num += 1
 
         # Prints the board
-        print()
+        self.vprint()
         self.pretty_print_board()
 
         # Scores bonus blocks
