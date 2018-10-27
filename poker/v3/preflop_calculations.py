@@ -7,7 +7,6 @@ from random import shuffle, randrange, sample
 # import random
 
 # Constants
-GAMES = 1
 suit_num_to_letter = {0: 'C', 1: 'D', 2: 'H', 3: 'S'}
 value_num_to_letter = {1: 'A',
 					2: '2',
@@ -44,7 +43,7 @@ value_letter_to_num = {'A': 1,
 # The winner is computed
 # The winner's win_count is incremented
 # The process is repeated until statistical significance is achieved
-def simulate_hand(player1):
+def simulate_hand(player1, verbose = True):
 
 	# Create Deck
 	deck = []
@@ -70,31 +69,36 @@ def simulate_hand(player1):
 	for i in range(5):
 		river.append(deck.pop())
 
-	# Output players hole cards and the river
-	print("Player 1:")
-	print_hand(player1)
+	if verbose:
+		# Output players hole cards and the river
+		print("Player 1:")
+		print_hand(player1)
 
-	print("Player 2:")
-	print_hand(player2)
+		print("Player 2:")
+		print_hand(player2)
 
-	print("River: ")
-	print_hand(river)
+		print("River: ")
+		print_hand(river)
 
 	# Decide who the winner is
-	winners = decide_winners([player1, player2], river)
+	winners = decide_winners([player1, player2], river, verbose)
 
 	# Print the winners!
 	winners_string = ""
 	for winner in winners:
-		winners_string += str(winner + 1) + ", and "
-	winners_string = winners_string[:-6]
-	print("The winner is player " + winners_string + "!")
+		winners_string += str(winner + 1) + " and "
+	winners_string = winners_string[:-5]
+	if verbose:
+		print("The winner is player " + winners_string + "!")
+
+	# return the array of winners
+	return winners
 
 # This is the game logic that decides who wins.
 # I am currently working to clean it up and optimize it.
 # Right now it's really gross––apologies.
 # Returns a list of winners (often just one, but accounts for case where several tie)
-def decide_winners(players, river):
+def decide_winners(players, river, verbose = True):
 
 	all_players_cards = []
 	all_players_suits = []
@@ -220,7 +224,6 @@ def decide_winners(players, river):
 					if num_consecutive_suit >= 5:
 						has_straight_flush = True
 						straight_flush_high_card = (int(cards[i], base=2) // 4)
-
 			# If this next card is the same value as the next card,
 			# keep straight length and move on.
 			elif (int(cards[i-1], base=2) // 4) == (int(cards[i], base=2) // 4):
@@ -246,19 +249,29 @@ def decide_winners(players, river):
 			players_with_straight_flushes.append((player_num, all_players_has_straight_flush[player_num]))
 
 	# If someone has a straight flush...
+	print("players_with_straight_flushes", players_with_straight_flushes)
 	if len(players_with_straight_flushes) > 0:
+		print("HEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEE")
+		print("HEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEE")
+		print("HEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEE")
+		print("HEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEE")
+		print("HEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEEEE")
+		print("HEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEE")
 		# Return player with highest straight flush hand
 		current_highest_straight_flush = players_with_straight_flushes[0][1]
+		print("current_highest_straight_flush", current_highest_straight_flush)
 		current_winner = [players_with_straight_flushes[0][0]]
 		for straight_flush_tuple in players_with_straight_flushes[1:]:
-			if straight_flush_tuple[1] > current_highest_straight_flush:
+			print("straight_flush_tuple", straight_flush_tuple)
+			if current_highest_straight_flush != 1 and straight_flush_tuple[1] > current_highest_straight_flush:
 				current_highest_straight_flush = straight_flush_tuple[1]
 				current_winner = [straight_flush_tuple[0]]
 			elif straight_flush_tuple[1] == current_highest_straight_flush:
 				# If any number of players share the same highest card, we need
 				# to implement this logic. The following is currently not correct.
 				current_winner.append(straight_flush_tuple[0])
-		print("STRAIGHT FLUSH!!")
+		if verbose:
+			print("STRAIGHT FLUSH!!")
 		return current_winner
 
 	"""
@@ -321,15 +334,17 @@ def decide_winners(players, river):
 		current_highest_foak = players_with_four_of_a_kinds[0][1]
 		current_winner = [players_with_four_of_a_kinds[0][0]]
 		for foak_tuple in players_with_four_of_a_kinds[1:]:
-			if foak_tuple[1] > current_highest_foak:
+			if current_highest_foak != 1 and foak_tuple[1] > current_highest_foak:
 				current_highest_foak = foak_tuple[1]
 				current_winner = [foak_tuple[0]]
 			elif foak_tuple[1] == current_highest_foak:
 				# If any number of players share the same highest card, we need
 				# to implement this logic. The following is currently not correct.
 				current_winner.append(foak_tuple[0])
-		print("FOUR OF A KIND!!")
+		if verbose:
+			print("FOUR OF A KIND!!")
 		return current_winner
+	# FIX TIE CASE
 
 	# Check which player have the highest full house
 	players_with_full_house = []
@@ -341,14 +356,15 @@ def decide_winners(players, river):
 		current_highest_full_house = players_with_full_house[0][1]
 		current_winner = [players_with_full_house[0][0]]
 		for full_house_tuple in players_with_full_house[1:]:
-			if full_house_tuple[1] > current_highest_full_house:
+			if current_highest_full_house[0] != 1 and full_house_tuple[1] > current_highest_full_house:
 				current_highest_full_house = full_house_tuple[1]
 				current_winner = [full_house_tuple[0]]
 			elif full_house_tuple[1] == current_highest_full_house:
 				# If any number of players share the same highest card, we need
 				# to implement this logic. The following is currently not correct.
 				current_winner.append(full_house_tuple[0])
-		print("FULL HOUSE!!")
+		if verbose:
+			print("FULL HOUSE!!")
 		# print(players_with_full_house)
 		return current_winner
 	# NEED TO ADD TIE CASE
@@ -366,16 +382,17 @@ def decide_winners(players, river):
 		current_best_flush = players_with_flushes[0][1]
 		current_winner = [players_with_flushes[0][0]]
 		for flush_tuple in players_with_flushes[1:]:
-			if flush_tuple[1] > current_best_flush:
+			if current_best_flush != 1 and flush_tuple[1] > current_best_flush:
 				current_best_flush = flush_tuple[1]
 				current_winner = [flush_tuple[0]]
 			elif flush_tuple[1] == current_best_flush:
 				# If any number of players share the same highest card, we need
 				# to implement this logic. The following is currently not correct.
 				current_winner.append(flush_tuple[0])
-		print("FLUSH!")
+		if verbose:
+			print("FLUSH!")
 		return current_winner
-	# NEED TO ADD TIE CASE
+	# NEED TO FIX TIE CASE
 
 	# Check which player has the best straight
 	players_with_straights = []
@@ -387,16 +404,17 @@ def decide_winners(players, river):
 		current_best_straight = players_with_straights[0][1]
 		current_winner = [players_with_straights[0][0]]
 		for stright_tuple in players_with_straights[1:]:
-			if stright_tuple[1] > current_best_straight:
+			if current_best_straight != 1 and stright_tuple[1] > current_best_straight:
 				current_best_straight = stright_tuple[1]
 				current_winner = [stright_tuple[0]]
 			elif stright_tuple[1] == current_best_straight:
 				# If any number of players share the same highest card, we need
 				# to implement this logic. The following is currently not correct.
 				current_winner.append(stright_tuple[0])
-		print("STRAIGHT!")
+		if verbose:
+			print("STRAIGHT!")
 		return current_winner
-	# NEED TO ADD TIE CASE
+	# NEED TO FIX TIE CASE
 
 	# Check which player have the highest three of a kind
 	players_with_three_of_a_kinds = []
@@ -408,16 +426,17 @@ def decide_winners(players, river):
 		current_highest_toak = players_with_three_of_a_kinds[0][1]
 		current_winner = [players_with_three_of_a_kinds[0][0]]
 		for toak_tuple in players_with_three_of_a_kinds[1:]:
-			if toak_tuple[1] > current_highest_toak:
+			if current_highest_toak[0] != 1 and toak_tuple[1] > current_highest_toak:
 				current_highest_toak = toak_tuple[1]
 				current_winner = [toak_tuple[0]]
 			elif toak_tuple[1] == current_highest_toak:
 				# If any number of players share the same highest card, we need
 				# to implement this logic. The following is currently not correct.
 				current_winner.append(toak_tuple[0])
-		print("Three of a kind!")
+		if verbose:
+			print("Three of a kind!")
 		return current_winner
-	# NEED TO ADD TIE CASE
+	# NEED TO FIX TIE CASE
 
 	# Check which player has the best two pair
 	players_with_two_pair = []
@@ -435,20 +454,42 @@ def decide_winners(players, river):
 					current_highest_two_pairs[1] = all_players_pairs[player_num][i]
 			players_with_two_pair.append((player_num, current_highest_two_pairs))
 	# Return the player with the highest two pair
+	# print("players_with_two_pair", players_with_two_pair)
 	if len(players_with_two_pair) > 0:
-		current_highest_tp = players_with_two_pair[0][1]
+		# Calculate which of the first player's pairs is highest
+		if players_with_two_pair[0][1][0] > players_with_two_pair[0][1][1]:
+			current_highest_tp = players_with_two_pair[0][1][0]
+		else:
+			current_highest_tp = players_with_two_pair[0][1][1]
+		if players_with_two_pair[0][1][0] == 1:
+			current_highest_tp = players_with_two_pair[0][1][0]
+		elif players_with_two_pair[0][1][1] == 1:
+			current_highest_tp = players_with_two_pair[0][1][1]
 		current_winner = [players_with_two_pair[0][0]]
+		# Iterate through the rest of the players with two pairs to determine best hand
 		for tp_tuple in players_with_two_pair[1:]:
-			if tp_tuple[1] > current_highest_tp:
-				current_highest_tp = tp_tuple[1]
+			# print("tp_tuple", tp_tuple)
+			if tp_tuple[1][0] > tp_tuple[1][1]:
+				this_players_highest_pair = tp_tuple[1][0]
+			else:
+				this_players_highest_pair = tp_tuple[1][0]
+			if tp_tuple[1][0] == 1:
+				this_players_highest_pair = tp_tuple[1][0]
+			elif tp_tuple[1][1] == 1:
+				this_players_highest_pair = tp_tuple[1][0]
+			# print("this_players_highest_pair", this_players_highest_pair)
+			# print("current_highest_tp", current_highest_tp)
+			if current_highest_tp != 1 and this_players_highest_pair > current_highest_tp:
+				current_highest_tp = this_players_highest_pair
 				current_winner = [tp_tuple[0]]
-			elif tp_tuple[1] == current_highest_tp:
+			elif this_players_highest_pair == current_highest_tp:
 				# If any number of players share the same highest card, we need
 				# to implement this logic. The following is currently not correct.
 				current_winner.append(tp_tuple[0])
-		print("Two pair!")
+		if verbose:
+			print("Two pair!")
 		return current_winner
-	# NEED TO ADD TIE CASE
+	# NEED TO FIX TIE CASE
 
 	# Check which player has the best pair
 	players_with_pair = []
@@ -465,7 +506,7 @@ def decide_winners(players, river):
 		current_highest_pair = players_with_pair[0][1]
 		current_winner = [players_with_pair[0][0]]
 		for pair_tuple in players_with_pair[1:]:
-			print("current_highest_pair", current_highest_pair)
+			# print("current_highest_pair", current_highest_pair)
 			if current_highest_pair[0] != 1 and pair_tuple[1] > current_highest_pair:
 				current_highest_pair = pair_tuple[1]
 				current_winner = [pair_tuple[0]]
@@ -473,29 +514,28 @@ def decide_winners(players, river):
 				# If any number of players share the same highest card, we need
 				# to implement this logic. The following is currently not correct.
 				current_winner.append(pair_tuple[0])
-		print("Pair!")
+		if verbose:
+			print("Pair!")
 		# print("Current winner", current_winner)
 		return current_winner
 	# Add Ace case
-	# NEED TO ADD TIE CASE
+	# NEED TO FIX TIE CASE
 
 	# Choose player with best high card
 	current_best_high_card = all_players_cards[0][-1]
 	current_winner = [0]
 	for player_num, cards in enumerate(all_players_cards[1:]):
-		if cards[-1] > current_best_high_card:
+		if current_best_high_card[0] != 1 and cards[-1] > current_best_high_card:
 			current_best_high_card = cards[-1]
 			current_winner = [player_num]
 		elif cards[-1] == current_best_high_card:
 			# If any number of players share the same highest card, we need
 			# to implement this logic. The following is currently not correct.
 			current_winner.append(player_num)
-	print("High card:", current_best_high_card)
+	if verbose:
+		print("High card:", current_best_high_card)
 	return current_winner
-	# NEED TO ADD TIE CASE
-
-
-
+	# NEED TO FIX TIE CASE
 
 # Takes array of players and the river and decides which player won
 # A value is calculated for each hand and these values are compared
@@ -616,10 +656,33 @@ def main():
 		if (len(hand) == 2 and hand[0] in value_letter_to_num and hand[1] in value_letter_to_num) or (len(hand) == 3 and hand[0] in value_letter_to_num and hand[1] in value_letter_to_num and hand[2] == 's' and hand[0] != hand[1]):
 			is_input_valid = True
 
+	# Convert input to array of binaries (each card is binary string)
 	player1 = choose_hand(hand)
 
+	player1_wins = 0
+	player2_wins = 0
+	ties = 0
+
+	GAMES = 1000
+
 	for i in range(GAMES):
-		simulate_hand(player1)
+		if i % 10000 == 0:
+			print(i)
+		winners = simulate_hand(player1, verbose = True)
+		if len(winners) == 1:
+			if winners[0] == 0:
+				player1_wins += 1
+			else:
+				player2_wins += 1
+		elif len(winners) == 2:
+			ties += 1
+		else:
+			raise Exception("You fucked up, weird number of winners", winners)
+		print()
+
+	print("Player 1 won:", player1_wins)
+	print("Player 2 won:", player2_wins)
+	print("Ties", ties)
 
 if __name__ == "__main__":
 	main()
