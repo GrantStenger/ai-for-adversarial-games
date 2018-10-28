@@ -1,17 +1,18 @@
 import sys
 import argparse
 from Game import Game
-from players.HumanPlayer import HumanPlayer
-from players.RandomComputerPlayer import RandomComputerPlayer
-from players.GreedyComputerPlayer import GreedyComputerPlayer
-from players.DistanceComputerPlayer import DistanceComputerPlayer
+from players.Human import Human
+from players.Random import Random
+from players.Greedy import Greedy
+from players.OptColorGreedy import OptColorGreedy
+
 
 def main(_):
     """ Initializes Players and a Game, then begins the game.
     """
 
     # Initializes Players
-    players = [HumanPlayer(), DistanceComputerPlayer(4), DistanceComputerPlayer(3)]
+    players = [Random(), OptColorGreedy(), Greedy()]
 
     # Initializes a Game
     game = Game(players, depth=FLAGS.depth, num_colors=FLAGS.num_colors, vprint=print)

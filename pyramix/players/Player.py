@@ -1,9 +1,9 @@
-class BasePlayer(object):
+class Player(object):
     """ An class representing a Player.
 
         Attributes:
             score: An integer representing the Player's current score.
-            bonuses_taken_per_color: A dict of colors and the number of 1-point blocks the Player has of them. 
+            bonuses_taken_per_color: A dict of colors & the number of 1-point blocks the Player has.
     """
 
     def __init__(self):
@@ -27,7 +27,7 @@ class BasePlayer(object):
             self.bonuses_taken_per_color[color] = 0
 
     def evaluate_moves(self, board, legal_moves, players):
-        """ Evaluates and selects an optimum move.
+        """ Evaluates and selects an optimal move.
 
             Args:
                 board: A nested array of Blocks.
@@ -55,7 +55,7 @@ class BasePlayer(object):
 
     def pretty_print(self, vprint):
         """ Pretty-prints player's score and colors.
-            
+
             Args:
                 vprint: The intended print function.
         """
