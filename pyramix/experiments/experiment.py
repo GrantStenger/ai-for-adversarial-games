@@ -9,14 +9,16 @@ from players.Random import Random
 from players.Greedy import Greedy
 from players.HalfGreedy import HalfGreedy
 from players.OptColorGreedy import OptColorGreedy
+from players.IgnoreTwos import IgnoreTwos
 
 
 def main(_):
     """ Runs several experiments and graphs results.
     """
 
-    experiment(Random(), HalfGreedy())
-    experiment(HalfGreedy(), Greedy())
+    experiment(OptColorGreedy(), IgnoreTwos())
+    #experiment(Random(), HalfGreedy())
+    #experiment(HalfGreedy(), Greedy())
     #experiment(Random(), Greedy())
     #experiment(Random(), OptColorGreedy())
     #experiment(Greedy(), OptColorGreedy())
@@ -64,7 +66,6 @@ def experiment(player1, player2, player3=None):
             else:
                 result[3] += 1
 
-    print(result)
     result = [int(float(x) / FLAGS.num_games * 100) for x in result]
     print(result)
 

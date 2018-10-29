@@ -34,6 +34,6 @@ class HalfGreedy(Greedy, Random):
 
         # 50/50 chance to be greedy or random
         if randint(0, 1):
-            return Greedy.evaluate_moves(board, legal_moves, players)
+            return Greedy.evaluate_moves(self, board, legal_moves, players)
         else:
-            return Random.evaluate_moves(board, legal_moves, players)
+            return Random.evaluate_moves(self, board, legal_moves, players)

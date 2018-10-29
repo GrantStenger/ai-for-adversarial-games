@@ -5,6 +5,7 @@ from players.Human import Human
 from players.Random import Random
 from players.Greedy import Greedy
 from players.OptColorGreedy import OptColorGreedy
+from players.IgnoreTwos import IgnoreTwos
 
 
 def main(_):
@@ -12,7 +13,7 @@ def main(_):
     """
 
     # Initializes Players
-    players = [Random(), OptColorGreedy(), Greedy()]
+    players = [Random(), OptColorGreedy(), IgnoreTwos()]
 
     # Initializes a Game
     game = Game(players, depth=FLAGS.depth, num_colors=FLAGS.num_colors, vprint=print)
