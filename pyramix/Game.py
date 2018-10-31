@@ -39,7 +39,7 @@ class Game:
         self.depth = depth
         self.colors = self.generate_colors(num_colors)
         self.vprint = vprint
-           
+
         # Let players create a dict storing all 1 point tiles taken
         for player in players:
             player.set_colors(self.colors)
@@ -55,7 +55,7 @@ class Game:
         # Initalize the starting legal moves
         # MUST be called AFTER initialize_board
         self.legal_moves = self.initialize_legal_moves()
- 
+
     def generate_colors(self, num_colors):
         """ Generates a list of block colors represented by ASCII letters.
 

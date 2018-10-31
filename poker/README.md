@@ -9,6 +9,8 @@
 * How likely is it to have a straight and a flush but not a straight flush?
 * Compute the probability of a full house, 3 of a kind, 4 of a kind, straight, flush, straight flush, etc.
 * How likely is a straight flush?
+* What is the optimal level of aggression pre-flop? How does this change as the number of players changes? What is the correct threshold above which a hand should be playable pre-flop given a certain number of players in the game?
+* Given m players, what's the distribution of the number of players who will not fold pre-flop? 
 
 ### To Do's
 * Make it possible to input any hands to decide who wins these hands. Will be useful to test edge cases of winner deciding logic.
