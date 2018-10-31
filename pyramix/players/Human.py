@@ -1,18 +1,18 @@
-from players.BasePlayer import BasePlayer
+from players.Player import Player
 
 
-class HumanPlayer(BasePlayer):
+class Human(Player):
     """ Represents a human player.
 
         Prompts for input instead of calculating the optimum move.
 
         Attributes:
             score: An integer representing the Player's current score.
-            bonuses_taken_per_color: A dict of colors and the number of 1-point blocks the Player has of them. 
+            bonuses_taken_per_color: A dict of colors & the number of 1-point blocks the Player has.
     """
 
     def __init__(self):
-        """ Initializes a HumanPlayer.
+        """ Initializes a Human.
         """
 
         # Initializes a Player
@@ -35,7 +35,7 @@ class HumanPlayer(BasePlayer):
             try:
                 user_input = input('Enter the coordinates of the block you wish to take (in the form "i,j"): ')
                 user_input = tuple([int(i) for i in user_input.split(',')])
-                
+
                 while user_input not in legal_moves:
                     print()
                     print('That is not a legal move.')

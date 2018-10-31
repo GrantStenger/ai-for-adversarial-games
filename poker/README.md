@@ -8,7 +8,10 @@
 * Given two cards of the same suit, how likely are you to get a flush?
 * How likely is it to have a straight and a flush but not a straight flush?
 * Compute the probability of a full house, 3 of a kind, 4 of a kind, straight, flush, straight flush, etc.
+* How likely is a straight flush?
 
 ### To Do's
 * Make it possible to input any hands to decide who wins these hands. Will be useful to test edge cases of winner deciding logic.
 * Implement kelly criterion––bankroll management
+* Fix straight flush logic
+* Fix fucking bugs

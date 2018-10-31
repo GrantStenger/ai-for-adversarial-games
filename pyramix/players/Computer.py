@@ -1,16 +1,16 @@
-from players.BasePlayer import BasePlayer
+from players.Player import Player
 
 
-class ComputerPlayer(BasePlayer):
+class Computer(Player):
     """ Represents a computer player.
 
         Attributes:
             score: An integer representing the Player's current score.
-            blocks_taken: A list of Blocks which belong to the Player.
+            bonuses_taken_per_color: A dict of colors & the number of 1-point blocks the Player has.
     """
 
     def __init__(self):
-        """ Initializes a ComputerPlayer.
+        """ Initializes a Computer.
         """
 
         # Initializes a Player
