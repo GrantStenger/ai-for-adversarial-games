@@ -1,26 +1,25 @@
 import numpy as np
 
-from players.ComputerPlayer import ComputerPlayer
+from players.Computer import Computer
 
 
-class RandomComputerPlayer(ComputerPlayer):
-
-    """ Represents a computer player.
+class Random(Computer):
+    """ Represents a random computer player.
 
         Attributes:
             score: An integer representing the Player's current score.
-            blocks_taken: A list of Blocks which belong to the Player.
+            bonuses_taken_per_color: A dict of colors & the number of 1-point blocks the Player has.
     """
 
     def __init__(self):
-        """ Initializes a ComputerPlayer.
+        """ Initializes a Random player.
         """
 
-        # Initializes a ComputerPlayer
+        # Initializes a Computer
         super().__init__()
 
     def evaluate_moves(self, board, legal_moves, players):
-        """ Selects a Random Move from the list of legal moves.
+        """ Selects a random move from the list of legal moves.
 
             Args:
                 board: A nested array of Blocks.

@@ -160,8 +160,6 @@ class Game:
             Args:
                 position: An (x,y) tuple (must be extended for >2 dimensions).
         """
-        # Remember to remove block from legal moves when detecting which position
-        # loses a block.
 
         i = position[0]
         j = position[1]
@@ -227,6 +225,7 @@ class Game:
             The player with the most 1-point blocks of that color get the points; if there is a
             tie, nobody gets the points.
         """
+
         self.vprint()
         self.vprint("Scoring bonus blocks...")
 
@@ -459,13 +458,13 @@ class Game:
         self.vprint("------------PYRAMIX------------")
         self.vprint(parameters)
 
-        # Runs gameplay until only the base Blocks remain
-        turn_num = 0
-        while not self.game_over:
-            # Randomized order: every round, a new player starts
-            if turn_num % len(self.players) == 0:
-                self.current_player = randint(0, len(self.players) - 1)
+        # Sets up random player order
+        players_order = [i for i in range(len(self.players))]
+        shuffle(players_order)
+        self.current_player = players_order[0]
 
+        # Runs gameplay until only the base Blocks remain
+        while not self.game_over:
             # Prints the current game state
             self.pretty_print()
 
@@ -484,11 +483,13 @@ class Game:
             # Updates legal moves given the player's move choices
             self.update_legal_moves(move)
 
-            # Makes the next player the current player
-            self.current_player = (self.current_player + 1) % len(self.players)
-
-            # Increment the turn number
-            turn_num += 1
+            # Re-randomize player order if necessary, otherwise increment player
+            current_player_index = players_order.index(self.current_player)
+            if current_player_index == len(players_order) - 1:
+                shuffle(players_order)
+                self.current_player = players_order[0]
+            else:
+                self.current_player = players_order[(current_player_index + 1)]
 
         # Prints the board
         self.vprint()

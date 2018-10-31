@@ -1,9 +1,10 @@
 from Game import Game
-from players.HumanPlayer import HumanPlayer
-from players.RandomComputerPlayer import RandomComputerPlayer
-from players.GreedyComputerPlayer import GreedyComputerPlayer
-from players.HalfGreedyComputerPlayer import HalfGreedyComputerPlayer
-from players.DistanceComputerPlayer import DistanceComputerPlayer
+from players.Human import Human
+from players.Random import Random
+from players.Greedy import Greedy
+from players.HalfGreedy import HalfGreedy
+from players.Distance import Distance
+from players.OptColorGreedy import OptColorGreedy
 
 
 def main():
@@ -11,9 +12,9 @@ def main():
     """
     
     win_nums = [0] * 3
-    for i in range(100):
+    for i in range(1000):
         # Initializes Players
-        players = [DistanceComputerPlayer(3), GreedyComputerPlayer(), RandomComputerPlayer()]
+        players = [Distance(3), Random(), OptColorGreedy()]
         
         # Define vprint as an empty function
         vprint = lambda *a, **k: None
