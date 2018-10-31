@@ -9,7 +9,7 @@ To Do's:
 * Implement MiniMax 
 * Implement Alpha-Beta Pruning
 * Build Javascript front-end
-* Optimize runtime (encode boards as bits, potentially rewrite in C++, be more careful with recursion)
+* Optimize runtime (encode boards as bits, be more careful with recursion)
 
 To get to chess, implement minimax with possibly some simple heuristics on connect-4. 
 
@@ -19,6 +19,7 @@ What happens when there's not perfect information? Poker for example.
 
 Try some sort of minimax + heuristic algo on 2048.
 
+This directory now also includes a C++ implementation of tic-tac-toe minimax.
 
 s_0 // Initial state
 player(s) // who's the player in state s
