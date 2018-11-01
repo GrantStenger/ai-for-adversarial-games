@@ -31,3 +31,12 @@
 ### Deck
 * The deck is an array of binaries.
 * Can this be optimized?
+
+### Updated storing method
+* Each card can be represented as a 64-bit integer
+* Each binary integer will contain all 0s except a 1 at the ith digit where i corresponds to the card number
+* The cards will be ordered as follows 2c, 3c, 4c,..., Kc, Ac, 2d, 3d,..., Kd, Ad, 2h, 3h,..., Ah, 2s,..., Ks, As
+* 2c: 0000000000000000000000000000000000000000000000000000000000000001
+* 3c: 0000000000000000000000000000000000000000000000000000000000000010
+* Kc: 0000000000000000000000000000000000000000000000000000100000000000
+* etc...

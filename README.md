@@ -33,6 +33,10 @@
 * [CS234: Reinforcement Learning](http://web.stanford.edu/class/cs234/index.html)
 * [Efficient Reinforcement Learning in Adversarial Games](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6495112)
 * [GANGs: Generative Adversarial Network Games](https://arxiv.org/abs/1712.00679)
+* [Exploration by Random Network Distillation](https://arxiv.org/abs/1810.12894)
+* [Reinforcement Learning with Prediction-Based Rewards](https://blog.openai.com/reinforcement-learning-with-prediction-based-rewards/#RNDjump)
+* [Human-level control through deep reinforcement learning](https://www.nature.com/articles/nature14236)
+* [Deep RL Bootcamp](https://sites.google.com/view/deep-rl-bootcamp/lectures)
 
 ## RL Overview (From Stanford CS234 [1])
 * Reinforcement Learning: Learning to make good sequences of decisions.
@@ -47,6 +51,13 @@ Imitation Learning
   * Reduces RL to Supervised Learning
   * Avoids exploration problem
   * Limitations: can be expensive to collect data
+
+### Techniques to Test
+* DQN
+* Policy Gradients and Actor Critic
+* TRPO and PPO
+* SVG, DDPG, and Stochastic Computation Graphs
+* RND
 
 ## Sources
 [1] [Stanford CS234](http://web.stanford.edu/class/cs234/slides/cs234_2018_l1.pdf)

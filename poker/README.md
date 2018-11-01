@@ -17,3 +17,12 @@
 * Implement kelly criterion––bankroll management
 * Fix straight flush logic
 * Fix fucking bugs
+* Rewrite in Cython
+
+### Game Theory
+* Understand extremely simple game: 3 cards (AKQ), two players, can bet 1, call, check, fold, pot p. 
+* Chapter 13 The Mathematics of Poker
+* Originally considered by Mike Caro
+
+### Resources
+* https://chrisbeaumont.org/holdem_odds/#8H+QS  
