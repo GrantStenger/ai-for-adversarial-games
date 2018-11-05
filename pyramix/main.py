@@ -13,7 +13,7 @@ def main(_):
     """
 
     # Initializes Players
-    players = [Random(), OptColorGreedy(), IgnoreTwos()]
+    players = [Human(), OptColorGreedy()]
 
     # Initializes a Game
     game = Game(players, depth=FLAGS.depth, num_colors=FLAGS.num_colors, vprint=print)
