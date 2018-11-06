@@ -45,6 +45,9 @@ value_letter_to_num = {'A': 1,
 # The process is repeated until statistical significance is achieved
 def simulate_hand(player1, verbose = True):
 
+	if verbose:
+		print()
+
 	# Create Deck
 	deck = []
 	for suit in range(4):
@@ -234,7 +237,7 @@ def decide_winners(players, river, verbose = True):
 
 		if longest_straight >= 5:
 			# print("STRAIGHT!!!!")
-			# print(straight_high_card)
+			# raight_high_card)
 			all_players_has_straight[player_num] = straight_high_card
 			if has_straight_flush:
 				# print("STRAIGHT FUCKING FLUSH!!")
@@ -249,20 +252,20 @@ def decide_winners(players, river, verbose = True):
 			players_with_straight_flushes.append((player_num, all_players_has_straight_flush[player_num]))
 
 	# If someone has a straight flush...
-	print("players_with_straight_flushes", players_with_straight_flushes)
+	# print("players_with_straight_flushes", players_with_straight_flushes)
 	if len(players_with_straight_flushes) > 0:
-		print("HEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEE")
-		print("HEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEE")
-		print("HEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEE")
-		print("HEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEE")
-		print("HEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEEEE")
-		print("HEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEE")
+		# print("HEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEE")
+		# print("HEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEE")
+		# print("HEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEE")
+		# print("HEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEE")
+		# print("HEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEEEE")
+		# print("HEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRREEEEEEEEEEE")
 		# Return player with highest straight flush hand
 		current_highest_straight_flush = players_with_straight_flushes[0][1]
-		print("current_highest_straight_flush", current_highest_straight_flush)
+		# print("current_highest_straight_flush", current_highest_straight_flush)
 		current_winner = [players_with_straight_flushes[0][0]]
 		for straight_flush_tuple in players_with_straight_flushes[1:]:
-			print("straight_flush_tuple", straight_flush_tuple)
+			# print("straight_flush_tuple", straight_flush_tuple)
 			if current_highest_straight_flush != 1 and straight_flush_tuple[1] > current_highest_straight_flush:
 				current_highest_straight_flush = straight_flush_tuple[1]
 				current_winner = [straight_flush_tuple[0]]
@@ -608,7 +611,7 @@ def decide_winner_by_hand_value(players, river):
 	# Possible fifth highest cards are 4 to 9
 	# 4=>0, 5=>1, 6=>2, 7=>3, 8=>4, 9=>5
 
-	print()
+	# print()
 
 def print_hand(cards):
 	for card in cards:
@@ -663,12 +666,13 @@ def main():
 	player2_wins = 0
 	ties = 0
 
-	GAMES = 1000
+	GAMES = 100
+	VERBOSE = True
 
 	for i in range(GAMES):
 		if i % 10000 == 0:
 			print(i)
-		winners = simulate_hand(player1, verbose = True)
+		winners = simulate_hand(player1, verbose = VERBOSE)
 		if len(winners) == 1:
 			if winners[0] == 0:
 				player1_wins += 1
@@ -678,7 +682,7 @@ def main():
 			ties += 1
 		else:
 			raise Exception("You fucked up, weird number of winners", winners)
-		print()
+		# print()
 
 	print("Player 1 won:", player1_wins)
 	print("Player 2 won:", player2_wins)

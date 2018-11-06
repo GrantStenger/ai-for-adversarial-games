@@ -32,11 +32,17 @@
   * If there's a guaranteed "mate in X", mate.
 * A specific example heuristic
   * H(x) = 200(K-K')
-  *     \+ 9(Q-Q')
-  *     \+ 5(R-R')
-  *     \+ 3(B-B' + N-N')
-  *     \+ 1(P-P')
-  *     \- 0.2(D-D' + B-B' + I-I') (doubled, blocked, isolated)
-  *     \+ 0.1(M-M') (mobility i.e. number of legal moves)
-  *     \+ 0.5(BP-BP') (bishop pair)
-  *     \+ 0.1(ROF-ROF') (rook on open file)
+  * + 9(Q-Q')
+  * + 5(R-R')
+  * + 3(B-B' + N-N')
+  * + 1(P-P')
+  * - 0.2(D-D' + B-B' + I-I') (doubled, blocked, isolated)
+  * + 0.1(M-M') (mobility i.e. number of legal moves)
+  * + 0.5(BP-BP') (bishop pair)
+  * + 0.1(ROF-ROF') (rook on open file)
+
+### To Do's
+* Make smaller chess games
+* Find optimal piece positioning given an m by n board and see how this changes given access to different numbers of pieces.
+* What if in chess you could place your pieces however you like so long as you are behind the midline. What if you can only use the back two rows?
+* How valuable are each of the pieces?
