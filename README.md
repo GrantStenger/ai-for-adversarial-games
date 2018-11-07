@@ -7,6 +7,24 @@
 * Texas Hold'em is currently being rebuilt with better optimization.
 * Chess, Black Jack, checkers, dollar-auction, and prisoners dilemma are currently unbuilt.
 
+### Proposed Time Line
+* By Sunday, Nov. 11:
+  * minimax implemented for connect 4 + heuristics
+  * test RL on simple game
+  * theoretical results on pyramix (computational complexity etc.)
+  * poker fully debugged and pristine
+* By Sunday, Nov. 18:
+  * super human pyramix player
+  * connect 4 solved
+  * RL tested on pyramix
+* By Sunday, Nov. 25:
+  * our "above and beyond week"
+  * shocking new discoveries
+  * world is changed for the better
+* By Sunday, Dec. 2:
+  * presentation made
+  * final touches
+
 ### Algorithms to test
 * Minimax + Alpha-Beta Pruning
 * Deep Q Learning
@@ -27,7 +45,7 @@
 * We plan to build AIs for these games with classical techniques like minimax w/ alpha-beta pruning and to beat them with modern reinforcement learning techniques.
 * To get minimax working well, we're attempting to beat a simpler purely deterministic game like connect-4.
 * If we're going to try to make minimax work on connect-4, we better be sure that we can get minimax working ~very~ well on tic-tac-toe.
-* We're also solving a more esoteric game called pyramix which seems to be a great mix of AI planning and reinforcement learning. 
+* We're also solving a more esoteric game called pyramix which seems to be a great mix of AI planning and reinforcement learning.
 
 ### Interesting Resources:
 * [CS234: Reinforcement Learning](http://web.stanford.edu/class/cs234/index.html)
