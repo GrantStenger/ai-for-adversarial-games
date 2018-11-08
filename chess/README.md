@@ -46,3 +46,6 @@
 * Find optimal piece positioning given an m by n board and see how this changes given access to different numbers of pieces.
 * What if in chess you could place your pieces however you like so long as you are behind the midline. What if you can only use the back two rows?
 * How valuable are each of the pieces?
+* Go through [AlphaZero paper](https://arxiv.org/pdf/1712.01815.pdf) [2](https://arxiv.org/abs/1712.01815)
+* Explore [AlphaGo repo](https://github.com/Zeta36/chess-alpha-zero)
+* [Mastering the game of Go without human knowledge](https://www.nature.com/articles/nature24270.epdf?author_access_token=VJXbVjaSHxFoctQQ4p2k4tRgN0jAjWel9jnR3ZoTv0PVW4gB86EEpGqTRDtpIz-2rmo8-KG06gqVobU5NSCFeHILHcVFUeMsbvwS-lxjqQGg98faovwjxeTUgZAUMnRQ)

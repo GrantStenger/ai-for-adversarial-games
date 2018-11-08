@@ -26,12 +26,14 @@
 * Generalize connect-4 board size
 * Simulator works best with no printing, human experience better with it => make two versions: optimized and comfortable
 * What's the best way to internally represent board configurations within each player as they imagine the changes made for each possible choice?
+* Connect-4 is reflectively symmetrical. Save both states in queue.
 
 ### Game Plan
 1. Build Random Player
 2. Build player who will always make immediately winning moves, otherwise random
 3. Build player who will block opponent from making immediately winning moves
 4. Build player who explores games to depth d and uses minimax with a specified heuristic to choose which move to play
+5. Implement AlphaZero for Connect-4
 
 ### Possible Heuristics
 * Chains of length 1 worth 2 point, chains of length 2 worth 4 points, chains of length 3 worth 16 points, chains of length 4 worth 256 points
