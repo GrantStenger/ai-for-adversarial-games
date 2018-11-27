@@ -32,6 +32,8 @@ class Game:
         print(board)
         board = np.asarray(board)
         print(board)
+        board = board.flatten()
+        print(board)
         board = torch.from_numpy(board)
         print(board)
 
@@ -42,10 +44,10 @@ class Game:
             next_head = self.snake[1]
             while next_head == neck_pos:
                 pass
-                #next_head = self.moveNet.forward()
+                next_head = self.moveNet.forward(board)
         else:
             pass
-            #next_head = self.moveNet.forward() 
+            next_head = self.moveNet.forward(board) 
 
         self.snake.pop()
         self.snake.appendleft(next_head)

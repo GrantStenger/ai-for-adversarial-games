@@ -1,5 +1,6 @@
 from random import shuffle
 from random import randint
+import numpy as np
 import string
 
 from Block import Block
@@ -444,11 +445,18 @@ class Game:
         else:
             self.vprint("There is a tie. Score: " + str(winner.score))
             return -1
+    
+    def export_matrix_for_cnn(self):
+        matrix = np.zeros((self.depth, self.depth, 3*len(self.colors)), dtype=np.int) 
 
-    def play(self):
-        """ Runs gameplay until the game is over, then scores bonus Blocks.
-        """
+        for i in range(len(self.board)):
+            for j in range(len(self.board[i])):
+                block = self.board[i][j]
+                matrix[i][j][3 * self.colors.index(block.color) + block.value - 1] = 1
 
+        return matrix
+
+    def setup(self):
         parameters = "Players: " + str(len(self.players))
         parameters += " Depth: " + str(self.depth)
         parameters += " Colors: " + str(len(self.colors))
@@ -459,9 +467,15 @@ class Game:
         self.vprint(parameters)
 
         # Sets up random player order
-        players_order = [i for i in range(len(self.players))]
-        shuffle(players_order)
-        self.current_player = players_order[0]
+        self.players_order = [i for i in range(len(self.players))]
+        shuffle(self.players_order)
+        self.current_player = self.players_order[0]
+
+    def play(self):
+        """ Runs gameplay until the game is over, then scores bonus Blocks.
+        """
+
+        self.setup()
 
         # Runs gameplay until only the base Blocks remain
         while not self.game_over:
@@ -484,12 +498,12 @@ class Game:
             self.update_legal_moves(move)
 
             # Re-randomize player order if necessary, otherwise increment player
-            current_player_index = players_order.index(self.current_player)
-            if current_player_index == len(players_order) - 1:
-                shuffle(players_order)
-                self.current_player = players_order[0]
+            current_player_index = self.players_order.index(self.current_player)
+            if current_player_index == len(self.players_order) - 1:
+                shuffle(self.players_order)
+                self.current_player = self.players_order[0]
             else:
-                self.current_player = players_order[(current_player_index + 1)]
+                self.current_player = self.players_order[(current_player_index + 1)]
 
         # Prints the board
         self.vprint()

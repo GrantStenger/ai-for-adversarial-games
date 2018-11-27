@@ -7,8 +7,8 @@ class MoveNet(nn.Module):
     def __init__(self, SIZE):
         super().__init__()
         self.INPUT_DIM = SIZE * SIZE
-        self.H1_DIM = math.floor(0.6 * SIZE)
-        self.H2_DIM = math.floor(0.2 * SIZE)
+        self.H1_DIM = math.floor(0.2 * SIZE)
+        self.H2_DIM = math.floor(0.1 * SIZE)
         self.OUTPUT_DIM = 4
 
         self.linear1 = nn.Linear(self.INPUT_DIM, self.H1_DIM)
