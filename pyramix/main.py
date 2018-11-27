@@ -1,11 +1,13 @@
 import sys
 import argparse
 from Game import Game
+from DQN import DQN
 from players.Human import Human
 from players.Random import Random
 from players.Greedy import Greedy
 from players.OptColorGreedy import OptColorGreedy
 from players.IgnoreTwos import IgnoreTwos
+from players.Neural import Neural
 
 
 def main(_):
@@ -13,7 +15,7 @@ def main(_):
     """
 
     # Initializes Players
-    players = [Human(), OptColorGreedy()]
+    players = [Human(), Neural(DQN(FLAGS.depth, FLAGS.num_colors))]
 
     # Initializes a Game
     game = Game(players, depth=FLAGS.depth, num_colors=FLAGS.num_colors, vprint=print)

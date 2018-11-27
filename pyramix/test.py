@@ -5,7 +5,7 @@ from DQN import DQN
 from players.OptColorGreedy import OptColorGreedy
 
 def main():
-    DEPTH = 15
+    DEPTH = 15 
     NUM_COLORS = 4
 
     players = [OptColorGreedy(), OptColorGreedy(), OptColorGreedy()]

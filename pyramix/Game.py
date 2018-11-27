@@ -447,12 +447,13 @@ class Game:
             return -1
     
     def export_matrix_for_cnn(self):
-        matrix = np.zeros((self.depth, self.depth, 3*len(self.colors)), dtype=np.int) 
+        matrix = np.zeros((3 * len(self.colors), self.depth, self.depth), dtype=np.int) 
 
         for i in range(len(self.board)):
             for j in range(len(self.board[i])):
                 block = self.board[i][j]
-                matrix[i][j][3 * self.colors.index(block.color) + block.value - 1] = 1
+                if block.color != "0":
+                    matrix[3 * self.colors.index(block.color) + block.value - 1][i][j] = 1
 
         return matrix
 

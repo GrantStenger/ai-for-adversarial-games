@@ -4,6 +4,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 import torchvision.transforms as T
+from collections import namedtuple
 
 class DQN(nn.Module):
     """ A Deep Q-Network for intelligently playing Pyramix.
@@ -26,7 +27,7 @@ class DQN(nn.Module):
         self.bn2 = nn.BatchNorm2d(12 * NUM_COLORS)
 
         # Linear layer
-        self.head = nn.Linear(12 * NUM_COLORS * 81, DEPTH * DEPTH)
+        self.head = nn.Linear(12 * NUM_COLORS * (DEPTH - 6) * (DEPTH - 6) , DEPTH * DEPTH)
 
     def forward(self, X):
         """ A forward pass of the Deep Q-Network.
@@ -51,13 +52,10 @@ class DQN(nn.Module):
         # Adds a batch dimension
         input = input[None, :, :, :]
 
-        # Puts the channels dimension in the right place
-        input = input.permute(0, 3, 1, 2)
-
         # Converts dtype to float
         return(input.float())
 
-Transition = namedTuple('Transition', ('state', 'action', 'next_state', 'reward'))
+Transition = namedtuple('Transition', ('state', 'action', 'next_state', 'reward'))
 class QTable():
     def __init__(self, capacity):
         self.capacity = capacity
