@@ -472,6 +472,47 @@ class Game:
         shuffle(self.players_order)
         self.current_player = self.players_order[0]
 
+    def step(self, move):
+        """ Steps one move of gameplay.
+
+            Returns:
+                state: The initial board matrix
+                action: The move passed in as a parameter
+                reward: The increase in score for the player
+                next_state: The next board matrix
+        """
+
+        initial_score = self.players[self.current_player].score
+        state = self.export_matrix_for_cnn()
+        action = move
+        
+        self.make_move(move)
+
+        # If only the base Blocks remain, terminate the game
+        if self.blocks_left == self.depth:
+            self.game_over = True
+        if len(self.legal_moves) == 0:
+            self.game_over = True
+
+        if self.game_over:
+            self.score_bonus_blocks()
+
+        # Updates legal moves given the player's move choices
+        self.update_legal_moves(move)
+
+        reward = self.players[self.current_player].score - initial_score
+        next_state = self.export_matrix_for_cnn()
+
+        # Re-randomize player order if necessary, otherwise increment player
+        current_player_index = self.players_order.index(self.current_player)
+        if current_player_index == len(self.players_order) - 1:
+            shuffle(self.players_order)
+            self.current_player = self.players_order[0]
+        else:
+            self.current_player = self.players_order[(current_player_index + 1)]
+
+        return state, action, reward, next_state
+
     def play(self):
         """ Runs gameplay until the game is over, then scores bonus Blocks.
         """

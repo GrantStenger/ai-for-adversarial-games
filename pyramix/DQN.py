@@ -1,4 +1,5 @@
 import numpy as np
+import random
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -33,13 +34,9 @@ class DQN(nn.Module):
         """ A forward pass of the Deep Q-Network.
         """
         
-        print(X.shape)
         conv1_result = F.relu(self.bn1(self.conv1(X)))
-        print(conv1_result.shape)
         conv2_result = F.relu(self.bn2(self.conv2(conv1_result)))
-        print(conv2_result.shape)
         head_result = torch.sigmoid(self.head(conv2_result.view(conv2_result.size(0), -1)))
-        print(head_result.shape)
         return head_result
 
     def game_matrix_to_tensor(self, matrix):
@@ -55,7 +52,7 @@ class DQN(nn.Module):
         # Converts dtype to float
         return(input.float())
 
-Transition = namedtuple('Transition', ('state', 'action', 'next_state', 'reward'))
+Transition = namedtuple("Transition", ("state", "action", "reward", "next_state"))
 class QTable():
     def __init__(self, capacity):
         self.capacity = capacity

@@ -52,7 +52,7 @@ class Neural(Computer):
         if move in legal_moves:
             return move
         else:
-            return legal_moves[random.randint(0, len(legal_moves)]
+            return legal_moves[random.randint(0, len(legal_moves))]
 
     def export_matrix_for_cnn(self, board):
         depth = len(board[0])
