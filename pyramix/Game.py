@@ -511,7 +511,7 @@ class Game:
         else:
             self.current_player = self.players_order[(current_player_index + 1)]
 
-        return state, action, reward, next_state
+        return state, action, float(reward), next_state
 
     def play(self):
         """ Runs gameplay until the game is over, then scores bonus Blocks.

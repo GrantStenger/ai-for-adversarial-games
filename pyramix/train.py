@@ -43,20 +43,20 @@ def select_action(game):
         tensor = dqn.game_matrix_to_tensor(game_matrix)
         inference = dqn(tensor)
 
-        #move_matrix = inference.detach().numpy()
+        #print(inference)
 
-        index = inference.max()[1]
-        print(index)
+        index = inference.max(1)[1]
         row = int(index / game.depth)
-        move_tuple = (row, index % (row + 1))
+        col = np.asscalar((index % (row + 1)).numpy())
+        move_tuple = (row, col)
 
         if move_tuple in game.legal_moves:
-            return torch.tensor([index]), move_tuple
+            return torch.tensor([index], dtype=torch.float32), move_tuple
         else:
-            return torch.tensor([index]), random_move
+            return torch.tensor([index], dtype=torch.float32), random_move
     else:
-        print("rand")
-        return torch.tensor([random.randint(0, DEPTH * DEPTH)]), random_move
+        #print("rand")
+        return torch.tensor([random.randint(0, DEPTH * DEPTH)], dtype=torch.float32), random_move
 
 def compute_td_loss():
     if len(qtable) < BATCH_SIZE:
@@ -79,9 +79,10 @@ def compute_td_loss():
     #q_value = q_values.gather(1, action).squeeze(1)
     #q_value_next = q_values_next.max(1)[0]
 
-    expected_q_value = reward + GAMMA * q_value_next.long()
+    expected_q_value = reward + GAMMA * q_value_next
 
-    loss = (q_value.long() - expected_q_value.data).pow(2).float().mean()
+    loss = (q_value - expected_q_value).pow(2).mean()
+    print(loss)
 
     optimizer.zero_grad()
     loss.backward()
@@ -105,7 +106,7 @@ for epoch in range(EPOCHS):
 
         # Convert inferences to tensors
         state = dqn.game_matrix_to_tensor(state)
-        reward = torch.tensor(torch.from_numpy(np.asarray(reward)))
+        reward = torch.tensor(torch.from_numpy(np.asarray(reward)), dtype=torch.float32)
         next_state = dqn.game_matrix_to_tensor(next_state)
 
         # Store the transition in memory
