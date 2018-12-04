@@ -165,6 +165,10 @@ class Game:
         i = position[0]
         j = position[1]
 
+        # No-op
+        if (i == -1 and j == -1):
+            return
+
         # Check if there is no block in both directions
         if (i == 0 or self.board[i - 1][j].color == "0") and \
            (j == 0 or self.board[i][j - 1].color == "0"):
@@ -486,22 +490,27 @@ class Game:
         state = self.export_matrix_for_cnn()
         action = move
         
-        self.make_move(move)
+        if move in self.legal_moves:
+            self.make_move(move)
 
-        # If only the base Blocks remain, terminate the game
-        if self.blocks_left == self.depth:
-            self.game_over = True
-        if len(self.legal_moves) == 0:
-            self.game_over = True
+            # If only the base Blocks remain, terminate the game
+            if self.blocks_left == self.depth:
+                self.game_over = True
+            if len(self.legal_moves) == 0:
+                self.game_over = True
 
-        if self.game_over:
-            self.score_bonus_blocks()
+            if self.game_over:
+                self.score_bonus_blocks()
 
-        # Updates legal moves given the player's move choices
-        self.update_legal_moves(move)
+            # Updates legal moves given the player's move choices
+            self.update_legal_moves(move)
 
-        reward = self.players[self.current_player].score - initial_score
-        next_state = self.export_matrix_for_cnn()
+            reward = self.players[self.current_player].score - initial_score
+            next_state = self.export_matrix_for_cnn()
+        # Penalize selecting a non-legal move
+        else:
+            reward = -100
+            next_state = state
 
         # Re-randomize player order if necessary, otherwise increment player
         current_player_index = self.players_order.index(self.current_player)

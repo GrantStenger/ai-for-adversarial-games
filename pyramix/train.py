@@ -4,6 +4,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 import torch.optim as optim
+import statistics as stat
 
 from DQN import DQN
 from DQN import QTable
@@ -15,15 +16,15 @@ BATCH_SIZE = 1
 GAMMA = 0.999
 EPS_START = 1.0
 EPS_END = 0.01
-EPS_DECAY = 500
+EPS_DECAY = 10000 
         
-DEPTH = 15
-NUM_COLORS = 4
+DEPTH = 9
+NUM_COLORS = 3
 
 dqn = DQN(DEPTH, NUM_COLORS)
 
 optimizer = optim.Adam(dqn.parameters())
-qtable = QTable(10000)
+qtable = QTable(100000)
 
 steps_done = 0
 vprint = lambda *a, **k: None
@@ -35,8 +36,6 @@ def select_action(game):
 
     steps_done += 1
     
-    random_move = game.legal_moves[random.randint(0, len(game.legal_moves) - 1)]
-
     if random.random() > eps_threshold:
         game_matrix = game.export_matrix_for_cnn()
     
@@ -46,17 +45,22 @@ def select_action(game):
         #print(inference)
 
         index = inference.max(1)[1]
-        row = int(index / game.depth)
+        row = int(index / DEPTH)
         col = np.asscalar((index % (row + 1)).numpy())
         move_tuple = (row, col)
 
-        if move_tuple in game.legal_moves:
-            return torch.tensor([index], dtype=torch.float32), move_tuple
-        else:
-            return torch.tensor([index], dtype=torch.float32), random_move
+        return torch.tensor([index], dtype=torch.float32), move_tuple
     else:
         #print("rand")
-        return torch.tensor([random.randint(0, DEPTH * DEPTH)], dtype=torch.float32), random_move
+        #random_action = torch.tensor([random.randint(0, DEPTH * DEPTH)], dtype = torch.float32)
+        #index = np.asscalar(random_action.numpy())
+        #row = int(index / DEPTH)
+        #col = int(index % (row + 1))
+        #random_move = (row, col)
+        random_move = game.legal_moves[random.randint(0, len(game.legal_moves) - 1)]
+        index = DEPTH * random_move[0]
+        random_action = torch.tensor([index], dtype=torch.float32)
+        return random_action, random_move
 
 def compute_td_loss():
     if len(qtable) < BATCH_SIZE:
@@ -71,7 +75,7 @@ def compute_td_loss():
     next_state = batch.next_state[0]
 
     q_values = dqn(state)
-    q_values_next = dqn(state)
+    q_values_next = dqn(next_state)
 
     # Can do because batch size is one
     q_value = q_values
@@ -82,7 +86,6 @@ def compute_td_loss():
     expected_q_value = reward + GAMMA * q_value_next
 
     loss = (q_value - expected_q_value).pow(2).mean()
-    print(loss)
 
     optimizer.zero_grad()
     loss.backward()
@@ -90,12 +93,15 @@ def compute_td_loss():
 
     return loss
 
-EPOCHS = 20
+EPOCHS = 1000000
 for epoch in range(EPOCHS):
-    players = [Neural(dqn), Neural(dqn), Neural(dqn)]
+    players = [Neural(dqn), Neural(dqn)]
 
     game = Game(players=players, depth=DEPTH, num_colors=NUM_COLORS, vprint=vprint)
     game.setup()
+
+    rewards = []
+    losses = []
 
     while True:
         # Select an action
@@ -103,6 +109,8 @@ for epoch in range(EPOCHS):
 
         # Perform the action
         state, _, reward, next_state = game.step(move)
+
+        rewards.append(reward)
 
         # Convert inferences to tensors
         state = dqn.game_matrix_to_tensor(state)
@@ -113,7 +121,13 @@ for epoch in range(EPOCHS):
         qtable.push(state, action, reward, next_state)
 
         # Perform one step of the optimization
-        loss = compute_td_loss()
+        loss = np.asscalar(compute_td_loss().detach().numpy())
+
+        losses.append(loss)
         
         if game.game_over:
             break
+
+    print("Mean loss for epoch " + str(epoch) + ": " + str(stat.mean(losses)))
+    print("Mean reward for epoch " + str(epoch) + ": " + str(stat.mean(rewards)))
+
