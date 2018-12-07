@@ -1,14 +1,14 @@
 # This currently does not work. This will be fixed soon.
 
 from players.BasePlayer import BasePlayer
+from Game import Game
 
 class MinimaxComputerPlayer(BasePlayer):
 
 	def __init__(self, name):
-		self.name = name
-
-		# When performing minimax, we will be manipulating this mental board
-		self.mental_game = Game()
+		
+		# Initializes the Player
+		super().__init__(name)
 
 	def play(self, game):
 		# Establish real game

@@ -12,7 +12,7 @@ class ComputerPlayerV2(BasePlayer):
     """
 
     def __init__(self, name):
-        """ Initializes a HumanPlayer.
+        """ Initializes a ComputerPlayerV2.
         """
 
         # Initializes a Player

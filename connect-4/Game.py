@@ -10,7 +10,7 @@ class Game:
 
 		# This will be the real board the only gets changed when a player
 		# decides to make a move
-		self.board = self.makeBoard()
+		self.board = self.make_board()
 
 		# When players are considering how a certain move might play out,
 		# they will be using this imaginary board, so as not to effect our real board
@@ -26,11 +26,11 @@ class Game:
 		# Work-around to fix default argument in python (need to fix)
 		self.simulating = simulating if simulating is not None else simulating
 
-	def makeBoard(self):
+	def make_board(self):
 		board = [[BLANK for j in range(self.columns)] for i in range(self.rows)]
 		return board
 
-	def printBoard(self, board = None):
+	def print_board(self, board = None):
 
 		# Work-around to fix default argument in python (need to fix)
 		board = board if board is not None else self.board
@@ -160,16 +160,16 @@ class Game:
 				self.winner_name = "Tie"
 			return 0
 
-		# If no one has won, return 0
-		return 0
+		# If no one has won, return None
+		return None
 
-	def isPlaying(self):
+	def is_playing(self):
 		return self.playing
 
-	def getBoard(self):
+	def get_board(self):
 		return self.board
 
-	def getPlayerToMove(self):
+	def get_player_to_move(self):
 		return self.player_to_move
 
 	def play(self):
@@ -177,18 +177,18 @@ class Game:
 		"""
 
 		# Runs game until a player has won
-		while self.isPlaying():
+		while self.is_playing():
 
 			# Display board
 			if not self.simulating:
-				os.system('clear')
-				self.printBoard()
+				# os.system('clear')
+				self.print_board()
 
 			# Let the player choose their move
 			chosen_move = self.player_to_move.chooseMove(self)
 
 			# Execute move
-			self.move(int(chosen_move) - 1, self.getBoard())
+			self.move(int(chosen_move) - 1, self.get_board())
 
 			# Check board
 			self.check_board()
@@ -201,6 +201,6 @@ class Game:
 
 		# Print final board configuration
 		if not self.simulating:
-			os.system('clear')
+			# os.system('clear')
 			print(self.winner_name, "wins!")
-			self.printBoard()
+			self.print_board()
