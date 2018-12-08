@@ -92,3 +92,9 @@
 * Comparing solvers
   * Have them play against each other, output % wins for each player
   * Compare move execution time (on the same machine)
+
+### Basic RL Summary
+*Objective*: Be the first player to connect 4 in a row.
+*State*: Current board, player to move
+*Action*: Place token in a column
+*Reward*: Won (+1), tied (0), lost (-1)
