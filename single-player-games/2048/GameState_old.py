@@ -22,20 +22,23 @@ DOWN = 3
 
 class GameState:
 
-	def __init__(self, depth_to_search, current_depth = 0, board = [], score = 0, is_slider_to_move = True, highscore = -1):
+	def __init__(self, depth_to_search, current_depth = 0, board = [], score = 0):
 
+		# print()
+		# print()
+		# print("NEW GAMESTATE!")
+		# print()
+		# print()
+
+		# Read in high score from file and initialize
+		f = open("highscore.txt", "r")
+		self.highscore = int(f.read())
+		f.close()
+
+		self.score = 0
 		self.depth_to_search = depth_to_search
 		self.current_depth = current_depth
-		self.score = score
-		self.is_slider_to_move = is_slider_to_move
-
-		# If highscore is not passed in, read it in from file and initialize
-		if highscore == -1:
-			f = open("highscore.txt", "r")
-			self.highscore = int(f.read())
-			f.close()
-		else:
-			self.highscore = highscore
+		self.value = 0
 
 		# If a board is not being passed in...
 		if board == []:
@@ -44,35 +47,32 @@ class GameState:
 			self.total_tiles = 0 # Incremented by add_tile
 			self.add_tile()
 			self.add_tile()
+			# Initialize current score as 0
+			self.score = 0
 		else:
 			self.board = board
+			self.score = score
 			self.total_tiles = self.get_total_tiles()
 
 		# Use boolean to check if the game is over
-		self.game_over = self.check_for_game_over()
-
-		# self.value = self.evaluate_value()
-		self.value = 0
+		self.game_over = False
 
 		# Calculate the value of this position and best move
 		if current_depth < depth_to_search:
 			self.get_best_action()
 
 	# Add a new tile to an empty cell of the board
-	def add_tile(self, input_location = None, tile_val = None):
+	def add_tile(self):
 
-		# If no input location is specified, generate a tile and location randomly
-		if input_location == None:
+		# Make a list of tuples of all the empty cells
+		x_val, y_val = np.where(self.board == 0)
+		empty_cells = list(zip(x_val,y_val))
 
-			# Make a list of tuples of all the empty cells
-			x_val, y_val = np.where(self.board == 0)
-			empty_cells = list(zip(x_val,y_val))
+		# Select one of these cells at random
+		empty_cell = empty_cells[np.random.choice(len(empty_cells))]
 
-			# Select one of these cells at random
-			empty_cell = empty_cells[np.random.choice(len(empty_cells))]
-
-			# Select a value of 2 or 4 with a ratio of 9:1
-			tile_val = np.random.choice([2, 4], p=[0.9, 0.1])
+		# Select a value of 2 or 4 with a ratio of 9:1
+		tile_val = np.random.choice([2, 4], p=[0.9, 0.1])
 
 		# Update the board
 		self.board[empty_cell[0]][empty_cell[1]] = tile_val
@@ -240,7 +240,6 @@ class GameState:
 			self.highscore = self.score
 
 	def check_for_game_over(self):
-		# Change to: If all possible slides still leave 16 tiles.
 		# If there are 16 non-zero tiles...
 		if self.total_tiles == 16:
 			# The game is over
@@ -299,70 +298,4 @@ class GameState:
 
 		return self.best_action
 
-class BoardState2:
-
-	LOSS_REWARD = -1000000
-
-	def __init__(self, depth_to_search, current_depth = 0, board = [], score = 0, is_slider_to_move = True, highscore = -1):
-
-
-		self.depth_to_search = depth_to_search
-		self.current_depth = current_depth
-		self.score = score
-		self.is_slider_to_move = is_slider_to_move
-
-
-		# If highscore is not passed in, read it in from file and initialize
-		if highscore == -1:
-			f = open("highscore.txt", "r")
-			self.highscore = int(f.read())
-			f.close()
-		else:
-			self.highscore = highscore
-
-		# If a board is not being passed in...
-		if board == []:
-			# Initialize the board with two random tiles
-			self.board = np.zeros((4, 4), dtype=np.int)
-			self.total_tiles = 0 # Incremented by add_tile
-			self.add_tile()
-			self.add_tile()
-		else:
-			self.board = board
-			self.total_tiles = self.get_total_tiles()
-
-		# Use boolean to check if the game is over
-		self.game_over = self.check_for_game_over()
-
-		self.value = self.evaluate_value()
-
-		# Calculate the value of this position and best move
-		if current_depth < depth_to_search:
-			self.get_best_action()
-
-	def evaluate_value(self):
-		if self.is_slider_to_move:
-			if self.game_over:
-				return LOSS_REWARD
-			else:
-				if self.current_depth == self.depth_to_search:
-					return 0
-				else:
-					# The value of this position will increase as we iterate over
-					# all possible future positions.
-					total_position_val = 0
-
-					# Make a list of tuples of all the empty cells
-					x_val, y_val = np.where(self.board == 0)
-					empty_cells = list(zip(x_val,y_val))
-
-					for empty_cell in empty_cells:
-						new_state = BoardState(self.depth_to_search, current_depth + 1, board = self.board, score = self.score, is_slider_to_move = True)
-						self.add_tile(empty_cell)
-
-					# Select a value of 2 or 4 with a ratio of 9:1
-					tile_val = np.random.choice([2, 4], p=[0.9, 0.1])
-
-					# Update the board
-					board[empty_cell[0]][empty_cell[1]] = tile_val
-					return
+	

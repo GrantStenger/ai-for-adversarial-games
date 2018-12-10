@@ -1,3 +1,8 @@
+"""
+Notes:
+Depth 7 currently runs at 16 moves/minute
+"""
+
 from GameState import GameState
 
 # Define Constants
@@ -16,7 +21,7 @@ current_move_num = 0
 while not game_state.game_over:
 
     # Display the board
-    if current_move_num % 10 == 0:
+    if current_move_num % 1 == 0:
         game_state.display()
 
     # Prompt for user input
