@@ -1,12 +1,9 @@
 # Chess
 
-* Stockfish: "It's a pretty simple combination of static, positional analysis combined with dynamic branching to deliver "minimax" style evaluations."
 
-* Great resources:
-  * https://github.com/official-stockfish/Stockfish
-  * https://www.youtube.com/watch?v=pUyURF1Tqvg
-  * https://en.wikipedia.org/wiki/Stockfish
-  * https://www.chessprogramming.org/Main_Page
+### Update
+* The [python-chess](https://python-chess.readthedocs.io/en/latest/#) library is AMAZING.
+* Running `python main.py` displays two random agents playing to terminal
 
 ### Ideas
 * General Idea
@@ -49,3 +46,13 @@
 * Go through [AlphaZero paper](https://arxiv.org/pdf/1712.01815.pdf) [2](https://arxiv.org/abs/1712.01815)
 * Explore [AlphaGo repo](https://github.com/Zeta36/chess-alpha-zero)
 * [Mastering the game of Go without human knowledge](https://www.nature.com/articles/nature24270.epdf?author_access_token=VJXbVjaSHxFoctQQ4p2k4tRgN0jAjWel9jnR3ZoTv0PVW4gB86EEpGqTRDtpIz-2rmo8-KG06gqVobU5NSCFeHILHcVFUeMsbvwS-lxjqQGg98faovwjxeTUgZAUMnRQ)
+
+
+
+* Stockfish: "It's a pretty simple combination of static, positional analysis combined with dynamic branching to deliver "minimax" style evaluations."
+
+* Great resources:
+  * https://github.com/official-stockfish/Stockfish
+  * https://www.youtube.com/watch?v=pUyURF1Tqvg
+  * https://en.wikipedia.org/wiki/Stockfish
+  * https://www.chessprogramming.org/Main_Page
