@@ -1,10 +1,12 @@
 import PythonChess.chess as chess
 import os
-import chess.svg
+# import chess.svg
+# import chess.engine
+
 
 class Game:
 
-	def __init__(self, players, simulating = None):
+	def __init__(self, players, unicode, simulating):
 
 		# This will be the real board the only gets changed when a player
 		# decides to make a move
@@ -14,6 +16,7 @@ class Game:
 		# they will be using this imaginary board, so as not to effect our real
 		# board
 		self.imaginary_board = None
+		self.unicode = unicode
 		self.player1 = players[0]
 		self.player2 = players[1]
 		self.player1.assign_color("White")
@@ -144,25 +147,36 @@ class Game:
 		""" Runs gameplay until the game is over, then scores bonus Blocks.
 		"""
 
-		while not self.board.is_game_over():
+		# while not self.board.is_game_over():
 
-			# Display board
-			if not self.simulating:
+		# Display board
+		if not self.simulating:
+			if self.unicode:
 				print(self.board.unicode())
-
-			# Let the player choose their move
-			chosen_move = self.player_to_move.choose_move(self)
-
-			# Execute move
-			self.board.push_uci(chosen_move)
-
-			# Switch whose turn it is
-			if self.player_to_move == self.player1:
-				self.player_to_move = self.player2
 			else:
-				self.player_to_move = self.player1
+				print(self.board)
 
-			# Clear console
-			os.system('clear')
+		# Let the player choose their move
+		chosen_move = self.player_to_move.choose_move(self)
+		# result = engine.play(self.board, chess.engine.Limit(time=0.100))
 
-		print(self.board.unicode())
+
+		# Execute move
+		self.board.push_uci(chosen_move)
+		# self.board.push(result.move)
+
+		# Switch whose turn it is
+		if self.player_to_move == self.player1:
+			self.player_to_move = self.player2
+		else:
+			self.player_to_move = self.player1
+
+		# Clear console
+		os.system('clear')
+
+		if self.unicode:
+			print(self.board.unicode())
+		else:
+			print(self.board)
+
+		engine.quit()
