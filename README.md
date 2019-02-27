@@ -3,7 +3,7 @@
 ### Game Status
 * Tic-tac-toe is fully built and plays perfectly. It is unbeatable. It needs to be optimized and code should be cleaner.
 * Connect-4 is built and AI development is in progress.
-* Pyramix is currently being built.
+* Pyramix is built and a human-level heuristic-greedy player has been implemented.
 * Texas Hold'em is currently being rebuilt with better optimization.
 * Chess, Black Jack, checkers, dollar-auction, and prisoners dilemma are currently unbuilt.
 
