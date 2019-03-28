@@ -1,13 +1,10 @@
-# To Do:
-# Improve mutate function
-
 # Import Dependencies
 import random
 import matplotlib.pyplot as plt
-
+import time
 
 # Constants
-NUM_PLAYERS = 1000
+NUM_PLAYERS = 100
 
 def compute_winner(player1, player2):
     
@@ -50,7 +47,7 @@ def display_sorted_ranking(players):
     
     grid = []
     for player in players:
-        print(player[0], player[1])
+        #print(player[0], player[1])
         grid.append(player[0])
 
     new_grid = []
@@ -179,6 +176,8 @@ def main():
     # Sort players by average score
     players = sort_players(players)
     
+    print(players[0][0], 1)
+
     # Print out this first list of players
     #for player in players:
     #    print(player[0], player[1])
@@ -190,11 +189,13 @@ def main():
     # LET THEM PLAY AND LEARN
     # Delete the bottom 50% of competitors from the previous tournament and add a mutated 
     # copy of each of the winning 50% of competitors to the next round. 
-    for i in range(500):
+    for i in range(1, 250):
 
         # In this funtion we take last round's competitors and create a new set
         players = create_new_player_set(players)
         
+        print(players[0][0], i+1)
+
         # Print out the players from best to worst
         #print()
         #for player in players:
@@ -207,13 +208,11 @@ def main():
     # Finally display the heat map of the last round
     #display_sorted_ranking(players)
 
-    for player in players:
-        print(player[0], player[1])
+    #for player in players:
+    #    print(player[0], player[1])
     display_sorted_ranking(players)
 
 if __name__ == "__main__":
+    start_time = time.time()
     main()
-    #arr = [0,   9,  0,  16,   21,  0,  16,  12,  25,  1]
-    #print(arr)
-    #print(mutate(arr))
-
+    print("--- %s seconds ---" % (time.time() - start_time))
