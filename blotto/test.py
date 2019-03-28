@@ -1,10 +1,16 @@
 # Import Dependencies
 import random
+import os
+import matplotlib as mpl
+if os.environ.get('DISPLAY','') == '':
+    print('no display found. Using non-interactive Agg backend')
+    mpl.use('Agg')
 import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 
 # Constants
-NUM_PLAYERS = 10000
+NUM_PLAYERS = 100
 
 def compute_winner(player1, player2):
     
@@ -48,12 +54,20 @@ def display_sorted_ranking(players):
         print(player[0], player[1])
         grid.append(player[0])
 
-    for i in range(len(grid)):
-        for j in range(len(grid[i])):
-            grid[i][j]
-    
-    # plt.imshow(grid, cmap='hot')
-    # plt.show()
+    new_grid = []
+    for i in range(10):
+        new_grid_row = []
+        for col_num in range(10):
+            cur_sub_cell_sum = 0
+            for row_num in range(i*NUM_PLAYERS//10, (i+1)*NUM_PLAYERS//10):
+                cur_sub_cell_sum += grid[row_num][col_num]
+            new_grid_row.append(cur_sub_cell_sum)
+        new_grid.append(new_grid_row)
+
+    print(new_grid)
+
+    plt.imshow(grid, cmap='hot')
+    plt.show()
 
 def main():
 
@@ -62,13 +76,9 @@ def main():
     for i in range(NUM_PLAYERS):
         players.append([generate_random_allocations(), 0])
 
-
-    num_games = 0
-
     for i in range(len(players)):
         for j in range(i+1, len(players)):
             final_score = compute_winner(players[i][0], players[j][0])
-            num_games += 1
             players[i][1] += final_score[0]
             players[j][1] += final_score[1]
 
@@ -77,8 +87,6 @@ def main():
 
     display_sorted_ranking(players)
     
-    print(num_games)
-
 if __name__ == "__main__":
     main()
 
