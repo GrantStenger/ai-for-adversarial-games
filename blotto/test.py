@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import time
 
 # Constants
-NUM_PLAYERS = 100
+NUM_PLAYERS = 1000
 
 def compute_winner(player1, player2):
     
@@ -43,28 +43,36 @@ def sort_players(players):
     players.sort(key=lambda x: x[1], reverse=True)
     return players
 
-def display_sorted_ranking(players):
-    
+def players_to_grid(players):
     grid = []
     for player in players:
-        #print(player[0], player[1])
         grid.append(player[0])
+    return grid
 
+def create_new_grid(grid):
     new_grid = []
     for i in range(10):
         new_grid_row = []
         for col_num in range(10):
             cur_sub_cell_sum = 0
-            for row_num in range(i*NUM_PLAYERS//10, (i+1)*NUM_PLAYERS//10):
+            for row_num in range(i*len(grid)//10, (i+1)*len(grid)//10):
                 cur_sub_cell_sum += grid[row_num][col_num]
             sub_cell_avg = cur_sub_cell_sum * 10 / NUM_PLAYERS
             new_grid_row.append(sub_cell_avg)
         new_grid.append(new_grid_row)
+    return new_grid
 
-    print(new_grid)
+def plot_heat_map(grid):
+    plt.imshow(grid, cmap='hot')
+    plt.show()
 
-    #plt.imshow(new_grid, cmap='hot')
-    #plt.show()
+def display_sorted_ranking(players):
+    
+    grid = players_to_grid(players)
+    new_grid = create_new_grid(grid)
+    #print(new_grid)
+
+    plot_heat_map(new_grid)
 
 def test_a_strategy(strategy): 
     
@@ -140,7 +148,7 @@ def play_round_robin(players):
             players[j][1] += final_score[1]
 
     for player in players:
-        player[1] = player[1] / (NUM_PLAYERS-1)
+        player[1] = player[1] / (len(players)-1)
 
     return players
 
@@ -175,8 +183,13 @@ def main():
 
     # Sort players by average score
     players = sort_players(players)
-    
-    print(players[0][0], 1)
+
+
+    winners = []
+    winners.append(players[0][0])
+
+
+    #print(players[0][0], 1)
 
     # Print out this first list of players
     #for player in players:
@@ -189,12 +202,15 @@ def main():
     # LET THEM PLAY AND LEARN
     # Delete the bottom 50% of competitors from the previous tournament and add a mutated 
     # copy of each of the winning 50% of competitors to the next round. 
-    for i in range(1, 250):
+    for i in range(1, 500):
 
         # In this funtion we take last round's competitors and create a new set
         players = create_new_player_set(players)
         
-        print(players[0][0], i+1)
+        if (i+1) % 10 == 0:
+            print(players[0][0], i+1)
+        winners.append(players[0][0])
+
 
         # Print out the players from best to worst
         #print()
@@ -210,7 +226,34 @@ def main():
 
     #for player in players:
     #    print(player[0], player[1])
-    display_sorted_ranking(players)
+    #display_sorted_ranking(players)
+
+    print()
+    print()
+    print()
+
+    for winner in winners:
+        print(winner)
+
+    print()
+    print()
+    print()
+
+    new_grid = create_new_grid(winners)
+    #plot_heat_map(new_grid)
+    #for item in new_grid:
+    #    print(item)
+    
+    # Compute Final Ranking
+    final_ranking = []
+    for winner in winners:
+        final_ranking.append([winner, 0])
+    
+    final_ranking = sort_players(play_round_robin(final_ranking))
+    for player in final_ranking:
+        print(player[0], player[1])
+
+
 
 if __name__ == "__main__":
     start_time = time.time()
