@@ -5,9 +5,14 @@ import time
 
 # Constants
 NUM_PLAYERS = 1000
+ITERATIONS = 500
 
 def compute_winner(player1, player2):
-    
+    """
+    Takes two allocations as input
+    Returns the final score of their battle
+    """
+
     # Initialize players' scores
     player1_score = 0
     player2_score = 0
@@ -33,6 +38,9 @@ def compute_winner(player1, player2):
     return (player1_score, player2_score)
 
 def generate_random_allocation():
+    """
+    This generates and returns a random allocation of soldiers
+    """
     allocation = [0] * 10
     for i in range(100):
         rand_slot = random.randint(1,10)
@@ -67,17 +75,13 @@ def plot_heat_map(grid):
     plt.show()
 
 def display_sorted_ranking(players):
-    
     grid = players_to_grid(players)
     new_grid = create_new_grid(grid)
-    #print(new_grid)
-
     plot_heat_map(new_grid)
 
-def test_a_strategy(strategy): 
-    
+def test_a_strategy(strategy):
     strategy_score_sum = 0
-    
+
     adversaries = []
     for i in range(NUM_PLAYERS):
         adversaries.append(generate_random_allocation())
@@ -95,37 +99,15 @@ def mutate(allocation):
 
     to_add = random.sample(list(range(10)), 5)
     to_sub = [e for e in list(range(10)) if e not in to_add]
-    
-    #print('to add', to_add)
-    #print('to sub', to_sub)
-    
+
     to_sub = [i for i in to_sub if new_allocation[i] != 0]
     to_add = random.sample(to_add, len(to_sub))
-
-    #print('to add', to_add)
-    #print('to sub', to_sub)
 
     for i in to_add:
         new_allocation[i] += 1
     for i in to_sub:
         new_allocation[i] -= 1
-    
-    #print('new allocation', new_allocation)
 
-    return new_allocation
-
-def MuTaTe(allocation):
-
-    new_allocation = [i for i in allocation]
-    to_add_to = random.sample(list(range(10)), 5)
-    for index in to_add_to:
-        new_allocation[index] += 1
-
-    to_subtract = [new_allocation.index(e) for e in new_allocation if e > 0 and e not in to_add_to]
-    to_subtract = random.sample(to_subtract, 5)
-    for index in to_subtract:
-        new_allocation[index] -= 1
-          
     return new_allocation
 
 def old_mutate(allocation):
@@ -152,9 +134,11 @@ def play_round_robin(players):
 
     return players
 
-# Select the top 50% of models and additionally create a new set of mutated models
 def create_new_player_set(players):
-    
+    """
+    Selects the top 50% of models and creates a new set of mutated models
+    """
+
     new_players = []
     for player in players[:len(players)//2]:
         new_players.append(player[0])
@@ -169,7 +153,7 @@ def create_new_player_set(players):
 
     return players
 
-def main():
+def generate_first_round_of_players():
 
     # Initialize an array of players
     players = []
@@ -178,84 +162,78 @@ def main():
     for i in range(NUM_PLAYERS):
         players.append([generate_random_allocation(), 0])
 
-    # Have all the players play each other in a round-robin tournament 
+    return players
+
+def print_players(players):
+    for player in players:
+        print(player[0], player[1])
+
+def main():
+
+    # Generate the first round of players
+    players = generate_first_round_of_players()
+
+    # Have all the players play each other in a round-robin tournament
     players = play_round_robin(players)
 
     # Sort players by average score
     players = sort_players(players)
 
-
+    # LET THEM PLAY AND LEARN
+    # The following is a genetic algorithm that we will perform to create the
+    # strongest players we can. We will delete the bottom 50% of competitors
+    # from the previous tournament and add a mutated copy of each of the winning
+    # 50% of competitors to the next round. These new players will compete and
+    # this process will repeat. We will store the winner of each of these rounds
+    # and will have them all compete in the final round.
     winners = []
     winners.append(players[0][0])
 
-
-    #print(players[0][0], 1)
-
-    # Print out this first list of players
-    #for player in players:
-    #    print(player[0], player[1])
-    
-    # Display the ranked strategies in a heat map
-    #display_sorted_ranking(players)
-
-
-    # LET THEM PLAY AND LEARN
-    # Delete the bottom 50% of competitors from the previous tournament and add a mutated 
-    # copy of each of the winning 50% of competitors to the next round. 
-    for i in range(1, 500):
+    for i in range(1, ITERATIONS):
 
         # In this funtion we take last round's competitors and create a new set
         players = create_new_player_set(players)
-        
+
+        # This helps to display our progress
         if (i+1) % 10 == 0:
             print(players[0][0], i+1)
+
+        # Append the winner of this round to the final winners list
         winners.append(players[0][0])
 
-
-        # Print out the players from best to worst
-        #print()
-        #for player in players:
-        #    print(player[0], player[1])
-        
-        # Display these players' strategies as a heat map
-        #if i % 20 == 0:
-        #    display_sorted_ranking(players)
-    
-    # Finally display the heat map of the last round
-    #display_sorted_ranking(players)
-
-    #for player in players:
-    #    print(player[0], player[1])
-    #display_sorted_ranking(players)
-
+    # Display winners list
     print()
     print()
     print()
-
     for winner in winners:
         print(winner)
 
-    print()
-    print()
-    print()
-
-    new_grid = create_new_grid(winners)
-    #plot_heat_map(new_grid)
-    #for item in new_grid:
-    #    print(item)
-    
     # Compute Final Ranking
     final_ranking = []
     for winner in winners:
         final_ranking.append([winner, 0])
-    
+
     final_ranking = sort_players(play_round_robin(final_ranking))
     for player in final_ranking:
         print(player[0], player[1])
 
+def final_test():
+
+    processed_players = []
+    for player in players_round5:
+        processed_players.append([player, 0])
+
+    players = sort_players(play_round_robin(processed_players))
+
+    new_players = []
+    for player in players[:len(players)//2]:
+        new_players.append(player)
+
+    for player in new_players:
+        print(player)
 
 
 if __name__ == "__main__":
     start_time = time.time()
-    main()
+    final_test()
     print("--- %s seconds ---" % (time.time() - start_time))
