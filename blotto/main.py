@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import time
 
 # Constants
-NUM_PLAYERS = 1000
-ITERATIONS = 500
+NUM_PLAYERS = 100000
+ITERATIONS = 1000
 
 def compute_winner(player1, player2):
     """
@@ -94,6 +94,13 @@ def test_a_strategy(strategy):
     return avg_score
 
 def mutate(allocation):
+    """
+    Adds a soldier to 5 battlefields and removes one from the other 5.
+    EXCEPT do not remove when a battlefield has no soldiers.
+    The old mutate function showed the behavior when massive negative ammounts
+    of soldiers were placed on the first and tenth castles to increase soldiers
+    on castles 5 through 8.
+    """
 
     new_allocation = [e for e in allocation]
 
@@ -122,6 +129,10 @@ def old_mutate(allocation):
     return new_allocation
 
 def play_round_robin(players):
+    """
+    Takes a set of players as inputs and returns the players with their average
+    scores from the round robin
+    """
 
     for i in range(len(players)):
         for j in range(i+1, len(players)):
@@ -214,26 +225,10 @@ def main():
         final_ranking.append([winner, 0])
 
     final_ranking = sort_players(play_round_robin(final_ranking))
-    for player in final_ranking:
-        print(player[0], player[1])
-
-def final_test():
-
-    processed_players = []
-    for player in players_round5:
-        processed_players.append([player, 0])
-
-    players = sort_players(play_round_robin(processed_players))
-
-    new_players = []
-    for player in players[:len(players)//2]:
-        new_players.append(player)
-
-    for player in new_players:
-        print(player)
-
+    print_players(final_ranking)
 
 if __name__ == "__main__":
+    # For development purposes, record how long each run takes
     start_time = time.time()
-    final_test()
+    main()
     print("--- %s seconds ---" % (time.time() - start_time))

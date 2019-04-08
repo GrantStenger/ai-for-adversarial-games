@@ -8,10 +8,6 @@
 - In the case of a tie, no one get's points.
 - In a given match, battlefields are fought in order (starting with battlefield 1), and as soon as one player reaches a score of 20 or more points, the match ends. Any remaining battlefields go unawarded.
 
-### Notes
-- Do not use multiples of 5 or 10 as they likely increase the probability of a tie
-- There is a trade off between winning early and winning high scoring battles.
-
 ### Solution
 My Submission is [4, 2, 9, 8, 2, 14, 31, 29, 0, 1].
 
@@ -20,7 +16,9 @@ TLDR: This solution was arrived at after coding up a genetic algorithm and runni
 Originally, I coded up the game and––to see what types of strategies are generally better than others––I generated about 10,000 random allocations and had them play in a round robin tournament. (Notably, there are ~4.3 trillion possible configurations, so simulating them all is computationally intractable. If each game takes about 100 bytes to store, storing all configurations would take about 430 terabytes.)
 
 I then ranked the 10,000 strategies and produced this visualization:
+
 ![Heat Map](Blotto_Uniform_Stenger.png)
+
 The horizontal axis represents the individual castles where soldiers can be placed. The vertical axis represents the ranked strategies divided into deciles with best strategies on top and worst on the bottom. Lighter squares represent more soldiers, and darker squares represent fewer soldiers. You can see that the worst performing strategies place many soldiers on the first castles where they are awarded few points and on the last castles where their opponent defeats them before these soldiers are ever useful. The best strategies seem to try to win on castles 6, 7, and 8 (at least when playing random players).
 
 Next, it was clear to me that players of this game would not be submitting random strategies. I needed to create a dataset of valid and diverse strategies to generate my own effective submission. I decided that the bottom 50% of strategies from those generated from above would never be played, so I deleted them. Instead I decided to replace them with mutated versions of the top 50% of strategies. My mutate function took 5 castles and added 1 soldier to them and removed a soldier from the other 5 castles. In this way, if this were a convex optimization problem, we are removing the strategies furthest away from optimal, retaining the 50% that are closest and generating new data which is close to our approximated optimal solution region but with noise which will let us approach new optimums.
