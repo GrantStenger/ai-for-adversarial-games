@@ -99,7 +99,7 @@ def simulate_hand(player1, verbose = True):
 
 # This is the game logic that decides who wins.
 # I am currently working to clean it up and optimize it.
-# Right now it's really gross––apologies.
+# Right now it's really gross, apologies.
 # Returns a list of winners (often just one, but accounts for case where several tie)
 def decide_winners(players, river, verbose = True):
 
@@ -288,8 +288,8 @@ def decide_winners(players, river, verbose = True):
 				cards_seen[int(cards[i], base=2) // 4] = cards_seen[int(cards[i], base=2) // 4] + 1
 			else:
 				cards_seen[int(cards[i], base=2) // 4] = 1
-		print("player num", player_num)
-		print("cards_seen", cards_seen)
+		# print("player num", player_num)
+		# print("cards_seen", cards_seen)
 
 		for card_val in cards_seen:
 			if 4 == cards_seen[card_val]:
@@ -322,10 +322,10 @@ def decide_winners(players, river, verbose = True):
 					current_largest_pair = pair
 			all_players_full_house[player_num].append(current_largest_pair)
 
-	print(all_players_pairs)
-	print(all_players_three_of_a_kinds)
-	print(all_players_full_house)
-	print(all_players_four_of_a_kinds)
+	# print(all_players_pairs)
+	# print(all_players_three_of_a_kinds)
+	# print(all_players_full_house)
+	# print(all_players_four_of_a_kinds)
 
 	# Check which player have the highest four of a kind
 	players_with_four_of_a_kinds = []
@@ -518,7 +518,7 @@ def decide_winners(players, river, verbose = True):
 				# to implement this logic. The following is currently not correct.
 				current_winner.append(pair_tuple[0])
 		if len(current_winner) > 1:
-
+			pass
 		if verbose:
 			print("Pair!")
 		# print("Current winner", current_winner)
@@ -580,8 +580,8 @@ def decide_winner_by_hand_value(players, river):
 				current_straight = 1
 
 		if longest_straight >= 5:
-			print("STRAIGHT!!!!")
-			print(straight_high_card)
+			# print("STRAIGHT!!!!")
+			# print(straight_high_card)
 			## UPDATE HAND VALUE
 			hand_values.append(4)
 		else:
@@ -657,9 +657,13 @@ def main():
 	# Prompt user for input and check if valid
 	is_input_valid = False
 	while not is_input_valid:
-		hand = input("What hand would you like to check (e.g. A5, 27s, TQ): ")
-		if (len(hand) == 2 and hand[0] in value_letter_to_num and hand[1] in value_letter_to_num) or (len(hand) == 3 and hand[0] in value_letter_to_num and hand[1] in value_letter_to_num and hand[2] == 's' and hand[0] != hand[1]):
+		hand = raw_input("What hand would you like to check (e.g. A5, 27s, TQ): ")
+		if (len(hand) == 2 and hand[0] in value_letter_to_num and hand[1] in value_letter_to_num):
 			is_input_valid = True
+		elif (len(hand) == 3 and hand[0] in value_letter_to_num and hand[1] in value_letter_to_num and hand[2] == 's' and hand[0] != hand[1]):
+			is_input_valid = True
+		else:
+			print('input invalid')
 
 	# Convert input to array of binaries (each card is binary string)
 	player1 = choose_hand(hand)
@@ -668,12 +672,13 @@ def main():
 	player2_wins = 0
 	ties = 0
 
-	GAMES = 10
-	VERBOSE = True
+	GAMES = 1000
+	VERBOSE = False
 
 	for i in range(GAMES):
 		if i % 10000 == 0:
-			print(i)
+			# print(i)
+			pass
 		winners = simulate_hand(player1, verbose = VERBOSE)
 		if len(winners) == 1:
 			if winners[0] == 0:
@@ -684,7 +689,6 @@ def main():
 			ties += 1
 		else:
 			raise Exception("You fucked up, weird number of winners", winners)
-		# print()
 
 	print("Player 1 won:", player1_wins)
 	print("Player 2 won:", player2_wins)
@@ -692,20 +696,3 @@ def main():
 
 if __name__ == "__main__":
 	main()
-
-
-"""
-	values = {"2":2,
-			  "3":3,
-			  "4":4,
-			  "5":5,
-			  "6":6,
-			  "7":7,
-			  "8":8,
-			  "9":9,
-			  "T":10,
-			  "J":11,
-			  "Q":12,
-			  "K":13,
-			  "A":14}
-"""

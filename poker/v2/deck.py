@@ -20,10 +20,6 @@ class Deck():
 	def shuffle(self):
 		return np.random.shuffle(self.deck)
 
-	# def print(self):
-	# 	for card in self.deck:
-	# 		print(card)
-
 	def pop(self):
 		return self.deck.pop()
 
