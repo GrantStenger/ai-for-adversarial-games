@@ -672,7 +672,7 @@ def main():
 	player2_wins = 0
 	ties = 0
 
-	GAMES = 1000
+	GAMES = 10000
 	VERBOSE = False
 
 	for i in range(GAMES):
