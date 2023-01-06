@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap');
 
 :root {
-
+  --unit: 50px;
 }
 
 body {
@@ -62,6 +62,106 @@ ul.navigationBar > li > ul.themeDropdown  > li > ul  > li {
 }
 
 
+
+.game {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  /* width: calc(10 * var(--unit) * 1.732); */
+  /* height: calc(10 * var(--unit) * 1.732); */
+  background: var(--gameColor);
+  /* left: 50%; */
+  /* top: 50%; */
+  /* translate: -50% -50%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game > .board {
+  position: absolute;
+  width: calc(1 * var(--unit));
+  height: calc(9 * var(--unit) * 1.732);
+  background: var(--boardColor);
+  margin: 0;
+  padding: 0;
+}
+
+.game > .board::before {
+  content: "";
+  position: absolute;
+  height: calc(var(--unit) * 1.732);
+  width: 0;
+  border: calc(4 * var(--unit) * 1.732) solid transparent;
+  border-left: 0 solid transparent;
+  border-right: calc(4 * var(--unit)) solid var(--boardColor);
+  top: 0;
+  right: calc(1 * var(--unit));
+}
+
+.game > .board::after {
+  content: "";
+  position: absolute;
+  height: calc(var(--unit) * 1.732);
+  width: 0;
+  border: calc(4 * var(--unit) * 1.732) solid transparent;
+  border-right: 0 solid transparent;
+  border-left: calc(4 * var(--unit)) solid var(--boardColor);
+  top: 0;
+  left: calc(1 * var(--unit));
+}
+
+.game > .board > *  {
+  position: absolute;
+  width: calc(var(--unit)  * 0.5);
+  height: calc(var(--unit) * 1.732 * 0.5);
+  /* background: red; */
+  background: transparent;
+/*   border-radius: 50%; */
+  right: calc(4.25 * var(--unit));
+  top: calc(4.25 * var(--unit) * 1.732);
+  translate: calc(var(--row) * var(--unit) * 0.5 + var(--column) * var(--unit) * 0.5) calc(var(--row) * var(--unit) * 0.5 * 1.732 - var(--column) * var(--unit) * 0.5 * 1.732);
+  z-index: 2;
+  cursor: pointer;
+}
+.game > .board > *::after {
+  content: "";
+  position: relative;
+  display: flex;
+  height: calc(var(--unit) * 0.75);
+  width: calc(var(--unit) * 0.75);
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  background: var(--color);
+  border-radius: 50%;
+}
+
+.game > .board > .inaccessible::after {
+  height: calc(var(--unit) * 0.25);
+  width: calc(var(--unit) * 0.25);
+}
+
+.game > .board > *:not(.inaccessible)::after {
+  backdrop-filter: blur(6px);
+  box-shadow: 10px 10px 20px 0px rgba(145, 192, 255, 0.5), inset -4px -4px 5px 0px rgba(145, 192, 255, 0.6), inset 0px 4px 8px 0px rgb(255, 255, 255);
+}
+
+.game > .board > *[isSelected="true"]::after
+ {
+  border: 5px solid white;
+} 
+
+
+
+
+
+
+
+
+
+
+/* 
 .game {
   position: relative;
   margin: 0;
@@ -82,12 +182,9 @@ ul.navigationBar > li > ul.themeDropdown  > li > ul  > li {
   align-items: center;
   align-content: center;
   justify-items: center;
-  rotate: -45deg;
 }
 
-.game > .board > .inaccessible,
-.game > .board > .player1-occupied,
-.game > .board > .player2-occupied {
+.game > .board > *{
   width: 90%;
   height: 90%;
   background: inherit;
@@ -131,7 +228,7 @@ ul.navigationBar > li > ul.themeDropdown  > li > ul  > li {
 .game > .board > .inaccessible[isSelected="true"]
  {
   border: 2px solid black;
-}
+} */
 
 
 

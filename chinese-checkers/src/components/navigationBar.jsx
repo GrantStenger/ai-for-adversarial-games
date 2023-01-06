@@ -1,13 +1,26 @@
 import "../index.css"
 import React, { useState } from "react"
-
+import defaultGameState from "../utils/defaultGameState"
+import getValidMoves from "../utils/getValidMoves"
 
 
 export default function NavigationBar({myProps, updateMyProps}) {
     const [showThemeDropdown, setShowThemeDropdown] = useState(false)
+
+
+    function newGame() {
+        updateMyProps({
+          gameState: defaultGameState(),
+          currPlayerID: 1,
+          validMoves: getValidMoves(defaultGameState(), 1),
+          selectedSpot: [-1, -1]
+        })
+      }
+
+
     return (
         <ul className="navigationBar">
-            <li><button onClick={() => console.log("New game")}><p>New Game</p></button></li>
+            <li><button onClick={newGame}><p>New Game</p></button></li>
             <li >
                 <button onClick={() => setShowThemeDropdown(!showThemeDropdown)}><p>Theme</p></button>
                 <ul className="themeDropdown" show={showThemeDropdown.toString()}>
