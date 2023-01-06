@@ -4,7 +4,7 @@
   --unit: 50px;
 }
 
-body {
+body, input, textarea, button {
   font-family: 'Fira Mono', monospace;
 }
 
@@ -21,6 +21,31 @@ body {
   padding: 0;
 }
 
+
+button {
+  margin: none;
+  border: none;
+  padding: 0 20px;
+  border-radius: 99999px;
+  position: relative;
+  display: inline-block;
+}
+
+button:hover::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: invert(100%);
+  margin: none;
+  border: none;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  border-radius: 99999px;
+}
+
 ul.navigationBar {
   height: 100px;
   width: 100%;
@@ -31,35 +56,87 @@ ul.navigationBar {
   background: yellow;
   list-style-type: none;
   display: flex;
+  justify-content: left;
+  align-items: center;
   margin: 0;
   padding: 0;
   z-index: 3;
 }
 
 ul.navigationBar > li {
-  padding: 20px;
+  padding: 0px 20px;
 }
 
-ul.navigationBar > li > ul.themeDropdown[show="false"] {
+
+
+
+
+
+
+
+
+ul.navigationBar > li > .dropdown[show="false"] {
   display: none;
+  padding: none;
 }
 
-ul.navigationBar > li > ul.themeDropdown  {
+ul.navigationBar > li > .dropdown[show="true"] {
+  margin: 0;
+  padding: 20px;
+  position: absolute;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  justify-items: center;
+  align-content: center;
+}
+
+
+
+ul.navigationBar > li > .dropdown > * {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+
+ul.navigationBar > li > .dropdown > ul  {
+  padding: 0;
+  list-style-type: none;
+  position: relative;
+  margin: 0;
+  margin-bottom: 50px;
+}
+
+
+
+ul.navigationBar > li > .dropdown > ul  > li > ul {
   margin: 0;
   padding: 0;
   list-style-type: none;
+  position: relative;
 }
 
-ul.navigationBar > li > ul.themeDropdown  > li > ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
-
-ul.navigationBar > li > ul.themeDropdown  > li > ul  > li {
+ul.navigationBar > li > .dropdown > ul  > li > ul  > li {
   display: flex;
   justify-content: space-between;
+  position: relative;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -122,7 +199,6 @@ ul.navigationBar > li > ul.themeDropdown  > li > ul  > li {
   top: calc(4.25 * var(--unit) * 1.732);
   translate: calc(var(--row) * var(--unit) * 0.5 + var(--column) * var(--unit) * 0.5) calc(var(--row) * var(--unit) * 0.5 * 1.732 - var(--column) * var(--unit) * 0.5 * 1.732);
   z-index: 2;
-  cursor: pointer;
 }
 .game > .board > *::after {
   content: "";
@@ -135,16 +211,19 @@ ul.navigationBar > li > ul.themeDropdown  > li > ul  > li {
   translate: -50% -50%;
   background: var(--color);
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .game > .board > .inaccessible::after {
-  height: calc(var(--unit) * 0.25);
-  width: calc(var(--unit) * 0.25);
+  height: calc(var(--unit) * 0.45);
+  width: calc(var(--unit) * 0.45);
+  backdrop-filter: blur(6px);
+  box-shadow: inset -10px 10px 20px 0px rgba(255, 255, 255, 0.5), 4px -4px 5px 0px rgba(255, 255, 255, 0.4),  0px -4px 8px 0px rgba(255, 255, 255, 0);
 }
 
 .game > .board > *:not(.inaccessible)::after {
   backdrop-filter: blur(6px);
-  box-shadow: 10px 10px 20px 0px rgba(145, 192, 255, 0.5), inset -4px -4px 5px 0px rgba(145, 192, 255, 0.6), inset 0px 4px 8px 0px rgb(255, 255, 255);
+  box-shadow: 10px 10px 20px 0px rgba(255, 255, 255, 0.5), inset -4px -4px 5px 0px rgba(255, 255, 255, 0.6), inset 0px 4px 8px 0px rgb(255, 255, 255);
 }
 
 .game > .board > *[isSelected="true"]::after
@@ -157,78 +236,6 @@ ul.navigationBar > li > ul.themeDropdown  > li > ul  > li {
 
 
 
-
-
-
-
-/* 
-.game {
-  position: relative;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.game > .board {
-  position: relative;
-  height: 500px;
-  width: 500px;
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  grid-template-rows: repeat(9, 1fr);
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  justify-items: center;
-}
-
-.game > .board > *{
-  width: 90%;
-  height: 90%;
-  background: inherit;
-  border-radius: 50%;
-}
-
-.game > .board >.inaccessible::after {
-  background: black;
-}
-
-.game > .board > .inaccessible::after,
-.game > .board > .player1-occupied::after,
-.game > .board > .player2-occupied::after
-{
-  content: "";
-  display: flex;
-  position: relative;
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
-  height: 4px;
-  width: 4px;
-  border-radius: 50%;
-}
-
-
-.game > .board > .player1-occupied::after,
-.game > .board > .player2-occupied::after {
-  top: 5%;
-  left: 5%;
-  background: var(--color);
-  height: 90%;
-  width: 90%;
-  translate: 0 0;
-}
-
-
-
-.game > .board > .player1-occupied[isSelected="true"],
-.game > .board > .player2-occupied[isSelected="true"],
-.game > .board > .inaccessible[isSelected="true"]
- {
-  border: 2px solid black;
-} */
 
 
 

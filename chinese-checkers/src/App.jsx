@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import defaultGameState from './utils/defaultGameState'
 import getValidMoves from './utils/getValidMoves'
 import isValidMove from './utils/isValidMove'
-
+import checkWin from './utils/checkWin'
 
 
 function App() {
@@ -26,7 +26,17 @@ function App() {
     selectedSpot: [-1, -1],
     currPlayerID: 1,
     gameState: defaultGameState(),
-    validMoves: getValidMoves(defaultGameState(), 1)
+    validMoves: getValidMoves(defaultGameState(), 1),
+    showThemeDropdown: false,
+    showNewGameDropdown: false,
+    opponentType: ["human", "computer"],
+    computerStrengthLevels: ["beginner", "intermediate", "advanced"],
+    computerStrength: "beginner",
+    timeLimit: 300,
+    timeLimits: [0, 30, 45, 60, 90, 120, 180, 240, 360, 420, 480, 540, 600],
+    increment: 1,
+    increments: [0, 1, 2, 3, 5, 10, 15, 20, 30, 60, 90, 120],
+    winner: 0
   })
 
   function updateGameState(newGameState) {
@@ -37,9 +47,13 @@ function App() {
       gameState: newGameState,
       currPlayerID: newPlayerID,
       validMoves: newValidMoves,
-      selectedSpot: [-1, -1]
+      selectedSpot: [-1, -1],
+      showThemeDropdown: false,
+      showNewGameDropdown: false,
+      winner: checkWin(newGameState)
     })
-    if (newPlayerID === 2) {
+    
+    if ((newPlayerID === 2) && (checkWin(newGameState) === 0)) {
       const randomIdx = Math.floor(Math.random() * newValidMoves.length)
       const newMoveTuple = newValidMoves[randomIdx]
       let newerGameState = [...newGameState]
@@ -49,7 +63,10 @@ function App() {
         gameState: newerGameState,
         currPlayerID: 1,
         validMoves: getValidMoves(newerGameState, 1),
-        selectedSpot: [-1, -1]
+        selectedSpot: [-1, -1],
+        showThemeDropdown: false,
+        showNewGameDropdown: false,
+        winner: checkWin(newerGameState)
       })
     }
   }
@@ -58,7 +75,7 @@ function App() {
   }
 
   return (
-    <div className="app" >
+    <div className="app" onClick={() => updateMyProps({showThemeDropdown: false, showNewGameDropdown: false})}>
       <NavigationBar myProps={myProps} updateMyProps={updateMyProps} />
       <Game myProps={myProps} updateMyProps={updateMyProps} updateGameState={updateGameState}/>
       <Timer myProps={myProps} updateMyProps={updateMyProps} />
