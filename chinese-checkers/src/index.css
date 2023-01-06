@@ -122,6 +122,7 @@ ul.navigationBar > li > ul.themeDropdown  > li > ul  > li {
   top: calc(4.25 * var(--unit) * 1.732);
   translate: calc(var(--row) * var(--unit) * 0.5 + var(--column) * var(--unit) * 0.5) calc(var(--row) * var(--unit) * 0.5 * 1.732 - var(--column) * var(--unit) * 0.5 * 1.732);
   z-index: 2;
+  cursor: pointer;
 }
 .game > .board > *::after {
   content: "";
@@ -148,7 +149,7 @@ ul.navigationBar > li > ul.themeDropdown  > li > ul  > li {
 
 .game > .board > *[isSelected="true"]::after
  {
-  border: 2px solid white;
+  border: 5px solid white;
 } 
 
 
