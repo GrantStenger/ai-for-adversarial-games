@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap');
+
+:root {
+
+}
+
+body {
+  font-family: 'Fira Mono', monospace;
+}
+
+.app {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 80vw 1fr;
+  grid-template-rows: 100px 1fr;
+  margin: 0;
+  padding: 0;
+}
+
+ul.navigationBar {
+  height: 100px;
+  width: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  grid-column: 1 / -1;
+  background: yellow;
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  z-index: 3;
+}
+
+ul.navigationBar > li {
+  padding: 20px;
+}
+
+ul.navigationBar > li > ul.themeDropdown[show="false"] {
+  display: none;
+}
+
+ul.navigationBar > li > ul.themeDropdown  {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+ul.navigationBar > li > ul.themeDropdown  > li > ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+ul.navigationBar > li > ul.themeDropdown  > li > ul  > li {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.game {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game > .board {
+  position: relative;
+  height: 500px;
+  width: 500px;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  rotate: -45deg;
+}
+
+.game > .board > .inaccessible,
+.game > .board > .player1-occupied,
+.game > .board > .player2-occupied {
+  width: 90%;
+  height: 90%;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.game > .board >.inaccessible::after {
+  background: black;
+}
+
+.game > .board > .inaccessible::after,
+.game > .board > .player1-occupied::after,
+.game > .board > .player2-occupied::after
+{
+  content: "";
+  display: flex;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  height: 4px;
+  width: 4px;
+  border-radius: 50%;
+}
+
+
+.game > .board > .player1-occupied::after,
+.game > .board > .player2-occupied::after {
+  top: 5%;
+  left: 5%;
+  background: var(--color);
+  height: 90%;
+  width: 90%;
+  translate: 0 0;
+}
+
+
+
+.game > .board > .player1-occupied[isSelected="true"],
+.game > .board > .player2-occupied[isSelected="true"],
+.game > .board > .inaccessible[isSelected="true"]
+ {
+  border: 2px solid black;
+}
+
+
+
+.timer {
+  position: relative;
+  background: lightcyan;
+  margin: 0;
+  padding: 0;
+}
