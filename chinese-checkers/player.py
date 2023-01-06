@@ -16,6 +16,7 @@ class Player(ABC):
 
 class HumanPlayer(Player):
     def make_turn(self, board):
+        # While loop allows the player to make infinite errors inputting their move (until proper move is executed)
         while True:
             try:
                 start = tuple(
@@ -27,7 +28,6 @@ class HumanPlayer(Player):
                     board.show()
                     jump_location = input(
                         "Where would you like to jump (row,col) or \"end\": ")
-                    print(jump_location)
                     if jump_location == "end":
                         board.end_turn()
                         break
@@ -41,10 +41,11 @@ class HumanPlayer(Player):
 
 
 class ComputerPlayer(Player):
+    def select_best_move(self, board, valid_moves):
+        pass
+
     def make_turn(self, board):
         valid_moves = board.get_valid_moves(player_id=2)
-
-        print(valid_moves)
 
         if len(valid_moves) > 0:
             start, end = self.select_best_move(board, valid_moves)
@@ -52,12 +53,14 @@ class ComputerPlayer(Player):
         else:
             my_print("No valid moves")
 
-        return valid_moves
 
+class BeginnerComputerPlayer(ComputerPlayer):
     def select_best_move(self, board, valid_moves):
+        return random.choice(valid_moves)
 
-        # Select a random move
-        # return random.choice(valid_moves)
+
+class IntermediateComputerPlayer(ComputerPlayer):
+    def select_best_move(self, board, valid_moves):
 
         # Select the move that results in a board configuration with pieces closest to the goal corner
         move_scores = {}
@@ -67,7 +70,7 @@ class ComputerPlayer(Player):
             print("start", start)
             print("end", end)
             board_copy.show()
-            board_copy.move(start, end, player_id=2, is_hallucinating=True)
+            board_copy.move(start, end, player_id=2)
             move_scores[move] = self.get_score(board_copy)
 
         return max(move_scores, key=move_scores.get)
@@ -79,3 +82,8 @@ class ComputerPlayer(Player):
                 if board.board[row][col] == 2:
                     score += 8 - col + row
         return score
+
+
+class ExpertComputerPlayer(ComputerPlayer):
+    def select_best_move(self, board, valid_moves):
+        return random.choice(valid_moves)
