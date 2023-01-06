@@ -49,7 +49,7 @@ class Board:
             my_print("You can't move a piece that isn't yours")
             return False
 
-        # Check if the piece is moving to an empty cell
+        # Check if the piece is moving to an occupied cell
         if self.board[end_row][end_col] != 0:
             my_print("You can't move to an occupied cell")
             return False

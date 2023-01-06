@@ -1,12 +1,14 @@
 from board import Board
 from utils import my_print
 import random
+from abc import ABC, abstractmethod
 
 
-class Player:
+class Player(ABC):
     def __init__(self, name):
         self.name = name
 
+    @abstractmethod
     def move(self, board):
         pass
 
