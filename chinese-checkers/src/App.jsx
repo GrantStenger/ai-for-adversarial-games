@@ -17,9 +17,10 @@ function App() {
     pieceStyles: ["style1", "style2", "style3"],
     boardStyles: ["style1", "style2", "style3"],
     backgroundStyles: ["style1", "style2", "style3"],
-    selectedSpot: [-1, -1]
+    selectedSpot: [-1, -1],
+    currPlayerID: 1
   })
-
+  console.log(myProps)
 
   const updateMyProps = (newProps) => {
     setMyProps({...myProps, ...newProps})
