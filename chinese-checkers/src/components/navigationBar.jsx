@@ -2,9 +2,15 @@ import "../index.css"
 import React, { useState } from "react"
 import defaultGameState from "../utils/defaultGameState"
 import getValidMoves from "../utils/getValidMoves"
+import getValidJumps from "../utils/getValidJumps"
+import getValidSteps from "../utils/getValidSteps"
 
 
 export default function NavigationBar({myProps, updateMyProps}) {
+    const [tempOpponentType, setTempOpponentType] = useState(myProps.opponentType)
+    const [tempComputerStrengthLevel, setTempComputerStrengthLevel] = useState(myProps.computerStrengthLevel)
+    const [tempTimeLimit, setTempTimeLimit] = useState(myProps.timeLimit)
+    const [tempIncrement, setTempIncrement] = useState(myProps.increment)
     
     const [tempPlayer1Color, setTempPlayer1Color] = useState(myProps.player1Color)
     const [tempPlayer2Color, setTempPlayer2Color] = useState(myProps.player2Color)
@@ -21,7 +27,40 @@ export default function NavigationBar({myProps, updateMyProps}) {
           gameStateHistory: [JSON.stringify(defaultGameState())],
           currPlayerID: 1,
           validMoves: getValidMoves(defaultGameState(), 1),
-          selectedSpot: [-1, -1]
+          selectedSpot: [-1, -1],
+          opponentType: tempOpponentType,
+          computerStrengthLevel: tempComputerStrengthLevel,
+          timeLimit: tempTimeLimit,
+          increment: tempIncrement,
+          showThemeDropdown: false,
+          showNewGameDropdown: false,
+          validMoves: getValidMoves(defaultGameState(), 1),
+          validJumps: getValidJumps(defaultGameState(), 1),
+          validSteps: getValidSteps(defaultGameState(), 1)
+        })
+      }
+      function revertGameSettings() {
+        setTempOpponentType(myProps.opponentType)
+        setTempComputerStrengthLevel(myProps.computerStrengthLevel)
+        setTempTimeLimit(myProps.timeLimit)
+        setTempIncrement(myProps.increment)
+      }
+      function defaultGameSettings() {
+        updateMyProps({
+          gameState: defaultGameState(),
+          gameStateHistory: [JSON.stringify(defaultGameState())],
+          currPlayerID: 1,
+          validMoves: getValidMoves(defaultGameState(), 1),
+          selectedSpot: [-1, -1],
+          opponentType: "computer",
+          computerStrengthLevel: "beginner",
+          timeLimit: 0,
+          increment: 0,
+          showThemeDropdown: false,
+          showNewGameDropdown: false,
+          validMoves: getValidMoves(defaultGameState(), 1),
+          validJumps: getValidJumps(defaultGameState(), 1),
+          validSteps: getValidSteps(defaultGameState(), 1)
         })
       }
       function applyTheme() {
@@ -76,12 +115,18 @@ export default function NavigationBar({myProps, updateMyProps}) {
                             <p>Opponent</p>
                             <ul>
                                 <li>
-                                    <label>Computer</label>
-                                    <select value={myProps.computerStrength} onChange={(e) => updateMyProps({computerStrength: e.target.value})}>
-                                        {myProps.computerStrengthLevels.map(level => <option>{level}</option>)}
-                                    </select>
+                                    <input type="radio" id="computer" name="computer" value="computer" checked={tempOpponentType === "computer"} onChange={(e) => setTempOpponentType(e.currentTarget.value)}/>
+                                    <label for="computer">
+                                        <label>Computer</label>
+                                        <select value={tempComputerStrengthLevel} onChange={(e) => setTempComputerStrengthLevel(e.target.value)}>
+                                            {myProps.computerStrengthLevels.map(level => <option>{level}</option>)}
+                                        </select>
+                                    </label>
                                 </li>
-                                <li>Human</li>
+                                <li>
+                                    <input type="radio" id="human" name="human" value="human" checked={tempOpponentType === "human"} onChange={(e) => setTempOpponentType(e.currentTarget.value)}/>
+                                    <label>Human</label>
+                                </li>
                             </ul>
                         </li>
                         <li>
@@ -89,13 +134,13 @@ export default function NavigationBar({myProps, updateMyProps}) {
                             <ul>
                                 <li>
                                     <label>Time Limit</label>
-                                    <select value={myProps.timeLimit} onChange={(e) => updateMyProps({timeLimit: e.target.value})}>
+                                    <select value={tempTimeLimit} onChange={(e) => setTempTimeLimit(parseInt(e.target.value))}>
                                         {myProps.timeLimits.map(limit => <option>{limit}</option>)}
                                     </select>
                                 </li>
                                 <li>
                                     <label>Increment</label>
-                                    <select value={myProps.increment} onChange={(e) => updateMyProps({increment: e.target.value})}>
+                                    <select value={tempIncrement} onChange={(e) => setTempIncrement(parseInt(e.target.value))}>
                                         {myProps.increments.map(increment => <option>{increment}</option>)}
                                     </select>
                                 </li>
@@ -103,6 +148,8 @@ export default function NavigationBar({myProps, updateMyProps}) {
                         </li>
                     </ul>
                     <button onClick={newGame}><p>Begin New Game</p></button>
+                    <button onClick={revertGameSettings}><p>Revert to Current</p></button>
+                    <button onClick={defaultGameSettings}><p>Revert to Default</p></button>
                 </div>
             </li>
             <li >

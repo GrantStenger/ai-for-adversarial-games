@@ -9,6 +9,7 @@ import getValidMoves from './utils/getValidMoves'
 import checkWin from './utils/checkWin'
 import getValidJumps from './utils/getValidJumps'
 import getValidSteps from './utils/getValidSteps'
+import isSmallArrayInBigArray from './utils/isSmallArrayInBigArray'
 
 function App() {
   const [myProps, setMyProps] = useState({
@@ -27,19 +28,19 @@ function App() {
     currPlayerID: 1,
     gameState: defaultGameState(),
     gameStateHistory: [JSON.stringify(defaultGameState())],
-    validMoves: getValidMoves(defaultGameState(), 1),
     showThemeDropdown: false,
     showNewGameDropdown: false,
     opponentType: "computer",
     opponentTypes: ["human", "computer"],
     computerStrengthLevels: ["beginner", "intermediate", "advanced"],
-    computerStrength: "beginner",
+    computerStrengthLevel: "beginner",
     timeLimit: 300,
     timeLimits: [0, 30, 45, 60, 90, 120, 180, 240, 360, 420, 480, 540, 600],
-    increment: 1,
+    increment: 0,
     increments: [0, 1, 2, 3, 5, 10, 15, 20, 30, 60, 90, 120],
     winner: 0,
     doubleJumpPivotSpot: [-1, -1],
+    validMoves: getValidMoves(defaultGameState(), 1),
     validJumps: getValidJumps(defaultGameState(), 1),
     validSteps: getValidSteps(defaultGameState(), 1)
   })
@@ -69,8 +70,46 @@ function App() {
     }
   }
   function makeComputerMove(newGameState, newValidMoves, newValidJumps, newValidSteps, newGameStateHistory) {
+    console.log("Making computer move")
     const randomIdx = Math.floor(Math.random() * newValidMoves.length)
     const newMoveTuple = newValidMoves[randomIdx]
+    console.log(`New Move Tuple: ${newMoveTuple}`)
+    if (isSmallArrayInBigArray(newMoveTuple, newValidSteps)) {
+      console.log("Making step")
+      makeStepComputer(newGameState, newGameStateHistory, newMoveTuple)
+    } else {
+      console.log("Making jump")
+      var finishedJumping = false
+      var newGameStateJumping
+      var newMoveTupleJumping
+      [finishedJumping, newGameStateJumping, newMoveTupleJumping] = makeJumpComputer(newGameState, newMoveTuple)
+      console.log(`Finished jumping: ${finishedJumping}`)
+      console.log(`New Game State Jumping: ${newGameStateJumping}`)
+      console.log(`New Move Tuple Jumping: ${newMoveTupleJumping}`)
+      while (finishedJumping === false) {
+        console.log("Entering jump while loop")
+        [finishedJumping, newGameStateJumping, newMoveTupleJumping] = makeJumpComputer(newGameStateJumping, newMoveTupleJumping)
+        console.log(`Finished jumping: ${finishedJumping}`)
+        console.log(`New Game State Jumping: ${newGameStateJumping}`)
+        console.log(`New Move Tuple Jumping: ${newMoveTupleJumping}`)
+      }
+      const newerGameStateHistoryJumping = [...myProps.gameStateHistory, JSON.stringify(newGameStateJumping)]
+      updateMyProps({
+        gameState: newGameStateJumping,
+        gameStateHistory: newerGameStateHistoryJumping,
+        currPlayerID: 1,
+        validMoves: getValidMoves(newGameStateJumping, 1),
+        validSteps: getValidSteps(newGameStateJumping, 1),
+        validJumps: getValidJumps(newGameStateJumping, 1),
+        selectedSpot: [-1, -1],
+        showThemeDropdown: false,
+        showNewGameDropdown: false,
+        winner: checkWin(newGameStateJumping)
+        })
+    }
+  }
+  function makeStepComputer(newGameState, newGameStateHistory, newMoveTuple) {
+    console.log("Make step computer function")
     let newerGameState = newGameState.map(elem => [...elem])
     newerGameState[newMoveTuple[2]][newMoveTuple[3]] = 2
     newerGameState[newMoveTuple[0]][newMoveTuple[1]] = 0
@@ -87,6 +126,38 @@ function App() {
       showNewGameDropdown: false,
       winner: checkWin(newerGameState)
       })
+  }
+  function makeJumpComputer(newGameState, newMoveTuple) {
+    console.log("Make Jump Comptuer function")
+    let newerGameState = newGameState.map(elem => [...elem])
+    newerGameState[newMoveTuple[2]][newMoveTuple[3]] = 2
+    newerGameState[newMoveTuple[0]][newMoveTuple[1]] = 0
+    console.log(`JJ TEST TEST: `)
+    console.log(getValidJumps(newerGameState, 2))
+    console.log(newMoveTuple)
+    // var newerValidJumps = getValidJumps(newerGameState, 2).filter(elem => ((elem[0] === newMoveTuple[2]) && (elem[1] === newMoveTuple[3])))
+    const newerValidJumps = [...getValidJumps(newerGameState, 2).filter(elem => ((elem[0] === newMoveTuple[2]) && (elem[1] === newMoveTuple[3]))), [newMoveTuple[2], newMoveTuple[3], newMoveTuple[2], newMoveTuple[3]]]
+    console.log(`Quick newer valid jumps: ${newerValidJumps}`)
+    // newerValidJumps.push()
+    updateMyProps({
+      gameState: newerGameState,
+      validMoves: newerValidJumps,
+      validJumps: newerValidJumps,
+      validSteps: [],
+      selectedSpot: [newMoveTuple[2], newMoveTuple[3]],
+      doubleJumpPivotSpot: [newMoveTuple[2], newMoveTuple[3]],
+      showThemeDropdown: false,
+      showNewGameDropdown: false,
+      winner: checkWin(newGameState)
+    })
+    const randomIdx = Math.floor(Math.random() * newerValidJumps.length)
+    console.log(`Newer valid jumps: ${newerValidJumps}`)
+    const newestMoveTuple = newerValidJumps[randomIdx]
+    console.log(`Newest Move Tuple: ${newestMoveTuple}`)
+    if ((newestMoveTuple[0] === newestMoveTuple[2]) && (newestMoveTuple[1] === newestMoveTuple[3])) {
+      return [true, "", ""]
+    }
+    return [false, newerGameState, newestMoveTuple]
   }
   function makeJump(newGameState, spot) {
     console.log("Jump!")
