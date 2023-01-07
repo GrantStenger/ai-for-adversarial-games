@@ -38,8 +38,8 @@ export default function NavigationBar({myProps, updateMyProps}) {
           validJumps: getValidJumps(defaultGameState(), 1),
           validSteps: getValidSteps(defaultGameState(), 1),
           dateBenchmark: Date.parse(new Date()),
-          timeLeftPlayer1: tempTimeLimit,
-          timeLeftPlayer2: tempTimeLimit
+          timeLeftPlayer1: tempTimeLimit * 1000,
+          timeLeftPlayer2: tempTimeLimit * 1000
         })
       }
       function revertGameSettings() {
@@ -57,7 +57,7 @@ export default function NavigationBar({myProps, updateMyProps}) {
           selectedSpot: [-1, -1],
           opponentType: "computer",
           computerStrengthLevel: "beginner",
-          timeLimit: 0,
+          timeLimit: 300,
           increment: 0,
           showThemeDropdown: false,
           showNewGameDropdown: false,

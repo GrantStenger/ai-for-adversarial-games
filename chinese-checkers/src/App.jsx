@@ -48,6 +48,33 @@ function App() {
     timeLeftPlayer2: 300000
   })
 
+
+  const [tempTimeLeftPlayer1, setTempTimeLeftPlayer1] = useState(myProps.timeLeftPlayer1)
+  const [tempTimeLeftPlayer2, setTempTimeLeftPlayer2] = useState(myProps.timeLeftPlayer2)
+  
+  useEffect(() => {
+      const intervalId = setInterval(() => {
+          if (tempTimeLeftPlayer1 < 0) {
+              console.log("Player 1 is out of time")
+              return () => clearInterval(intervalId)
+          } else if (tempTimeLeftPlayer2 < 0) {
+              console.log("Player 2 is out of time")
+              return () => clearInterval(intervalId)
+          } else if (myProps.currPlayerID === 1) {
+              setTempTimeLeftPlayer1(myProps.timeLeftPlayer1 - (Date.parse(new Date()) - myProps.dateBenchmark))
+          } else {
+              setTempTimeLeftPlayer2(myProps.timeLeftPlayer2 - (Date.parse(new Date()) - myProps.dateBenchmark))
+          }
+      }, 100)
+      return () => clearInterval(intervalId)
+  }, [myProps])
+
+
+
+
+
+
+
   function makeStep(newGameState) {
     const newPlayerID = (myProps.currPlayerID % 2) + 1
     const newValidMoves = getValidMoves(newGameState, newPlayerID)
@@ -68,6 +95,8 @@ function App() {
       winner: checkWin(newGameState),
       doubleJumpPivotSpot: [-1, -1],
       dateBenchmark: Date.parse(new Date()),
+      timeLeftPlayer1: tempTimeLeftPlayer1,
+      timeLeftPlayer2: tempTimeLeftPlayer2
     })
     if ((myProps.opponentType === "computer") && (checkWin(newGameState) === 0)) {
       makeComputerMove(newGameState, newValidMoves, newValidJumps, newValidSteps, newGameStateHistory)
@@ -110,6 +139,8 @@ function App() {
         showNewGameDropdown: false,
         winner: checkWin(newGameStateJumping),
         dateBenchmark: Date.parse(new Date()),
+        timeLeftPlayer1: tempTimeLeftPlayer1,
+        timeLeftPlayer2: tempTimeLeftPlayer2
         })
     }
   }
@@ -131,6 +162,8 @@ function App() {
       showNewGameDropdown: false,
       winner: checkWin(newerGameState),
       dateBenchmark: Date.parse(new Date()),
+      timeLeftPlayer1: tempTimeLeftPlayer1,
+      timeLeftPlayer2: tempTimeLeftPlayer2
       })
   }
   function makeJumpComputer(newGameState, newMoveTuple) {
@@ -187,6 +220,8 @@ function App() {
         winner: checkWin(newGameState),
         doubleJumpPivotSpot: [-1, -1],
         dateBenchmark: Date.parse(new Date()),
+        timeLeftPlayer1: tempTimeLeftPlayer1,
+        timeLeftPlayer2: tempTimeLeftPlayer2
       })
       if ((myProps.opponentType === "computer") && (checkWin(newGameState) === 0)) {
         makeComputerMove(newGameState, newValidMoves, newValidJumps, newValidSteps, newGameStateHistory)
@@ -229,6 +264,8 @@ function App() {
       showThemeDropdown: false,
       showNewGameDropdown: false,
       dateBenchmark: Date.parse(new Date()),
+      timeLeftPlayer1: tempTimeLeftPlayer1,
+      timeLeftPlayer2: tempTimeLeftPlayer2
     })
 
   }
@@ -237,7 +274,7 @@ function App() {
     <div className="app" onClick={() => updateMyProps({showThemeDropdown: false, showNewGameDropdown: false})}>
       <NavigationBar myProps={myProps} updateMyProps={updateMyProps} />
       <Game myProps={myProps} updateMyProps={updateMyProps} makeStep={makeStep} makeJump={makeJump} undoMove={undoMove}/>
-      <Timer myProps={myProps} updateMyProps={updateMyProps} />
+      <Timer myProps={myProps} updateMyProps={updateMyProps} tempTimeLeftPlayer1={tempTimeLeftPlayer1} tempTimeLeftPlayer2={tempTimeLeftPlayer2}/>
     </div>
   )
 }
