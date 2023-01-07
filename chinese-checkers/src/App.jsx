@@ -42,7 +42,10 @@ function App() {
     doubleJumpPivotSpot: [-1, -1],
     validMoves: getValidMoves(defaultGameState(), 1),
     validJumps: getValidJumps(defaultGameState(), 1),
-    validSteps: getValidSteps(defaultGameState(), 1)
+    validSteps: getValidSteps(defaultGameState(), 1),
+    dateBenchmark: Date.parse(new Date()),
+    timeLeftPlayer1: 300000,
+    timeLeftPlayer2: 300000
   })
 
   function makeStep(newGameState) {
@@ -63,7 +66,8 @@ function App() {
       showThemeDropdown: false,
       showNewGameDropdown: false,
       winner: checkWin(newGameState),
-      doubleJumpPivotSpot: [-1, -1]
+      doubleJumpPivotSpot: [-1, -1],
+      dateBenchmark: Date.parse(new Date()),
     })
     if ((myProps.opponentType === "computer") && (checkWin(newGameState) === 0)) {
       makeComputerMove(newGameState, newValidMoves, newValidJumps, newValidSteps, newGameStateHistory)
@@ -104,7 +108,8 @@ function App() {
         selectedSpot: [-1, -1],
         showThemeDropdown: false,
         showNewGameDropdown: false,
-        winner: checkWin(newGameStateJumping)
+        winner: checkWin(newGameStateJumping),
+        dateBenchmark: Date.parse(new Date()),
         })
     }
   }
@@ -124,7 +129,8 @@ function App() {
       selectedSpot: [-1, -1],
       showThemeDropdown: false,
       showNewGameDropdown: false,
-      winner: checkWin(newerGameState)
+      winner: checkWin(newerGameState),
+      dateBenchmark: Date.parse(new Date()),
       })
   }
   function makeJumpComputer(newGameState, newMoveTuple) {
@@ -179,7 +185,8 @@ function App() {
         showThemeDropdown: false,
         showNewGameDropdown: false,
         winner: checkWin(newGameState),
-        doubleJumpPivotSpot: [-1, -1]
+        doubleJumpPivotSpot: [-1, -1],
+        dateBenchmark: Date.parse(new Date()),
       })
       if ((myProps.opponentType === "computer") && (checkWin(newGameState) === 0)) {
         makeComputerMove(newGameState, newValidMoves, newValidJumps, newValidSteps, newGameStateHistory)
@@ -220,7 +227,8 @@ function App() {
       validMoves: newValidMoves,
       selectedSpot: [-1, -1],
       showThemeDropdown: false,
-      showNewGameDropdown: false
+      showNewGameDropdown: false,
+      dateBenchmark: Date.parse(new Date()),
     })
 
   }

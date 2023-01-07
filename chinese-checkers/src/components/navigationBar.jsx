@@ -36,7 +36,10 @@ export default function NavigationBar({myProps, updateMyProps}) {
           showNewGameDropdown: false,
           validMoves: getValidMoves(defaultGameState(), 1),
           validJumps: getValidJumps(defaultGameState(), 1),
-          validSteps: getValidSteps(defaultGameState(), 1)
+          validSteps: getValidSteps(defaultGameState(), 1),
+          dateBenchmark: Date.parse(new Date()),
+          timeLeftPlayer1: tempTimeLimit,
+          timeLeftPlayer2: tempTimeLimit
         })
       }
       function revertGameSettings() {
@@ -60,7 +63,10 @@ export default function NavigationBar({myProps, updateMyProps}) {
           showNewGameDropdown: false,
           validMoves: getValidMoves(defaultGameState(), 1),
           validJumps: getValidJumps(defaultGameState(), 1),
-          validSteps: getValidSteps(defaultGameState(), 1)
+          validSteps: getValidSteps(defaultGameState(), 1),
+          dateBenchmark: Date.parse(new Date()),
+          timeLeftPlayer1: 300000,
+          timeLeftPlayer2: 300000
         })
       }
       function applyTheme() {

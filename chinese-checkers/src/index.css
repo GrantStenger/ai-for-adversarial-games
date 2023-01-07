@@ -241,7 +241,60 @@ ul.navigationBar > li > .dropdown > ul  > li > ul  > li {
 
 .timer {
   position: relative;
-  background: lightcyan;
+  /* background: lightcyan; */
+  margin: 0;
+  padding: 20%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  align-content: center;
+  flex-direction: column;
+}
+
+
+.timer > .farTimer, .timer > .nearTimer {
+  font-size: xx-large;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.timer > .farTimer > .indicator, .timer > .nearTimer > .indicator{
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0 15px;
+  backdrop-filter: blur(6px);
+  box-shadow: inset -10px 10px 20px 0px rgba(255, 255, 255, 0.5), 4px -4px 5px 0px rgba(255, 255, 255, 0.4),  0px -4px 8px 0px rgba(255, 255, 255, 0);
+
+}
+
+.timer > .farTimer > .indicator[state="on"], .timer > .nearTimer > .indicator[state="on"] {
+  background: lime;
+}
+
+.timer > .farTimer > .indicator[state="off"], .timer > .nearTimer > .indicator[state="off"] {
+  background: red;
+}
+
+
+.timer > .farProfile, .timer > .nearProfile {
+  display: flex;
+  align-items: center;
+}
+
+.timer > .farProfile {
+  margin-bottom: 50px;
+}
+
+.timer > .farProfile > *, .timer > .nearProfile > * {
   margin: 0;
   padding: 0;
+  margin-right: 15px;
 }
+
+
+
