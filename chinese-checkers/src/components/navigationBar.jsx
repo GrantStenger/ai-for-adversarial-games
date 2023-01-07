@@ -18,6 +18,7 @@ export default function NavigationBar({myProps, updateMyProps}) {
     function newGame() {
         updateMyProps({
           gameState: defaultGameState(),
+          gameStateHistory: [JSON.stringify(defaultGameState())],
           currPlayerID: 1,
           validMoves: getValidMoves(defaultGameState(), 1),
           selectedSpot: [-1, -1]
