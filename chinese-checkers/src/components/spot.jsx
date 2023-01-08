@@ -11,11 +11,6 @@ export default function Spot({i, j, makeStep, makeJump, myProps, updateMyProps})
         e.stopPropagation();
         if (myProps.selectedSpot[0] > -1) {
             const moveTuple = [myProps.selectedSpot[0], myProps.selectedSpot[1], i, j]
-            // if (isSmallArrayInBigArray(moveTuple, myProps.validMoves)) {
-            //     let newGameState = myProps.gameState.map(elem => [...elem])
-            //     newGameState[i][j] = myProps.currPlayerID
-            //     newGameState[myProps.selectedSpot[0]][myProps.selectedSpot[1]] = 0
-            //     updateGameState(newGameState)
             if (isSmallArrayInBigArray(moveTuple, myProps.validSteps)) {
                 let newGameState = myProps.gameState.map(elem => [...elem])
                 newGameState[i][j] = myProps.currPlayerID
@@ -31,17 +26,11 @@ export default function Spot({i, j, makeStep, makeJump, myProps, updateMyProps})
             } else if (myProps.doubleJumpPivotSpot[0] > -1) {
                 updateMyProps({showThemeDropdown: false, showNewGameDropdown: false})
                 console.log("Please confirm double jump move")
-                // console.log("Error, cannot play move")
-                // updateMyProps({selectedSpot: [-1, -1]})
             } else {
                 updateMyProps({selectedSpot: [i, j], showThemeDropdown: false, showNewGameDropdown: false})
             }
         } else {
-            if (isSelected) {
-                updateMyProps({selectedSpot: [-1, -1], showThemeDropdown: false, showNewGameDropdown: false})
-            } else {
-                updateMyProps({selectedSpot: [i, j], showThemeDropdown: false, showNewGameDropdown: false})
-            }
+            updateMyProps({selectedSpot: [i, j], showThemeDropdown: false, showNewGameDropdown: false})
         }
     }
     if (myProps.gameState[i][j] === 1) {
