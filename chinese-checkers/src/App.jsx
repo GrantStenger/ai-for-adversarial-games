@@ -53,12 +53,19 @@ function App() {
   const [tempTimeLeftPlayer2, setTempTimeLeftPlayer2] = useState(myProps.timeLeftPlayer2)
   
   useEffect(() => {
+    if (myProps.timeLimit === 0) {
+      console.log("no timer")
+      setTempTimeLeftPlayer1(0)
+      setTempTimeLeftPlayer2(0)
+    } else {
       const intervalId = setInterval(() => {
           if (tempTimeLeftPlayer1 < 0) {
               console.log("Player 1 is out of time")
+              setTempTimeLeftPlayer1(0)
               return () => clearInterval(intervalId)
           } else if (tempTimeLeftPlayer2 < 0) {
               console.log("Player 2 is out of time")
+              setTempTimeLeftPlayer2(0)
               return () => clearInterval(intervalId)
           } else if (myProps.currPlayerID === 1) {
               setTempTimeLeftPlayer1(myProps.timeLeftPlayer1 - (Date.parse(new Date()) - myProps.dateBenchmark))
@@ -67,6 +74,7 @@ function App() {
           }
       }, 100)
       return () => clearInterval(intervalId)
+    }
   }, [myProps])
 
 
